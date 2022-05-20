@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::prefix('{locale?}')->where(['locale' => '[a-z]{2}'])->group(function () {
+    Route::get('/', [Controller::class, 'home'])->name('home');
+    Route::get('/{page:name}', [Controller::class, 'page'])->name('page');
 });
