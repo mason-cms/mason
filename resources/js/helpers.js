@@ -2,16 +2,26 @@ $(document)
     .on('change', 'form.autosave', function () {
         $(this).submit();
     })
-    .on('click', 'form button[type="clear"]', function (e) {
+    .on('click', '[data-clear]', function (e) {
         e.preventDefault();
 
-        var $button = $(this),
-            $form = $button.parents('form').first(),
-            $inputs = $form.find(':input');
+        var $this = $(this),
+            target = $this.data('clear'),
+            $target = $(target),
+            $inputs = $target.find(':input');
 
         $inputs.val('').prop('checked', false);
 
-        $form.submit();
+        if ($this.attr('type') === 'submit') {
+            $target.parents('form').submit();
+        }
+    })
+    .on('input', 'input.slug', function () {
+        var $input = $(this),
+            val = $input.val(),
+            slug = val.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+
+        $input.val(slug);
     })
     .on('click', '[data-confirm]', function () {
         return window.confirm($(this).data('confirm'));

@@ -2074,7 +2074,26 @@ __webpack_require__(/*! ./backend */ "./resources/js/backend.js");
   \*********************************/
 /***/ (() => {
 
-
+$(document).on('mason:sameHeight:resize', '.same-height-cards', function () {
+  var $group = $(this),
+      $cards = $group.find('.card'),
+      maxHeight = 0;
+  $cards.each(function () {
+    var $card = $(this),
+        $spacer = $card.children('.card-spacer').height(0),
+        height = parseInt($card.height());
+    if (height > maxHeight) maxHeight = height;
+  }).each(function () {
+    var $card = $(this),
+        height = parseInt($card.height()),
+        $spacer = $card.children('.card-spacer').last(),
+        spacing = maxHeight - height;
+    $spacer.height(spacing);
+  });
+});
+$(window).add(document).on('ready load resize', function () {
+  $('.same-height-cards').trigger('mason:sameHeight:resize');
+});
 
 /***/ }),
 
@@ -2099,13 +2118,22 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 $(document).on('change', 'form.autosave', function () {
   $(this).submit();
-}).on('click', 'form button[type="clear"]', function (e) {
+}).on('click', '[data-clear]', function (e) {
   e.preventDefault();
-  var $button = $(this),
-      $form = $button.parents('form').first(),
-      $inputs = $form.find(':input');
+  var $this = $(this),
+      target = $this.data('clear'),
+      $target = $(target),
+      $inputs = $target.find(':input');
   $inputs.val('').prop('checked', false);
-  $form.submit();
+
+  if ($this.attr('type') === 'submit') {
+    $target.parents('form').submit();
+  }
+}).on('input', 'input.slug', function () {
+  var $input = $(this),
+      val = $input.val(),
+      slug = val.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+  $input.val(slug);
 }).on('click', '[data-confirm]', function () {
   return window.confirm($(this).data('confirm'));
 });

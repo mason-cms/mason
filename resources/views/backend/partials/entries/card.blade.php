@@ -1,4 +1,14 @@
 <div class="card">
+    @isset($entry->cover)
+        <div class="card-image">
+            <figure class="image">
+                <a href="{{ route('backend.entries.edit', [$entry->type, $entry]) }}">
+                    <img src="{{ $entry->cover->url }}" alt="{{ $entry->cover->title }}">
+                </a>
+            </figure>
+        </div>
+    @endisset
+
     <div class="card-content">
         <div class="block">
             <h2 class="title is-2 entry-title">
@@ -44,12 +54,14 @@
             </div>
         </div>
 
-        @isset($entry->excerpt)
-            <div class="block entry-excerpt">
-                {!! $entry->excerpt !!}
+        @isset($entry->summary)
+            <div class="block entry-summary">
+                {!! $entry->summary !!}
             </div>
         @endisset
     </div>
+
+    <div class="card-spacer"></div>
 
     <div class="card-footer">
         <a

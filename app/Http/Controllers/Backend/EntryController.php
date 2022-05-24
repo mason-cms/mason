@@ -26,15 +26,19 @@ class EntryController extends Controller
         }
 
         if ($filters = $request->input('filters')) {
-            foreach ($filters as $attribute => $values) {
-                $query->whereIn($attribute, $values);
-            }
+            $query->filter($filters);
         }
 
-        $entries = $query->get();
+        $total = $query->count();
+
+        $perPage = $request->input('per_page') ?? 25;
+
+        $entries = $query->paginate($perPage);
 
         return response()->view('backend.entries.index', [
             'entries' => $entries,
+            'total' => $total,
+            'perPage' => $perPage,
             'entryType' => $entryType,
             'filters' => $filters ?? null,
             'search' => $search ?? null,
@@ -46,7 +50,7 @@ class EntryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function create(Request $request, EntryType $entryType)
     {
@@ -54,27 +58,9 @@ class EntryController extends Controller
         $entry->type()->associate($entryType);
         $entry->locale()->associate(Locale::default());
         $entry->author()->associate($request->user());
-
-        return response()->view('backend.entries.create', compact('entryType', 'entry'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EntryType  $entryType
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, EntryType $entryType)
-    {
-        $entry = new Entry;
-        $entry->type()->associate($entryType);
-        $entry->locale()->associate(Locale::default());
-        $entry->author()->associate($request->user());
-        $entry->fill($request->input('entry'));
         $entry->save();
 
-        return response()->redirectToRoute('backend.entries.index', [$entryType]);
+        return redirect()->route('backend.entries.edit', [$entryType, $entry]);
     }
 
     /**
@@ -109,13 +95,19 @@ class EntryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
      * @param  \App\Models\Entry  $entry
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, EntryType $entryType, Entry $entry)
     {
-        $entry->update($request->input('entry'));
+        $requestInput = $request->all();
 
-        return response()->redirectToRoute('backend.entries.edit', [$entryType, $entry]);
+        $entry->update($requestInput['entry'] ?? []);
+
+        if ($request->has('publish')) {
+            $entry->publish();
+        }
+
+        return redirect()->route('backend.entries.edit', [$entryType, $entry]);
     }
 
     /**
@@ -124,10 +116,12 @@ class EntryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
      * @param  \App\Models\Entry  $entry
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, EntryType $entryType, Entry $entry)
     {
-        //
+        $entry->delete();
+
+        return redirect()->route('backend.entries.index', [$entryType]);
     }
 }

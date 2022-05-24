@@ -22,7 +22,7 @@
 
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
-    <body>
+    <body class="backend">
         <nav class="navbar is-primary" role="navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="{{ route('backend.dashboard') }}">

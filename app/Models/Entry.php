@@ -15,12 +15,19 @@ class Entry extends Model
 
     const ICON = 'fa-file';
 
+    const STATUS_DRAFT = 'draft';
+    const STATUS_PUBLISHED = 'published';
+    const STATUS_SCHEDULED = 'scheduled';
+
     protected $fillable = [
         'name',
         'locale_id',
         'title',
-        'body',
+        'content',
+        'summary',
         'author_id',
+        'cover_id',
+        'cover_file',
         'published_at',
     ];
 
@@ -40,35 +47,69 @@ class Entry extends Model
                 ->orderBy('published_at', 'desc')
                 ->orderBy('created_at', 'desc');
         });
+
+        static::saving(function ($entry) {
+            $entry->name ??= Str::slug($entry->title);
+        });
     }
 
     public static function scopeByType($query, $entryType)
     {
-        if (is_string($entryType)) {
-            $entryType = EntryType::where('name', $entryType)->first();
-        }
-
-        if ($entryType instanceof EntryType) {
-            return $query->where('type_id', $entryType->id);
-        }
+        return $query->whereIn('type_id', prepareValueForScope($entryType, EntryType::class));
     }
 
     public static function scopeByLocale($query, $locale)
     {
-        if (is_string($locale)) {
-            $locale = Locale::where('name', $locale)->first();
+        return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
+    }
+
+    public static function scopeByAuthor($query, $author)
+    {
+        return $query->whereIn('author_id', prepareValueForScope($author, User::class));
+    }
+
+    public static function scopeByStatus($query, string $status)
+    {
+        switch ($status) {
+            case static::STATUS_DRAFT:
+                return $query->whereNull('published_at');
+
+            case static::STATUS_PUBLISHED:
+                return $query->where('published_at', '<=', now());
+
+            case static::STATUS_SCHEDULED:
+                return $query->where('published_at', '>', now());
+        }
+    }
+
+    public static function scopeFilter($query, $filters)
+    {
+        if (isset($filters['status'])) {
+            $query->byStatus($filters['status']);
         }
 
-        if ($locale instanceof Locale) {
-            return $query->where('locale_id', $locale->id);
+        if (isset($filters['locale_id'])) {
+            $query->byLocale($filters['locale_id']);
         }
+
+        if (isset($filters['author_id'])) {
+            $query->byAuthor($filters['author_id']);
+        }
+
+        return $query;
     }
 
     public static function scopeSearch($query, $term)
     {
         return $query
             ->where('title', 'LIKE', "%{$term}%")
-            ->orWhere('body', 'LIKE', "%{$term}%");
+            ->orWhere('content', 'LIKE', "%{$term}%")
+            ->orWhere('summary', 'LIKE', "%{$term}%");
+    }
+
+    public static function statusOptions()
+    {
+        return [static::STATUS_DRAFT, static::STATUS_PUBLISHED, static::STATUS_SCHEDULED];
     }
 
     public function __toString()
@@ -76,36 +117,26 @@ class Entry extends Model
         return "{$this->title}";
     }
 
-    public function type()
+    public function getTextAttribute()
     {
-        return $this->belongsTo(EntryType::class);
+        return strip_tags($this->attributes['content']);
     }
 
-    public function locale()
+    public function getSummaryAttribute()
     {
-        return $this->belongsTo(Locale::class);
-    }
-
-    public function author()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function getExcerptAttribute()
-    {
-        return Str::limit($this->body, 150);
+        return $this->attributes['summary'] ?? Str::limit($this->text, 150);
     }
 
     public function getStatusAttribute()
     {
         if (isset($this->published_at)) {
             if ($this->published_at <= now()) {
-                return 'published';
+                return static::STATUS_PUBLISHED;
             } else {
-                return 'scheduled';
+                return static::STATUS_SCHEDULED;
             }
         } else {
-            return 'draft';
+            return static::STATUS_DRAFT;
         }
     }
 
@@ -133,5 +164,40 @@ class Entry extends Model
     public function getRelativeUrlAttribute()
     {
         return $this->getUrl(false);
+    }
+
+    public function setCoverFileAttribute($file)
+    {
+        $media = new Media(['file' => $file]);
+        $media->parent()->associate($this);
+
+        if ($media->save()) {
+            $this->cover()->associate($media);
+        }
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(EntryType::class);
+    }
+
+    public function locale()
+    {
+        return $this->belongsTo(Locale::class);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function cover()
+    {
+        return $this->belongsTo(Media::class);
+    }
+
+    public function publish()
+    {
+        $this->update(['published_at' => now()]);
     }
 }

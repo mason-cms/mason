@@ -19,8 +19,10 @@ class CreateEntriesTable extends Migration
             $table->string('name', 255)->nullable()->index();
             $table->integer('locale_id')->unsigned()->index();
             $table->string('title', 255)->nullable();
-            $table->mediumText('body')->nullable();
+            $table->mediumText('content')->nullable();
+            $table->text('summary')->nullable();
             $table->integer('author_id')->unsigned()->index();
+            $table->integer('cover_id')->unsigned()->nullable();
             $table->timestamp('published_at')->nullable()->index();
             $table->timestamps();
             $table->softDeletes();

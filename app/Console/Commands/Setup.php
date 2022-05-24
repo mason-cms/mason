@@ -51,6 +51,9 @@ class Setup extends Command
             $this->line("Mail setup");
             $this->setupMail();
 
+            $this->line("Storage setup");
+            $this->setupStorage();
+
             $this->line("We have a few other questions");
             $this->setupMode();
             $this->setupMisc();
@@ -134,6 +137,21 @@ class Setup extends Command
         }
 
         $this->setEnv($env);
+    }
+
+    protected function setupStorage()
+    {
+        if ($filesystemDriver = $this->ask("Which filesystem driver do you want to use?", env('FILESYSTEM_DRIVER'))) {
+            $this->setEnv(['FILESYSTEM_DRIVER' => $filesystemDriver]);
+
+            switch ($filesystemDriver) {
+                case 'local':
+                    $this->line("Creating storage symlink...");
+                    Artisan::call('storage:link');
+                    $this->info("Symlink created");
+                    break;
+            }
+        }
     }
 
     protected function setupMode()

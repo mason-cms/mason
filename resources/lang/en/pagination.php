@@ -15,5 +15,7 @@ return [
 
     'previous' => '&laquo; Previous',
     'next' => 'Next &raquo;',
+    'per_page' => ":count per page",
+    'apply' => "Apply",
 
 ];

@@ -4,13 +4,16 @@ return [
     'title' => "Entries",
     'singular' => "Entry",
     'plural' => "Entries",
+    'pagination' => "{0} No entries|{1} One entry|[2,*] Showing :count entries out of :total",
+    'no_records' => "There are no entries at this moment.",
     'attributes' => [
         'id' => "ID",
         'name' => "Name",
         'locale' => "Language",
         'title' => "Title",
-        'body' => "Body",
+        'content' => "Content",
         'author' => "Author",
+        'cover' => "Cover image",
         'published_at' => "Published on",
         'status' => "Status",
         'created_at' => "Created on",
@@ -37,6 +40,12 @@ return [
         ],
         'save' => [
             'label' => "Save",
+        ],
+        'publish' => [
+            'label' => "Publish",
+        ],
+        'cancel' => [
+            'label' => "Cancel",
         ],
     ],
 ];
