@@ -6,12 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Post extends Model
+class EntryType extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'singular_title',
+        'plural_title',
+        'icon_class',
+    ];
+
     public function __toString()
     {
-        return "{$this->title}";
+        return "{$this->plural_title}";
     }
 }

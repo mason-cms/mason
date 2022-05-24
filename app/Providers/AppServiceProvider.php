@@ -26,9 +26,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($theme = Setting::get('theme')) {
+        if ($siteTheme = Setting::get('site_theme')) {
+            list($siteThemePath, $siteThemeVersion) = explode(':', $siteTheme);
             $viewPaths = config('view.paths');
-            $viewPaths[] = base_path("vendor/{$theme}/views");
+            $viewPaths[] = base_path("vendor/{$siteThemePath}/views");
             config(['view.paths' => $viewPaths]);
         }
     }

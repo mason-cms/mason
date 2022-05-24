@@ -9,6 +9,8 @@ class Setting extends Model
 {
     use HasFactory;
 
+    const ICON = 'fa-wrench';
+
     protected $fillable = [
         'name',
         'value',

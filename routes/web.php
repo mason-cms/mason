@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Controller;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,7 +11,6 @@ use App\Http\Controllers\Controller;
 |
 */
 
-Route::prefix('{locale?}')->where(['locale' => '[a-z]{2}'])->group(function () {
-    Route::get('/', [Controller::class, 'home'])->name('home');
-    Route::get('/{page:name}', [Controller::class, 'page'])->name('page');
-});
+require __DIR__.'/backend.php';
+require __DIR__.'/auth.php';
+require __DIR__.'/frontend.php';

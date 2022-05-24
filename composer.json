@@ -2,7 +2,14 @@
     "name": "limestonesoftware/mason",
     "type": "project",
     "description": "The Mason CMS",
-    "keywords": ["framework", "laravel", "cms"],
+    "keywords": ["framework", "laravel", "cms", "mason"],
+    "authors": [
+        {
+            "name": "Jonathan Roy",
+            "email": "jonathan@limestone.dev",
+            "role": "developer"
+        }
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.0",
@@ -16,6 +23,7 @@
     "require-dev": {
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "laravel/breeze": "^1.9",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
@@ -26,7 +34,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
