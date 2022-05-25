@@ -5,6 +5,7 @@
                 <div class="field">
                     <div class="control">
                         <input
+                            id="entry-title"
                             class="input is-large"
                             name="entry[title]"
                             type="text"
@@ -23,11 +24,13 @@
 
                     <div class="control is-expanded">
                         <input
+                            id="entry-name"
                             class="input is-small slug"
                             name="entry[name]"
                             type="text"
                             value="{!! $entry->name !!}"
                             maxlength="255"
+                            data-slug-from="#entry-title"
                         >
                     </div>
 
@@ -41,6 +44,7 @@
                 <div class="field">
                     <div class="control">
                         <textarea
+                            id="entry-content"
                             class="textarea"
                             name="entry[content]"
                             rows="20"
@@ -55,12 +59,13 @@
         <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
-                    <label class="label">
+                    <label class="label" for="entry-published-at">
                         {{ __('entries.attributes.published_at') }}
                     </label>
 
                     <div class="control">
                         <input
+                            id="entry-published-at"
                             class="input"
                             name="entry[published_at]"
                             type="datetime-local"
@@ -74,13 +79,17 @@
         <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
-                    <label class="label">
+                    <label class="label" for="entry-locale">
                         {{ __('entries.attributes.locale') }}
                     </label>
 
                     <div class="control">
                         <div class="select is-fullwidth">
-                            <select name="entry[locale_id]" autocomplete="off">
+                            <select
+                                id="entry-locale"
+                                name="entry[locale_id]"
+                                autocomplete="off"
+                            >
                                 @foreach(\App\Models\Locale::all() as $localeOption)
                                     <option
                                         value="{{ $localeOption->id }}"
@@ -97,13 +106,17 @@
         <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
-                    <label class="label">
+                    <label class="label" for="entry-author">
                         {{ __('entries.attributes.author') }}
                     </label>
 
                     <div class="control">
                         <div class="select is-fullwidth">
-                            <select name="entry[author_id]" autocomplete="off">
+                            <select
+                                id="entry-author"
+                                name="entry[author_id]"
+                                autocomplete="off"
+                            >
                                 @foreach(\App\Models\User::all() as $authorOption)
                                     <option
                                         value="{{ $authorOption->id }}"
@@ -120,7 +133,7 @@
         <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
-                    <label class="label">
+                    <label class="label" for="entry-cover-file">
                         {{ __('entries.attributes.cover') }}
                     </label>
 
@@ -134,6 +147,7 @@
                         <div class="file is-small">
                             <label class="file-label">
                                 <input
+                                    id="entry-cover-file"
                                     class="file-input"
                                     type="file"
                                     name="entry[cover_file]"
@@ -162,22 +176,15 @@
                 >
 
                 @foreach(\App\Models\TaxonomyType::all() as $taxonomyType)
-                    @if ($taxonomyType->taxonomies->count() > 0)
+                    @if ($taxonomyType->taxonomies()->count() > 0)
                         <div class="field">
                             <label class="label">
                                 {{ $taxonomyType }}
                             </label>
 
                             <div class="control">
-                                @foreach($taxonomyType->taxonomies as $taxonomy)
-                                    <label class="checkbox">
-                                        <input
-                                            type="checkbox"
-                                            name="entry[taxonomies][]"
-                                            value="{{ $taxonomy->id }}"
-                                            {{ $entry->taxonomies->contains($taxonomy) ? 'checked' : '' }}
-                                        > {{ $taxonomy }}
-                                    </label><br />
+                                @foreach ($taxonomyType->taxonomies()->topLevel()->get() as $taxonomy)
+                                    @include('backend.entries.partials.taxonomy-checkbox')
                                 @endforeach
                             </div>
                         </div>

@@ -56,6 +56,11 @@ class Taxonomy extends Model
         return $query->whereIn('type_id', prepareValueForScope($taxonomyType, TaxonomyType::class));
     }
 
+    public static function scopeTopLevel($query)
+    {
+        return $query->whereNull('parent_id');
+    }
+
     public static function scopeByLocale($query, $locale)
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
@@ -84,6 +89,29 @@ class Taxonomy extends Model
     public function __toString()
     {
         return "{$this->title}";
+    }
+
+    public function getAllChildren()
+    {
+        $children = collect();
+
+        foreach ($this->children as $child) {
+            $children->push($child);
+            $children = $children->merge($child->children);
+        }
+
+        return $children;
+    }
+
+    public function getParentOptions()
+    {
+        $allChildren = $this->getAllChildren();
+        $allChildrenIds = $allChildren->pluck('id');
+
+        return static::byType($this->type)
+            ->where('id', '!=', $this->id)
+            ->whereNotIn('id', $allChildrenIds)
+            ->get();
     }
 
     /**

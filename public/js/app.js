@@ -2062,7 +2062,7 @@ module.exports = {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-__webpack_require__(/*! ./helpers */ "./resources/js/helpers.js");
+__webpack_require__(/*! ./backend/helpers */ "./resources/js/backend/helpers.js");
 
 __webpack_require__(/*! ./backend/backend */ "./resources/js/backend/backend.js");
 
@@ -2087,6 +2087,44 @@ $(window).add(document).on('ready load resize', function () {
   } else {
     $body.addClass('is-mobile');
   }
+});
+
+/***/ }),
+
+/***/ "./resources/js/backend/helpers.js":
+/*!*****************************************!*\
+  !*** ./resources/js/backend/helpers.js ***!
+  \*****************************************/
+/***/ (() => {
+
+$(document).on('change', 'form.autosave', function () {
+  $(this).submit();
+}).on('click', '[data-clear]', function (e) {
+  e.preventDefault();
+  var $this = $(this),
+      target = $this.data('clear'),
+      $target = $(target),
+      $inputs = $target.find(':input');
+  $inputs.val('').prop('checked', false);
+
+  if ($this.attr('type') === 'submit') {
+    $target.parents('form').submit();
+  }
+}).on('input', 'input.slug', function () {
+  var $input = $(this),
+      slug = $input.val().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+  $input.val(slug);
+}).on('focus', 'input.slug[data-slug-from]', function () {
+  var $input = $(this),
+      from = $input.data('slug-from'),
+      $from = $(from).first();
+
+  if (!$input.val() && $from.length === 1) {
+    var slug = $from.val().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+    $input.val(slug).trigger('input');
+  }
+}).on('click', '[data-confirm]', function () {
+  return window.confirm($(this).data('confirm'));
 });
 
 /***/ }),
@@ -2137,36 +2175,6 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-/***/ }),
-
-/***/ "./resources/js/helpers.js":
-/*!*********************************!*\
-  !*** ./resources/js/helpers.js ***!
-  \*********************************/
-/***/ (() => {
-
-$(document).on('change', 'form.autosave', function () {
-  $(this).submit();
-}).on('click', '[data-clear]', function (e) {
-  e.preventDefault();
-  var $this = $(this),
-      target = $this.data('clear'),
-      $target = $(target),
-      $inputs = $target.find(':input');
-  $inputs.val('').prop('checked', false);
-
-  if ($this.attr('type') === 'submit') {
-    $target.parents('form').submit();
-  }
-}).on('input', 'input.slug', function () {
-  var $input = $(this),
-      val = $input.val(),
-      slug = val.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-  $input.val(slug);
-}).on('click', '[data-confirm]', function () {
-  return window.confirm($(this).data('confirm'));
-});
 
 /***/ }),
 

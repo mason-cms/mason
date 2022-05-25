@@ -1,4 +1,4 @@
 require('./bootstrap');
-require('./helpers');
+require('./backend/helpers');
 require('./backend/backend');
 require('./backend/sameHeight');

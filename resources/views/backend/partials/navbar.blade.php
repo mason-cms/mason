@@ -92,11 +92,11 @@
             </a>
 
             <a
-                href="{{ $routeUri = route('backend.settings.index') }}"
+                href="{{ $routeUri = route('backend.configuration.general') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
-                <span class="icon has-text-success"><i class="fa-light {{ \App\Models\Setting::ICON }}"></i></span>
-                <span>{{ __('settings.title') }}</span>
+                <span class="icon has-text-success"><i class="fa-light fa-screwdriver-wrench"></i></span>
+                <span>{{ __('configuration.title') }}</span>
             </a>
         </div>
 
@@ -104,8 +104,9 @@
             <form class="navbar-item" action="{{ route('logout') }}" method="post">
                 @csrf
 
-                <button class="button is-small" type="submit">
-                    Logout
+                <button class="button is-small is-warning" type="submit">
+                    <span>{{ __('auth.log_out') }}</span>
+                    <span class="icon"><i class="fa-light fa-right-from-bracket"></i></span>
                 </button>
             </form>
         </div>

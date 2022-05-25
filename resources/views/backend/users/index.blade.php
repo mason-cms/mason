@@ -63,6 +63,10 @@
                                         {{ __('entries.plural') }}
                                     </th>
 
+                                    <th>
+                                        {{ __('users.attributes.created_at') }}
+                                    </th>
+
                                     <th class="is-narrow"></th>
                                 </tr>
                             </thead>
@@ -72,6 +76,12 @@
                                     <tr>
                                         <td>
                                             {{ $user->name }}
+
+                                            @if ($user->is_root)
+                                                <span class="icon has-text-info" title="{{ __('users.attributes.is_root') }}">
+                                                    <i class="fa-light fa-key"></i>
+                                                </span>
+                                            @endif
                                         </td>
 
                                         <td>
@@ -80,6 +90,10 @@
 
                                         <td>
                                             {{ $user->entries()->count() }}
+                                        </td>
+
+                                        <td>
+                                            {{ $user->created_at }}
                                         </td>
 
                                         <td>

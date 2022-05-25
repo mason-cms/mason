@@ -19,9 +19,7 @@ class TaxonomyController extends Controller
      */
     public function index(Request $request, TaxonomyType $taxonomyType)
     {
-        $query = Taxonomy::byType($taxonomyType);
-
-        $query->whereNull('parent_id');
+        $query = Taxonomy::byType($taxonomyType)->topLevel();
 
         if ($search = $request->input('search')) {
             $query->search($search);

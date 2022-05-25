@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\ConfigurationController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EntryController;
 use App\Http\Controllers\Backend\UserController;
@@ -33,7 +34,9 @@ Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(functio
 
     Route::resource('users', UserController::class);
 
-    Route::prefix('/settings')->name('settings.')->group(function () {
-        Route::get('/', [SettingsController::class, 'index'])->name('index');
+    Route::prefix('/configuration')->name('configuration.')->group(function () {
+        Route::get('/', [ConfigurationController::class, 'general'])->name('general');
+
+        Route::resource('setting', SettingsController::class);
     });
 });

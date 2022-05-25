@@ -1,12 +1,10 @@
 <tr>
     <td>
-        @if ($depth > 0)
-            <span class="icon" style="margin-left: {!! ( $depth - 1 ) * 2 !!}em;">
-                <i class="fa-light fa-diagram-nested"></i>
-            </span>
-        @endif
+        {!! str_repeat('&mdash;', $depth) !!}
 
-        {{ $taxonomy->title }}
+        <a href="{{ route('backend.taxonomies.edit', [$taxonomy->type, $taxonomy]) }}">
+            {{ $taxonomy->title }}
+        </a>
     </td>
 
     <td>

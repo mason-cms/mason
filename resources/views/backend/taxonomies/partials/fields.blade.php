@@ -9,6 +9,7 @@
 
                     <div class="control">
                         <input
+                            id="taxonomy-title"
                             class="input is-large"
                             name="taxonomy[title]"
                             type="text"
@@ -25,11 +26,13 @@
 
                     <div class="control">
                         <input
+                            id="taxonomy-name"
                             class="input slug"
                             name="taxonomy[name]"
                             type="text"
                             value="{!! $taxonomy->name !!}"
                             maxlength="255"
+                            data-slug-from="#taxonomy-title"
                         >
                     </div>
                 </div>
@@ -41,6 +44,7 @@
 
                     <div class="control">
                         <textarea
+                            id="taxonomy-description"
                             class="textarea"
                             name="taxonomy[description]"
                             rows="20"
@@ -61,12 +65,45 @@
 
                     <div class="control">
                         <div class="select is-fullwidth">
-                            <select name="taxonomy[locale_id]" autocomplete="off">
+                            <select
+                                id="taxonomy-locale"
+                                name="taxonomy[locale_id]"
+                                autocomplete="off"
+                            >
                                 @foreach(\App\Models\Locale::all() as $localeOption)
                                     <option
                                         value="{{ $localeOption->id }}"
                                         {{ isset($taxonomy->locale) && $taxonomy->locale->is($localeOption) ? 'selected' : '' }}
                                     >{{ $localeOption }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="card block">
+            <div class="card-content">
+                <div class="field">
+                    <label class="label">
+                        {{ __('taxonomies.attributes.parent') }}
+                    </label>
+
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select
+                                id="taxonomy-parent"
+                                name="taxonomy[parent_id]"
+                                autocomplete="off"
+                            >
+                                <option></option>
+
+                                @foreach($taxonomy->getParentOptions() as $taxonomyOption)
+                                    <option
+                                        value="{{ $taxonomyOption->id }}"
+                                        {{ isset($taxonomy->parent) && $taxonomy->parent->is($taxonomyOption) ? 'selected' : '' }}
+                                    >{{ $taxonomyOption }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -92,6 +129,7 @@
                         <div class="file is-small">
                             <label class="file-label">
                                 <input
+                                    id="taxonomy-cover-file"
                                     class="file-input"
                                     type="file"
                                     name="taxonomy[cover_file]"

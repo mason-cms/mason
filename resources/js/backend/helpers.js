@@ -18,10 +18,20 @@ $(document)
     })
     .on('input', 'input.slug', function () {
         var $input = $(this),
-            val = $input.val(),
-            slug = val.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+            slug = $input.val().toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
 
         $input.val(slug);
+    })
+    .on('focus', 'input.slug[data-slug-from]', function () {
+        var $input = $(this),
+            from = $input.data('slug-from'),
+            $from = $(from).first();
+
+        if (! $input.val() && $from.length === 1) {
+            var slug = $from.val().toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+
+            $input.val(slug).trigger('input');
+        }
     })
     .on('click', '[data-confirm]', function () {
         return window.confirm($(this).data('confirm'));
