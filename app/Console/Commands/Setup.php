@@ -42,32 +42,35 @@ class Setup extends Command
      */
     public function handle()
     {
-        if ($this->confirm("Are you sure you want to continue with the Mason CMS setup?")) {
-            $this->setupDatabase();
-            $this->setupMail();
-            $this->setupStorage();
-            $this->setupSite();
-            $this->installTheme();
-            $this->setupMode();
-            $this->setupMisc();
+        $this->clearCache();
+        $this->setupDatabase();
+        $this->setupMail();
+        $this->setupStorage();
+        $this->setupSite();
+        $this->installTheme();
+        $this->setupMode();
+        $this->setupMisc();
+        $this->clearCache();
 
-            if ($this->confirm("Create a root user?")) {
-                if ($this->createRootUser()) {
-                    $this->info("Root user created successfully!");
-                } else {
-                    $this->error("Root user could not be created!");
-                }
+        $this->migrate();
+        $this->seed();
+
+        if ($this->confirm("Create a root user?")) {
+            if ($this->createRootUser()) {
+                $this->info("Root user created successfully!");
+            } else {
+                $this->error("Root user could not be created!");
             }
-
-            $this->info("Mason CMS setup completed.");
         }
+
+        $this->info("Mason CMS setup completed.");
 
         return 0;
     }
 
     protected function setupDatabase()
     {
-        $this->line("Database setup...");
+        $this->info("Database setup...");
 
         $vars = [
             'DB_CONNECTION' => "Database connection",
@@ -85,7 +88,7 @@ class Setup extends Command
 
     protected function setupMail()
     {
-        $this->line("Mail setup...");
+        $this->info("Mail setup...");
 
         $vars = [
             'MAIL_MAILER' => "Mailer",
@@ -105,16 +108,15 @@ class Setup extends Command
 
     protected function setupStorage()
     {
-        $this->line("Storage setup...");
+        $this->info("Storage setup...");
 
         if ($filesystemDriver = $this->ask("Which filesystem driver do you want to use?", env('FILESYSTEM_DRIVER'))) {
             $this->setEnv(['FILESYSTEM_DRIVER' => $filesystemDriver]);
 
             switch ($filesystemDriver) {
                 case 'local':
-                    $this->line("Creating storage symlink...");
+                    $this->info("Creating storage symlink...");
                     Artisan::call('storage:link');
-                    $this->info("Symlink created");
                     break;
             }
         }
@@ -122,18 +124,13 @@ class Setup extends Command
 
     protected function setupSite()
     {
-        $this->line("Site setup...");
+        $this->info("Site setup...");
 
-        $vars = [
-            'SITE_NAME' => "What will be the name of your site?",
-            'SITE_DESCRIPTION' => "Short description of your site",
-            'SITE_URL' => "What will be the URL of your site (include http(s))?",
-            'SITE_THEME' => "Select the theme you will be using for your site",
-        ];
-
-        foreach ($vars as $var => $question) {
-            $this->setEnv([$var => $this->ask($question, env($var))]);
-        }
+        $this->setEnv([
+            'SITE_NAME' => $this->ask("What will be the name of your site?", env('SITE_NAME')),
+            'SITE_DESCRIPTION' => $this->ask("Short description of your site", env('SITE_DESCRIPTION')),
+            'SITE_URL' => $this->ask("What will be the URL of your site (include http(s))?", env('SITE_URL')),
+        ]);
 
         $this->setEnv([
             'SITE_ALLOW_USER_REGISTRATION' => $this->confirm("Do you want to allow user registration?", env('SITE_ALLOW_USER_REGISTRATION', false)),
@@ -154,7 +151,7 @@ class Setup extends Command
 
     protected function installTheme()
     {
-        $this->line("Installing theme...");
+        $this->info("Installing theme...");
 
         if ($theme = env('SITE_THEME')) {
             if ( $output = shell_exec("composer require {$theme}") ) {
@@ -194,6 +191,18 @@ class Setup extends Command
         }
     }
 
+    protected function migrate()
+    {
+        $this->info("Running database migrations...");
+        Artisan::call('migrate --force');
+    }
+
+    protected function seed()
+    {
+        $this->info("Seeding database...");
+        Artisan::call('db:seed --force');
+    }
+
     protected function createRootUser()
     {
         $rootUser = new User;
@@ -218,12 +227,21 @@ class Setup extends Command
         }
     }
 
+    protected function clearCache()
+    {
+        Artisan::call('config:clear');
+    }
+
     protected function setEnv($data = [])
     {
         $path = base_path('.env');
 
         if (file_exists($path)) {
             foreach ($data as $key => $value) {
+                if (str_contains($value, " ")) {
+                    $value = '"' . $value . '"';
+                }
+
                 file_put_contents($path, str_replace(
                     $key . '=' . env($key), $key . '=' . $value, file_get_contents($path)
                 ));

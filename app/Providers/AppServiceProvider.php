@@ -28,11 +28,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($siteTheme = config('site.theme')) {
-            list($siteThemePath, $siteThemeVersion) = explode(':', $siteTheme, 2);
-            $viewPaths = config('view.paths');
-            $viewPaths[] = base_path("vendor/{$siteThemePath}/views");
-            config(['view.paths' => $viewPaths]);
+        $siteTheme = config('site.theme');
+
+        if (! empty($siteTheme)) {
+            $siteThemeInfo = explode(':', $siteTheme, 2);
+            $siteThemePath = $siteThemeInfo[0];
+
+            if (! empty($siteThemePath)) {
+                $viewPaths = config('view.paths');
+                $viewPaths[] = base_path("vendor/{$siteThemePath}/views");
+                config(['view.paths' => $viewPaths]);
+            }
         }
     }
 }

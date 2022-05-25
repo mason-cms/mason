@@ -38,34 +38,12 @@ class Deploy extends Command
      */
     public function handle()
     {
-        $dotEnv = base_path('.env');
-        $dotEnvExample = base_path('.env.example');
-
-        if (! file_exists($dotEnv)) {
-            if (file_exists($dotEnvExample)) {
-                $this->info("Creating .env file from .env.example");
-
-                if (! copy($dotEnvExample, $dotEnv)) {
-                    $this->error("Could not copy .env file");
-                    return 1;
-                }
-            } else {
-                $this->error("File .env.example does not exist");
-                return 1;
-            }
-        }
-
         $this->info("Installing composer dependencies...");
         shell_exec("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev");
 
         $this->info("Installing npm dependencies...");
         shell_exec("npm install");
         shell_exec("npm run production");
-
-        if (! env('APP_KEY')) {
-            $this->info("Generating new app key...");
-            Artisan::call('key:generate');
-        }
 
         $this->info("Running database migrations...");
         Artisan::call('migrate --force');
@@ -76,13 +54,10 @@ class Deploy extends Command
         $this->info("Optimizing...");
         Artisan::call('optimize');
 
-        $this->info("Seeding database...");
-        Artisan::call('db:seed --force');
-
         $this->info("Restarting queues...");
         Artisan::call('queue:restart');
 
-        $this->info("Deployment completed.");
+        $this->info("Mason deployment completed.");
 
         return 0;
     }

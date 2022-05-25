@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10485e1a624151db56a0473f48db5f24",
+    "content-hash": "1c3842733004e0957d7e6bd1cff93b78",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1662,16 +1662,16 @@
         },
         {
             "name": "limestonesoftware/granite",
-            "version": "dev-develop",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LimestoneSoftware/granite.git",
-                "reference": "1c44b283304c96b062b85f9e601dcbd6480b4316"
+                "reference": "603c74eeecbb9652c0775d2e901b84fe33a19b0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LimestoneSoftware/granite/zipball/1c44b283304c96b062b85f9e601dcbd6480b4316",
-                "reference": "1c44b283304c96b062b85f9e601dcbd6480b4316",
+                "url": "https://api.github.com/repos/LimestoneSoftware/granite/zipball/603c74eeecbb9652c0775d2e901b84fe33a19b0c",
+                "reference": "603c74eeecbb9652c0775d2e901b84fe33a19b0c",
                 "shasum": ""
             },
             "require": {
@@ -1680,19 +1680,13 @@
             "require-dev": {
                 "phpunit/phpunit": "^9.5.10"
             },
-            "type": "library",
+            "default-branch": true,
+            "type": "theme",
             "autoload": {
                 "psr-4": []
             },
             "license": [
                 "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jonathan Roy",
-                    "email": "jonathan@limestone.dev",
-                    "role": "developer"
-                }
             ],
             "description": "Mason CMS default theme",
             "keywords": [
@@ -1703,10 +1697,10 @@
                 "theme"
             ],
             "support": {
-                "source": "https://github.com/LimestoneSoftware/granite/tree/develop",
+                "source": "https://github.com/LimestoneSoftware/granite/tree/master",
                 "issues": "https://github.com/LimestoneSoftware/granite/issues"
             },
-            "time": "2022-05-24T04:21:13+00:00"
+            "time": "2022-05-20T14:20:19+00:00"
         },
         {
             "name": "monolog/monolog",
