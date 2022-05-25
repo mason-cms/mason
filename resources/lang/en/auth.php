@@ -16,5 +16,19 @@ return [
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'remember_me' => "Remember me",
+    'forgot_password' => "Forgot your password?",
+    'log_in' => "Log in",
+    'log_out' => "Log out",
+    'email_password_reset_link' => "Email Password Reset Link",
+    'already_registered' => "Already registered?",
+    'register' => "Register",
+    'registration_not_available' => "User registration is currently not available.",
+    'reset_password' => "Reset Password",
+    'verify_email' => [
+        'intro' => "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
+        'verification_link_sent' => "A new verification link has been sent to the email address you provided during registration.",
+        'resend_verification_email' => "Resend Verification Email",
+    ],
 
 ];

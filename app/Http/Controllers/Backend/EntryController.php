@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class EntryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display entries.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -31,9 +31,7 @@ class EntryController extends Controller
 
         $total = $query->count();
 
-        $perPage = $request->input('per_page') ?? 25;
-
-        $entries = $query->paginate($perPage);
+        $entries = $query->paginate($perPage = $request->input('per_page') ?? 25);
 
         return response()->view('backend.entries.index', [
             'entries' => $entries,
@@ -46,7 +44,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new entry.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -64,7 +62,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified entry.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -77,7 +75,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified entry.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -90,7 +88,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified entry in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -111,7 +109,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified entry from storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType

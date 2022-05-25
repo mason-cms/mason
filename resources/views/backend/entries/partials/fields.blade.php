@@ -1,6 +1,6 @@
 <div class="columns">
     <div class="column is-9">
-        <div class="card block">
+        <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
                     <div class="control">
@@ -48,11 +48,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </fieldset>
     </div>
 
     <div class="column is-3">
-        <div class="card block">
+        <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
                     <label class="label">
@@ -69,9 +69,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </fieldset>
 
-        <div class="card block">
+        <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
                     <label class="label">
@@ -92,9 +92,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </fieldset>
 
-        <div class="card block">
+        <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
                     <label class="label">
@@ -115,9 +115,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </fieldset>
 
-        <div class="card block">
+        <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
                     <label class="label">
@@ -151,6 +151,39 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </fieldset>
+
+        <fieldset class="card block">
+            <div class="card-content">
+                <input
+                    name="entry[taxonomies]"
+                    type="hidden"
+                    value=""
+                >
+
+                @foreach(\App\Models\TaxonomyType::all() as $taxonomyType)
+                    @if ($taxonomyType->taxonomies->count() > 0)
+                        <div class="field">
+                            <label class="label">
+                                {{ $taxonomyType }}
+                            </label>
+
+                            <div class="control">
+                                @foreach($taxonomyType->taxonomies as $taxonomy)
+                                    <label class="checkbox">
+                                        <input
+                                            type="checkbox"
+                                            name="entry[taxonomies][]"
+                                            value="{{ $taxonomy->id }}"
+                                            {{ $entry->taxonomies->contains($taxonomy) ? 'checked' : '' }}
+                                        > {{ $taxonomy }}
+                                    </label><br />
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+        </fieldset>
     </div>
 </div>

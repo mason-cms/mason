@@ -3,19 +3,20 @@
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.entries.update', [$entryType, $entry]) }}"
+        action="{{ route('backend.entries.update', [$entry->type, $entry]) }}"
         method="POST"
         enctype="multipart/form-data"
     >
         @method('PATCH')
         @csrf
+
         <div class="level">
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-1">
-                        <a href="{{ route('backend.entries.index', [$entryType]) }}">
+                        <a href="{{ route('backend.entries.index', [$entry->type]) }}">
                             <span class="icon"><i class="fa-light fa-arrow-left-long"></i></span>
-                            <span>{{ $entryType }}</span>
+                            <span>{{ $entry->type }}</span>
                         </a>
                     </h1>
                 </div>
@@ -49,6 +50,6 @@
             </div>
         </div>
 
-        @include('backend.partials.entries.fields')
+        @include('backend.entries.partials.fields')
     </form>
 @endsection

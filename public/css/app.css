@@ -10376,25 +10376,51 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   padding: 3rem 1.5rem 6rem;
 }
 
-.backend .navbar .navbar-brand {
+body.backend .navbar .navbar-brand {
   text-transform: uppercase;
   letter-spacing: 3px;
 }
-.backend .sidebar {
+body.backend .sidebar {
   min-width: 15%;
 }
-.backend .no-records {
+body.backend .no-records {
   font-size: 1.25rem;
   font-style: italic;
   color: hsl(0deg, 0%, 48%);
 }
-.backend .pagination-count {
+body.backend .pagination-count {
   font-size: 0.875rem;
 }
-.backend .is-disabled {
+body.backend .is-disabled {
   cursor: not-allowed;
 }
-.backend .filters .dropdown-content {
+body.backend .filters .dropdown-content {
   min-width: 20rem;
   max-width: 90%;
+}
+
+body.auth {
+  background-color: hsl(202deg, 40%, 14%);
+  min-height: 100vh;
+}
+body.auth #brand {
+  font-size: 1.5rem;
+  color: hsl(0deg, 0%, 100%);
+}
+body.auth #brand a, body.auth #brand strong {
+  color: hsl(0deg, 0%, 100%);
+}
+body.auth #footer {
+  font-size: 0.8125rem;
+  color: hsl(0deg, 0%, 100%);
+  opacity: 0.5;
+}
+body.auth #footer a {
+  color: hsl(0deg, 0%, 100%);
+}
+body.auth .card.is-narrow {
+  width: 36rem;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }

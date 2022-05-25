@@ -1,19 +1,32 @@
-<form
-    method="POST"
-    action="{{ route('password.email') }}"
->
-    @csrf
+@extends('layouts.auth')
 
-    <input
-        id="email"
-        type="email"
-        name="email"
-        value="{{ old('email') }}"
-        required
-        autofocus
-    />
+@section('content')
+    <form
+        id="forgot-password-form"
+        class="card block is-narrow"
+        method="POST"
+        action="{{ route('password.email') }}"
+    >
+        @csrf
 
-    <button>
-        {{ __('Email Password Reset Link') }}
-    </button>
-</form>
+        <div class="card-content">
+            <div class="field">
+                <div class="control">
+                    <input
+                        class="input"
+                        type="email"
+                        name="email"
+                        placeholder="{{ __('users.attributes.email') }}"
+                        value="{{ old('email') }}"
+                        required
+                        autofocus
+                    />
+                </div>
+            </div>
+
+            <button class="button is-primary" type="submit">
+                {{ __('auth.email_password_reset_link') }}
+            </button>
+        </div>
+    </form>
+@endsection

@@ -20,6 +20,8 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
+        $this->authorize('register-user');
+
         return view('auth.register');
     }
 
@@ -38,6 +40,8 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        $this->authorize('register-user', $request->email);
 
         $user = User::create([
             'name' => $request->name,

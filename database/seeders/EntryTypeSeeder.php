@@ -14,7 +14,7 @@ class EntryTypeSeeder extends Seeder
      */
     public function run()
     {
-        $entryTypeData = [
+        $data = [
             'page' => [
                 'singular_title' => "Page",
                 'plural_title' => "Pages",
@@ -27,15 +27,13 @@ class EntryTypeSeeder extends Seeder
             ],
         ];
 
-        foreach ($entryTypeData as $name => $attributes) {
-            if ($entryType = EntryType::where('name', $name)->first()) {
-                $entryType->update($attributes);
-            } else {
-                $entryType = new EntryType;
-                $entryType->name = $name;
-                $entryType->fill($attributes);
-                $entryType->save();
-            }
+        $res = seed($data, EntryType::class, 'name');
+        $out = "{$res['created']} created / {$res['updated']} updated / {$res['skipped']} skipped / {$res['errors']} errors";
+
+        if (isset($this->command)) {
+            $res['errors'] === 0
+                ? $this->command->line($out)
+                : $this->command->error($out);
         }
     }
 }

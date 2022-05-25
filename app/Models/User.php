@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return "{$this->name}";
     }
+
+    public function entries()
+    {
+        return $this->hasMany(Entry::class, 'author_id');
+    }
 }

@@ -16,8 +16,10 @@ class CreateTaxonomiesTable extends Migration
         Schema::create('taxonomies', function (Blueprint $table) {
             $table->id();
             $table->integer('type_id')->unsigned()->index();
-            $table->string('name', 255)->index();
-            $table->string('title', 255);
+            $table->string('name', 255)->nullable()->index();
+            $table->string('title', 255)->nullable();
+            $table->mediumText('description')->nullable();
+            $table->integer('cover_id')->unsigned()->nullable();
             $table->integer('locale_id')->unsigned()->index();
             $table->integer('parent_id')->unsigned()->nullable()->index();
             $table->timestamps();

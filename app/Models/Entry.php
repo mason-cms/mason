@@ -29,6 +29,7 @@ class Entry extends Model
         'cover_id',
         'cover_file',
         'published_at',
+        'taxonomies',
     ];
 
     protected $casts = [
@@ -37,6 +38,10 @@ class Entry extends Model
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
     ];
+
+    /**
+     * Static Methods
+     */
 
     protected static function boot()
     {
@@ -52,6 +57,15 @@ class Entry extends Model
             $entry->name ??= Str::slug($entry->title);
         });
     }
+
+    public static function statusOptions()
+    {
+        return [static::STATUS_DRAFT, static::STATUS_PUBLISHED, static::STATUS_SCHEDULED];
+    }
+
+    /**
+     * Scopes
+     */
 
     public static function scopeByType($query, $entryType)
     {
@@ -107,15 +121,34 @@ class Entry extends Model
             ->orWhere('summary', 'LIKE', "%{$term}%");
     }
 
-    public static function statusOptions()
-    {
-        return [static::STATUS_DRAFT, static::STATUS_PUBLISHED, static::STATUS_SCHEDULED];
-    }
+    /**
+     * Helpers
+     */
 
     public function __toString()
     {
         return "{$this->title}";
     }
+
+    public function getUrl($absolute = true)
+    {
+        $defaultLocale = Setting::get('site_default_locale');
+
+        if (isset($this->locale) && $this->locale->name !== $defaultLocale) {
+            return route('entry', ['locale' => $this->locale->name, 'entry' => $this], $absolute);
+        } else {
+            return route('entry', ['entry' => $this], $absolute);
+        }
+    }
+
+    public function publish()
+    {
+        $this->update(['published_at' => now()]);
+    }
+
+    /**
+     * Accessors & Mutators
+     */
 
     public function getTextAttribute()
     {
@@ -137,17 +170,6 @@ class Entry extends Model
             }
         } else {
             return static::STATUS_DRAFT;
-        }
-    }
-
-    public function getUrl($absolute = true)
-    {
-        $defaultLocale = Setting::get('site_default_locale');
-
-        if (isset($this->locale) && $this->locale->name !== $defaultLocale) {
-            return route('entry', ['locale' => $this->locale->name, 'entry' => $this], $absolute);
-        } else {
-            return route('entry', ['entry' => $this], $absolute);
         }
     }
 
@@ -176,6 +198,15 @@ class Entry extends Model
         }
     }
 
+    public function setTaxonomiesAttribute($taxonomies)
+    {
+        $this->taxonomies()->sync($taxonomies);
+    }
+
+    /**
+     * Relationships
+     */
+
     public function type()
     {
         return $this->belongsTo(EntryType::class);
@@ -196,8 +227,8 @@ class Entry extends Model
         return $this->belongsTo(Media::class);
     }
 
-    public function publish()
+    public function taxonomies()
     {
-        $this->update(['published_at' => now()]);
+        return $this->belongsToMany(Taxonomy::class);
     }
 }

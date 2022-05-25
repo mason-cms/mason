@@ -61,7 +61,7 @@ class Setup extends Command
             $this->refreshConfig();
 
             $this->line("Site setup");
-            $this->askSiteInfo();
+            $this->setupSiteInfo();
 
             $this->line("Setting up theme");
             $this->setupTheme();
@@ -73,6 +73,9 @@ class Setup extends Command
                     $this->error("Root user could not be created!");
                 }
             }
+
+            $this->line("User registration setup");
+            $this->setupUserRegistration();
 
             $this->line("Database seeding");
             if ($this->seedDatabase()) {
@@ -187,7 +190,7 @@ class Setup extends Command
         $this->setEnv($env);
     }
 
-    protected function askSiteInfo()
+    protected function setupSiteInfo()
     {
         $settings = [
             'site_name' => "What will be the name of your site?",
@@ -238,6 +241,22 @@ class Setup extends Command
         } else {
             $this->error("The passwords don't match. Please try again.");
             return $this->askPassword();
+        }
+    }
+
+    protected function setupUserRegistration()
+    {
+        $allowUserRegistration = $this->confirm("Do you want to allow user registration?", Setting::get('allow_user_registration') ?? false);
+        Setting::set('allow_user_registration', $allowUserRegistration);
+
+        if ($allowUserRegistration) {
+            $restrictUserEmailDomain = $this->confirm("Do you want to put a restriction on the users' email domain (eg: myorganization.com)?", Setting::get('restrict_user_email_domain') ?? false);
+            Setting::set('restrict_user_email_domain', $restrictUserEmailDomain);
+
+            if ($restrictUserEmailDomain) {
+                $allowedUserEmailDomains = $this->ask("Please enter allowed domains (separated by a coma)", implode(', ', Setting::get('allowed_user_email_domains') ?? []));
+                Setting::set('allowed_user_email_domains', array_map('trim', explode(',', $allowedUserEmailDomains)));
+            }
         }
     }
 

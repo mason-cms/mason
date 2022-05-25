@@ -25,19 +25,19 @@
 
             <div class="level-right">
                 <div class="level-item">
-                    @include('backend.partials.entries.search')
+                    @include('backend.partials.search')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.partials.entries.filters')
+                    @include('backend.entries.partials.filters')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.partials.entries.paginator')
+                    @include('backend.partials.paginator')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.partials.entries.buttons.create')
+                    @include('backend.entries.partials.buttons.create', ['entryType' => $entryType])
                 </div>
             </div>
         </div>
@@ -47,8 +47,8 @@
         @if ($entries->count() > 0)
             <div class="columns is-multiline same-height-cards">
                 @foreach($entries as $entry)
-                    <div class="column is-3">
-                        @include('backend.partials.entries.card')
+                    <div class="column is-4 is-3-desktop">
+                        @include('backend.entries.partials.card')
                     </div>
                 @endforeach
             </div>
@@ -59,11 +59,11 @@
         @else
             <div class="section is-medium has-text-centered">
                 <p class="block no-records">
-                    {{ __('entries.no_records') }}
+                    {{ __('entries.no_records', ['entryType' => strtolower($entryType->plural_title)]) }}
                 </p>
 
                 <p class="block">
-                    @include('backend.partials.entries.buttons.create')
+                    @include('backend.entries.partials.buttons.create', ['entryType' => $entryType])
                 </p>
             </div>
         @endif

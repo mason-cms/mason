@@ -5,7 +5,7 @@ return [
     'singular' => "Entry",
     'plural' => "Entries",
     'pagination' => "{0} No entries|{1} One entry|[2,*] Showing :count entries out of :total",
-    'no_records' => "There are no entries at this moment.",
+    'no_records' => "There are no :entryType at this moment.",
     'attributes' => [
         'id' => "ID",
         'name' => "Name",
@@ -27,7 +27,7 @@ return [
     ],
     'actions' => [
         'create' => [
-            'label' => "New Entry",
+            'label' => "New :entryType",
         ],
         'view' => [
             'label' => "View",

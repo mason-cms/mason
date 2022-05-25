@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             EntryTypeSeeder::class,
             LocaleSeeder::class,
+            TaxonomyTypeSeeder::class,
         ]);
     }
 }

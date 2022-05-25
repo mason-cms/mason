@@ -2064,31 +2064,61 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! ./helpers */ "./resources/js/helpers.js");
 
-__webpack_require__(/*! ./backend */ "./resources/js/backend.js");
+__webpack_require__(/*! ./backend/backend */ "./resources/js/backend/backend.js");
+
+__webpack_require__(/*! ./backend/sameHeight */ "./resources/js/backend/sameHeight.js");
 
 /***/ }),
 
-/***/ "./resources/js/backend.js":
-/*!*********************************!*\
-  !*** ./resources/js/backend.js ***!
-  \*********************************/
+/***/ "./resources/js/backend/backend.js":
+/*!*****************************************!*\
+  !*** ./resources/js/backend/backend.js ***!
+  \*****************************************/
 /***/ (() => {
 
-$(document).on('mason:sameHeight:resize', '.same-height-cards', function () {
-  var $group = $(this),
-      $cards = $group.find('.card'),
-      maxHeight = 0;
-  $cards.each(function () {
-    var $card = $(this),
-        $spacer = $card.children('.card-spacer').height(0),
-        height = parseInt($card.height());
-    if (height > maxHeight) maxHeight = height;
-  }).each(function () {
-    var $card = $(this),
-        height = parseInt($card.height()),
-        $spacer = $card.children('.card-spacer').last(),
-        spacing = maxHeight - height;
-    $spacer.height(spacing);
+$(window).add(document).on('ready load resize', function () {
+  var windowWidth = $(window).width(),
+      $body = $('body').removeClass('is-desktop is-tablet is-mobile');
+
+  if (windowWidth >= 1024) {
+    $body.addClass('is-desktop');
+  } else if (windowWidth >= 769) {
+    $body.addClass('is-tablet');
+  } else {
+    $body.addClass('is-mobile');
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/backend/sameHeight.js":
+/*!********************************************!*\
+  !*** ./resources/js/backend/sameHeight.js ***!
+  \********************************************/
+/***/ (() => {
+
+$(document).on('ready', function () {
+  var $body = $('body');
+  $(document).on('mason:sameHeight:resize', '.same-height-cards', function () {
+    var $group = $(this),
+        $cards = $group.find('.card'),
+        maxHeight = 0;
+    $cards.each(function () {
+      var $card = $(this),
+          $spacer = $card.children('.card-spacer').height(0),
+          height = parseInt($card.height());
+      if (height > maxHeight) maxHeight = height;
+    });
+
+    if (!$body.hasClass('is-mobile')) {
+      $cards.each(function () {
+        var $card = $(this),
+            height = parseInt($card.height()),
+            $spacer = $card.children('.card-spacer').last(),
+            spacing = maxHeight - height;
+        $spacer.height(spacing);
+      });
+    }
   });
 });
 $(window).add(document).on('ready load resize', function () {

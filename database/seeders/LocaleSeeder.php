@@ -14,7 +14,7 @@ class LocaleSeeder extends Seeder
      */
     public function run()
     {
-        $localeData = [
+        $data = [
             'en' => [
                 'title' => "English",
             ],
@@ -23,15 +23,13 @@ class LocaleSeeder extends Seeder
             ],
         ];
 
-        foreach ($localeData as $name => $attributes) {
-            if ($locale = Locale::where('name', $name)->first()) {
-                $locale->update($attributes);
-            } else {
-                $locale = new Locale;
-                $locale->name = $name;
-                $locale->fill($attributes);
-                $locale->save();
-            }
+        $res = seed($data, Locale::class, 'name');
+        $out = "{$res['created']} created / {$res['updated']} updated / {$res['skipped']} skipped / {$res['errors']} errors";
+
+        if (isset($this->command)) {
+            $res['errors'] === 0
+                ? $this->command->line($out)
+                : $this->command->error($out);
         }
     }
 }

@@ -70,7 +70,7 @@
             target="_blank"
         >
             <span class="icon"><i class="fa-light fa-arrow-up-right-from-square"></i></span>
-            <span>{{ __('entries.actions.view.label') }}</span>
+            <span class="is-hidden-mobile">{{ __('entries.actions.view.label') }}</span>
         </a>
 
         <a
@@ -78,7 +78,7 @@
             href="{{ route('backend.entries.edit', [$entry->type, $entry]) }}"
         >
             <span class="icon"><i class="fa-light fa-pencil"></i></span>
-            <span>{{ __('entries.actions.edit.label') }}</span>
+            <span class="is-hidden-mobile">{{ __('entries.actions.edit.label') }}</span>
         </a>
 
         <a
@@ -87,7 +87,7 @@
             data-confirm="{{ __('general.confirm') }}"
         >
             <span class="icon"><i class="fa-light fa-trash-can"></i></span>
-            <span>{{ __('entries.actions.destroy.label') }}</span>
+            <span class="is-hidden-mobile">{{ __('entries.actions.destroy.label') }}</span>
         </a>
     </div>
 </div>
