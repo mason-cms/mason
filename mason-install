@@ -21,6 +21,4 @@ echo shell_exec("npm install");
 
 echo shell_exec("php artisan key:generate");
 
-echo shell_exec("php artisan storage:link");
-
 echo "Mason CMS installation complete. Please run: php artisan mason:setup" . PHP_EOL;
