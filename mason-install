@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+if (! file_exists('.env')) {
+    if (file_exists('.env.example')) {
+        echo "Creating .env file from .env.example" . PHP_EOL;
+
+        if (! copy('.env.example', '.env')) {
+            echo "Could not copy .env file" . PHP_EOL;
+            return 1;
+        }
+    } else {
+        echo "File .env.example does not exist" . PHP_EOL;
+        return 1;
+    }
+}
+
+echo shell_exec("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev");
+
+echo shell_exec("npm install");
+
+echo shell_exec("php artisan key:generate");
+
+echo shell_exec("php artisan storage:link");
+
+echo "Mason CMS installation complete. Please run: php artisan mason:setup" . PHP_EOL;
