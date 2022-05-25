@@ -19,6 +19,6 @@ echo shell_exec("composer install --no-interaction --prefer-dist --optimize-auto
 
 echo shell_exec("npm install");
 
-echo shell_exec("php artisan key:generate");
+echo shell_exec("php artisan key:generate --force");
 
 echo "Mason CMS installation complete. Please run: php artisan mason:setup" . PHP_EOL;
