@@ -47,6 +47,7 @@ class Setup extends Command
         $this->setupMail();
         $this->setupStorage();
         $this->setupSite();
+        $this->clearCache();
         $this->installTheme();
         $this->setupMode();
         $this->setupMisc();
@@ -72,38 +73,30 @@ class Setup extends Command
     {
         $this->info("Database setup...");
 
-        $vars = [
-            'DB_CONNECTION' => "Database connection",
-            'DB_HOST' => "Database host",
-            'DB_PORT' => "Database port",
-            'DB_DATABASE' => "Database name",
-            'DB_USERNAME' => "Database username",
-            'DB_PASSWORD' => "Database password",
-        ];
-
-        foreach ($vars as $var => $label) {
-            $this->setEnv([$var => $this->ask($label, env($var))]);
-        }
+        $this->setEnv([
+            'DB_CONNECTION' => $this->ask("Database connection", env('DB_CONNECTION')),
+            'DB_HOST' => $this->ask("Database host", env('DB_HOST')),
+            'DB_PORT' => $this->ask("Database port", env('DB_PORT')),
+            'DB_DATABASE' => $this->ask("Database name", env('DB_DATABASE')),
+            'DB_USERNAME' => $this->ask("Database username", env('DB_USERNAME')),
+            'DB_PASSWORD' => $this->ask("Database password", env('DB_PASSWORD')),
+        ]);
     }
 
     protected function setupMail()
     {
         $this->info("Mail setup...");
 
-        $vars = [
-            'MAIL_MAILER' => "Mailer",
-            'MAIL_HOST' => "Mail host",
-            'MAIL_PORT' => "Mail port",
-            'MAIL_USERNAME' => "Mail username",
-            'MAIL_PASSWORD' => "Mail password",
-            'MAIL_ENCRYPTION' => "Mail encryption",
-            'MAIL_FROM_ADDRESS' => "Mail from address",
-            'MAIL_FROM_NAME' => "Mail from name",
-        ];
-
-        foreach ($vars as $var => $label) {
-            $this->setEnv([$var => $this->ask($label, env($var))]);
-        }
+        $this->setEnv([
+            'MAIL_MAILER' => $this->ask("Mailer", env('MAIL_MAILER')),
+            'MAIL_HOST' => $this->ask("Mail host", env('MAIL_HOST')),
+            'MAIL_PORT' => $this->ask("Mail port", env('MAIL_PORT')),
+            'MAIL_USERNAME' => $this->ask("Mail username", env('MAIL_USERNAME')),
+            'MAIL_PASSWORD' => $this->ask("Mail password", env('MAIL_PASSWORD')),
+            'MAIL_ENCRYPTION' => $this->ask("Mail encryption", env('MAIL_ENCRYPTION')),
+            'MAIL_FROM_ADDRESS' => $this->ask("Mail from address", env('MAIL_FROM_ADDRESS')),
+            'MAIL_FROM_NAME' => $this->ask("Mail from name", env('MAIL_FROM_NAME')),
+        ]);
     }
 
     protected function setupStorage()
@@ -181,14 +174,10 @@ class Setup extends Command
 
     protected function setupMisc()
     {
-        $vars = [
-            'APP_TIMEZONE' => "Please enter your timezone (choose from: https://www.php.net/manual/en/timezones.php)",
-            'FONTAWESOME_KIT' => "Please enter your FontAwesome kit ID",
-        ];
-
-        foreach ($vars as $var => $label) {
-            $this->setEnv([$var => $this->ask($label, env($var))]);
-        }
+        $this->setEnv([
+            'APP_TIMEZONE' => $this->ask("Please enter your timezone (choose from: https://www.php.net/manual/en/timezones.php)", env('APP_TIMEZONE')),
+            'FONTAWESOME_KIT' => $this->ask("Please enter your FontAwesome kit ID", env('FONTAWESOME_KIT')),
+        ]);
     }
 
     protected function migrate()
@@ -232,13 +221,13 @@ class Setup extends Command
         Artisan::call('config:clear');
     }
 
-    protected function setEnv($data = [])
+    protected function setEnv($data = [], $forceQuote = false)
     {
         $path = base_path('.env');
 
         if (file_exists($path)) {
             foreach ($data as $key => $value) {
-                if (str_contains($value, " ")) {
+                if ($forceQuote || str_contains($value, " ")) {
                     $value = '"' . $value . '"';
                 }
 
