@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Setting;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
@@ -27,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($siteTheme = Setting::get('site_theme')) {
+        if ($siteTheme = config('site.theme')) {
             list($siteThemePath, $siteThemeVersion) = explode(':', $siteTheme, 2);
             $viewPaths = config('view.paths');
             $viewPaths[] = base_path("vendor/{$siteThemePath}/views");

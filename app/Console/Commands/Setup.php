@@ -43,28 +43,13 @@ class Setup extends Command
     public function handle()
     {
         if ($this->confirm("Are you sure you want to continue with the Mason CMS setup?")) {
-            $this->generateAppKey();
-
-            $this->line("Database setup");
             $this->setupDatabase();
-
-            $this->line("Mail setup");
             $this->setupMail();
-
-            $this->line("Storage setup");
             $this->setupStorage();
-
-            $this->line("We have a few other questions");
+            $this->setupSite();
+            $this->installTheme();
             $this->setupMode();
             $this->setupMisc();
-
-            $this->refreshConfig();
-
-            $this->line("Site setup");
-            $this->setupSiteInfo();
-
-            $this->line("Setting up theme");
-            $this->setupTheme();
 
             if ($this->confirm("Create a root user?")) {
                 if ($this->createRootUser()) {
@@ -74,30 +59,16 @@ class Setup extends Command
                 }
             }
 
-            $this->line("User registration setup");
-            $this->setupUserRegistration();
-
-            $this->line("Database seeding");
-            if ($this->seedDatabase()) {
-                $this->info("Database seeded.");
-            }
-
             $this->info("Mason CMS setup completed.");
         }
 
         return 0;
     }
 
-    protected function generateAppKey()
-    {
-        if (! env('APP_KEY') || $this->confirm("Do you want to generate a new app key?")) {
-            Artisan::call('key:generate');
-            $this->info("New app key generated");
-        }
-    }
-
     protected function setupDatabase()
     {
+        $this->line("Database setup...");
+
         $vars = [
             'DB_CONNECTION' => "Database connection",
             'DB_HOST' => "Database host",
@@ -107,19 +78,15 @@ class Setup extends Command
             'DB_PASSWORD' => "Database password",
         ];
 
-        $env = [];
-
         foreach ($vars as $var => $label) {
-            if ($value = $this->ask($label, env($var))) {
-                $env[$var] = $value;
-            }
+            $this->setEnv([$var => $this->ask($label, env($var))]);
         }
-
-        $this->setEnv($env);
     }
 
     protected function setupMail()
     {
+        $this->line("Mail setup...");
+
         $vars = [
             'MAIL_MAILER' => "Mailer",
             'MAIL_HOST' => "Mail host",
@@ -131,19 +98,15 @@ class Setup extends Command
             'MAIL_FROM_NAME' => "Mail from name",
         ];
 
-        $env = [];
-
         foreach ($vars as $var => $label) {
-            if ($value = $this->ask($label, env($var))) {
-                $env[$var] = $value;
-            }
+            $this->setEnv([$var => $this->ask($label, env($var))]);
         }
-
-        $this->setEnv($env);
     }
 
     protected function setupStorage()
     {
+        $this->line("Storage setup...");
+
         if ($filesystemDriver = $this->ask("Which filesystem driver do you want to use?", env('FILESYSTEM_DRIVER'))) {
             $this->setEnv(['FILESYSTEM_DRIVER' => $filesystemDriver]);
 
@@ -154,6 +117,53 @@ class Setup extends Command
                     $this->info("Symlink created");
                     break;
             }
+        }
+    }
+
+    protected function setupSite()
+    {
+        $this->line("Site setup...");
+
+        $vars = [
+            'SITE_NAME' => "What will be the name of your site?",
+            'SITE_DESCRIPTION' => "Short description of your site",
+            'SITE_URL' => "What will be the URL of your site (include http(s))?",
+            'SITE_THEME' => "Select the theme you will be using for your site",
+        ];
+
+        foreach ($vars as $var => $question) {
+            $this->setEnv([$var => $this->ask($question, env($var))]);
+        }
+
+        $this->setEnv([
+            'SITE_ALLOW_USER_REGISTRATION' => $this->confirm("Do you want to allow user registration?", env('SITE_ALLOW_USER_REGISTRATION', false)),
+        ]);
+
+        if (env('SITE_ALLOW_USER_REGISTRATION')) {
+            $this->setEnv([
+                'SITE_RESTRICT_USER_EMAIL_DOMAIN' => $this->confirm("Do you want to put a restriction on the users' email domain (eg: myorganization.com)?", env('SITE_RESTRICT_USER_EMAIL_DOMAIN', false)),
+            ]);
+
+            if (env('SITE_RESTRICT_USER_EMAIL_DOMAIN')) {
+                $this->setEnv([
+                    'SITE_ALLOWED_USER_EMAIL_DOMAINS' => $this->ask("Please enter allowed domains (separated by a coma)", env('SITE_ALLOWED_USER_EMAIL_DOMAINS')),
+                ]);
+            }
+        }
+    }
+
+    protected function installTheme()
+    {
+        $this->line("Installing theme...");
+
+        if ($theme = env('SITE_THEME')) {
+            if ( $output = shell_exec("composer require {$theme}") ) {
+                $this->line($output);
+            } else {
+                $this->error("Could not install theme.");
+            }
+        } else {
+            $this->error("No theme to install.");
         }
     }
 
@@ -175,48 +185,12 @@ class Setup extends Command
     protected function setupMisc()
     {
         $vars = [
-            'APP_TIMEZONE' => "Please enter your timezone",
+            'APP_TIMEZONE' => "Please enter your timezone (choose from: https://www.php.net/manual/en/timezones.php)",
             'FONTAWESOME_KIT' => "Please enter your FontAwesome kit ID",
         ];
 
-        $env = [];
-
         foreach ($vars as $var => $label) {
-            if ($value = $this->ask($label, env($var))) {
-                $env[$var] = $value;
-            }
-        }
-
-        $this->setEnv($env);
-    }
-
-    protected function setupSiteInfo()
-    {
-        $settings = [
-            'site_name' => "What will be the name of your site?",
-            'site_description' => "Short description of your site",
-            'site_url' => "What will be the URL of your site (include http(s))?",
-            'site_default_locale' => "What is the default language of your site?",
-            'site_theme' => "Select the theme you will be using for your site",
-        ];
-
-        foreach ($settings as $setting => $question) {
-            if ($value = $this->ask($question, Setting::get($setting))) {
-                Setting::set($setting, $value);
-            }
-        }
-    }
-
-    protected function setupTheme()
-    {
-        if ($theme = Setting::get('site_theme')) {
-            if ( $output = shell_exec("composer require {$theme}") ) {
-                $this->line($output);
-            } else {
-                $this->error("Could not setup theme.");
-            }
-        } else {
-            $this->error("No theme to setup.");
+            $this->setEnv([$var => $this->ask($label, env($var))]);
         }
     }
 
@@ -244,29 +218,6 @@ class Setup extends Command
         }
     }
 
-    protected function setupUserRegistration()
-    {
-        $allowUserRegistration = $this->confirm("Do you want to allow user registration?", Setting::get('allow_user_registration') ?? false);
-        Setting::set('allow_user_registration', $allowUserRegistration);
-
-        if ($allowUserRegistration) {
-            $restrictUserEmailDomain = $this->confirm("Do you want to put a restriction on the users' email domain (eg: myorganization.com)?", Setting::get('restrict_user_email_domain') ?? false);
-            Setting::set('restrict_user_email_domain', $restrictUserEmailDomain);
-
-            if ($restrictUserEmailDomain) {
-                $allowedUserEmailDomains = $this->ask("Please enter allowed domains (separated by a coma)", implode(', ', Setting::get('allowed_user_email_domains') ?? []));
-                Setting::set('allowed_user_email_domains', array_map('trim', explode(',', $allowedUserEmailDomains)));
-            }
-        }
-    }
-
-    protected function seedDatabase()
-    {
-        $seeder = new DatabaseSeeder;
-        $seeder->run();
-        return true;
-    }
-
     protected function setEnv($data = [])
     {
         $path = base_path('.env');
@@ -278,11 +229,5 @@ class Setup extends Command
                 ));
             }
         }
-    }
-
-    protected function refreshConfig()
-    {
-        Artisan::call('config:clear');
-        Artisan::call('cache:clear');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Entry;
+use App\Models\Locale;
 use App\Models\Post;
 use App\Models\Setting;
 use Carbon\Carbon;
@@ -14,8 +15,12 @@ class FrontEndController extends Controller
 {
     protected function setLocale(&$locale = null)
     {
-        $defaultLocale = Setting::get('site_default_locale') ?? config('app.locale');
+        $defaultLocale = Locale::default();
         $locale ??= $defaultLocale;
+
+        if (is_string($locale)) {
+            $locale = Locale::byName($locale)->first();
+        }
 
         setlocale(LC_ALL, $locale);
 

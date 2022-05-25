@@ -17,9 +17,11 @@ class LocaleSeeder extends Seeder
         $data = [
             'en' => [
                 'title' => "English",
+                'is_default' => true,
             ],
             'fr' => [
                 'title' => "Français",
+                'is_default' => false,
             ],
         ];
 

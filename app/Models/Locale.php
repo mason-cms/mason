@@ -12,14 +12,27 @@ class Locale extends Model
 
     protected $fillable = [
         'title',
+        'is_default',
     ];
+
+    /**
+     * Static Methods
+     */
+
+    public static function findByName($name)
+    {
+        return static::where('name', $name)->first();
+    }
 
     public static function default()
     {
-        if ($defaultLocaleName = Setting::get('site_default_locale')) {
-            return static::where('name', $defaultLocaleName)->first();
-        }
+        return static::where('is_default', true)->first()
+            ?? static::findByName(config('app.locale'));
     }
+
+    /**
+     * Helpers
+     */
 
     public function __toString()
     {

@@ -17,6 +17,7 @@ class CreateLocalesTable extends Migration
             $table->id();
             $table->string('name', 5)->index();
             $table->string('title', 50);
+            $table->boolean('is_default')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
         });
