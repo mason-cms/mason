@@ -22,17 +22,19 @@ class FrontEndController extends Controller
             $locale = Locale::byName($locale)->first();
         }
 
-        setlocale(LC_ALL, $locale);
+        if ($locale instanceof Locale) {
+            setlocale(LC_ALL, $locale->code);
 
-        App::setLocale($locale);
+            App::setLocale($locale->code);
 
-        if ($locale !== $defaultLocale) {
-            URL::defaults(['locale' => $locale]);
+            if ($locale !== $defaultLocale) {
+                URL::defaults(['locale' => $locale->name]);
+            }
+
+            Carbon::setLocale($locale->code);
+
+            return $locale;
         }
-
-        Carbon::setLocale($locale);
-
-        return $locale;
     }
 
     public function entry(Request $request, string $locale = null, Entry $entry = null)
