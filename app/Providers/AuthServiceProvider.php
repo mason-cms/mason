@@ -28,12 +28,12 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('register-user', function ($email = null) {
-            if (Setting::get('allow_user_registration') === true) {
-                if (isset($email) && Setting::get('restrict_user_email_domain') === true) {
+            if (config('site.allow_user_registration')) {
+                if (isset($email) && config('site.restrict_user_email_domain')) {
                     list($emailUser, $emailDomain) = explode('@', $email, 2);
 
                     if (isset($emailDomain) && strlen($emailDomain) > 0) {
-                        $domains = Setting::get('allowed_user_email_domains');
+                        $domains = array_map('trim', explode(',', config('site.allowed_user_email_domains')));
 
                         if (is_array($domains) && count($domains) > 0 && in_array($email, $domains)) {
                             return Response::allow();
