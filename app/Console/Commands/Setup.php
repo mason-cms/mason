@@ -122,7 +122,7 @@ class Setup extends Command
         $this->setEnv([
             'SITE_NAME' => $this->quote($this->ask("What will be the name of your site?", env('SITE_NAME'))),
             'SITE_DESCRIPTION' => $this->quote($this->ask("Short description of your site", env('SITE_DESCRIPTION'))),
-            'SITE_URL' => $this->ask("What will be the URL of your site (include http(s))?", env('SITE_URL')),
+            'APP_URL' => $this->ask("What will be the URL of your site (include http(s))?", env('APP_URL')),
         ]);
 
         $this->setEnv([
