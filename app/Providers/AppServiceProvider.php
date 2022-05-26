@@ -24,10 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->setupTheme();
+        $this->loadTheme();
     }
 
-    protected function setupTheme()
+    protected function loadTheme()
     {
         $siteTheme = config('site.theme');
 
