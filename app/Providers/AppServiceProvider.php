@@ -51,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
 
             if (! empty($siteThemePath)) {
                 $viewPaths = config('view.paths');
-                $viewPaths[] = base_path("vendor/{$siteThemePath}/views");
+                $viewPaths[] = base_path("vendor/{$siteThemePath}/resources/views");
 
                 config(['view.paths' => $viewPaths]);
             }

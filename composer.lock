@@ -1666,12 +1666,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LimestoneSoftware/granite.git",
-                "reference": "9213cae09fd7f6a2ef64d55285e5a0cb65ca06ee"
+                "reference": "a63083dfdd2e6a1db4e5bb4dca1529dc116d3199"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LimestoneSoftware/granite/zipball/9213cae09fd7f6a2ef64d55285e5a0cb65ca06ee",
-                "reference": "9213cae09fd7f6a2ef64d55285e5a0cb65ca06ee",
+                "url": "https://api.github.com/repos/LimestoneSoftware/granite/zipball/a63083dfdd2e6a1db4e5bb4dca1529dc116d3199",
+                "reference": "a63083dfdd2e6a1db4e5bb4dca1529dc116d3199",
                 "shasum": ""
             },
             "require": {
@@ -1704,10 +1704,10 @@
                 "theme"
             ],
             "support": {
-                "source": "https://github.com/LimestoneSoftware/granite/tree/develop",
+                "source": "https://github.com/LimestoneSoftware/granite/tree/master",
                 "issues": "https://github.com/LimestoneSoftware/granite/issues"
             },
-            "time": "2022-05-26T03:26:31+00:00"
+            "time": "2022-05-26T05:12:25+00:00"
         },
         {
             "name": "monolog/monolog",
