@@ -110,7 +110,7 @@ class Setup extends Command
             switch ($filesystemDriver) {
                 case 'local':
                     $this->info("Creating storage symlink...");
-                    Artisan::call('storage:link');
+                    Artisan::call('storage:link', [], $this->getOutput());
                     break;
             }
         }
@@ -161,7 +161,9 @@ class Setup extends Command
 
             $this->line($output);
 
-            if ($result_code !== 0) {
+            if ($result_code === 0) {
+                Artisan::call('storage:link', [], $this->getOutput());
+            } else {
                 $this->error("Could not install theme.");
             }
         } else {
@@ -194,13 +196,13 @@ class Setup extends Command
     protected function migrate()
     {
         $this->info("Running database migrations...");
-        Artisan::call('migrate --force');
+        Artisan::call('migrate --force', [], $this->getOutput());
     }
 
     protected function seed()
     {
         $this->info("Seeding database...");
-        Artisan::call('db:seed --force');
+        Artisan::call('db:seed --force', [], $this->getOutput());
     }
 
     protected function createRootUser()
@@ -229,7 +231,7 @@ class Setup extends Command
 
     protected function clearCache()
     {
-        Artisan::call('config:clear');
+        Artisan::call('config:clear', [], $this->getOutput());
     }
 
     protected function setEnv($data = [], $forceQuote = false)
