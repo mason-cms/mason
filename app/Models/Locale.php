@@ -31,6 +31,15 @@ class Locale extends Model
             ?? static::findByName(config('app.locale'));
     }
 
+    public static function isDefault($locale)
+    {
+        if (is_string($locale)) {
+            $locale = static::findByName($locale);
+        }
+
+        return $locale instanceof static && $locale->is_default;
+    }
+
     /**
      * Helpers
      */
@@ -47,5 +56,19 @@ class Locale extends Model
     public function getCodeAttribute()
     {
         return "{$this->name}_{$this->region}";
+    }
+
+    /**
+     * Relationships
+     */
+
+    public function entries()
+    {
+        return $this->hasMany(Entry::class);
+    }
+
+    public function taxonomies()
+    {
+        return $this->hasMany(Taxonomy::class);
     }
 }
