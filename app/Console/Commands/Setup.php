@@ -157,9 +157,11 @@ class Setup extends Command
         $this->info("Installing theme...");
 
         if ($theme = env('SITE_THEME')) {
-            if ( $output = shell_exec("composer require {$theme}") ) {
-                $this->line($output);
-            } else {
+            exec("composer require {$theme}", $output, $result_code);
+
+            $this->line($output);
+
+            if ($result_code !== 0) {
                 $this->error("Could not install theme.");
             }
         } else {

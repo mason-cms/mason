@@ -15,10 +15,14 @@ if (! file_exists('.env')) {
     }
 }
 
-echo shell_exec("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev");
+passthru("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev");
 
-echo shell_exec("npm install");
+passthru("npm install");
 
-echo shell_exec("php artisan key:generate --force");
+passthru("php artisan key:generate --force");
 
-echo "Mason CMS installation complete. Please run: php artisan mason:setup" . PHP_EOL;
+echo "Mason CMS installation complete." . PHP_EOL;
+
+echo "Please run: php artisan mason:setup" . PHP_EOL;
+
+return 0;

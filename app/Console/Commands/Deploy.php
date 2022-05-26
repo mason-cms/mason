@@ -39,23 +39,23 @@ class Deploy extends Command
     public function handle()
     {
         $this->info("Installing composer dependencies...");
-        shell_exec("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev");
+        $this->line(shell_exec("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev"));
 
         $this->info("Installing npm dependencies...");
-        shell_exec("npm install");
-        shell_exec("npm run production");
+        $this->line(shell_exec("npm install"));
+        $this->line(shell_exec("npm run production"));
 
         $this->info("Running database migrations...");
-        Artisan::call('migrate --force');
+        Artisan::call('migrate --force', [], $this->getOutput());
 
         $this->info("Clearing cache...");
-        Artisan::call('clear-compiled');
+        Artisan::call('clear-compiled', [], $this->getOutput());
 
         $this->info("Optimizing...");
-        Artisan::call('optimize');
+        Artisan::call('optimize', [], $this->getOutput());
 
         $this->info("Restarting queues...");
-        Artisan::call('queue:restart');
+        Artisan::call('queue:restart', [], $this->getOutput());
 
         $this->info("Mason deployment completed.");
 
