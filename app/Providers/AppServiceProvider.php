@@ -24,17 +24,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->setTrustedProxy();
+        $this->setTrustedProxies();
         $this->setupTheme();
     }
 
-    protected function setTrustedProxy()
+    protected function setTrustedProxies()
     {
-        if (config('proxy.enabled')) {
-            $proxies = explode(',', config('proxy.list'));
+        $trustedProxies = config('proxy.trusted');
 
-            if (count($proxies) > 0) {
-                Request::setTrustedProxies($proxies, config('proxy.header_set'));
+        if (isset($trustedProxies)) {
+            $trustedProxies = explode(',', $trustedProxies);
+
+            if (count($trustedProxies) > 0) {
+                Request::setTrustedProxies($trustedProxies, config('proxy.header_set'));
             }
         }
     }

@@ -1,24 +1,17 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Request;
+
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Proxy Enabled?
+    | Trusted Proxies
     |--------------------------------------------------------------------------
     |
     */
 
-    'enabled' => env('PROXY_ENABLED'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Trusted Proxy List
-    |--------------------------------------------------------------------------
-    |
-    */
-
-    'list' => env('PROXY_LIST'),
+    'trusted' => env('TRUSTED_PROXIES'),
 
     /*
     |--------------------------------------------------------------------------
@@ -27,6 +20,6 @@ return [
     |
     */
 
-    'header_set' => \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_FOR,
+    'header_set' => Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_HOST | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO,
 
 ];
