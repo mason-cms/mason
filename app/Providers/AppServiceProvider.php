@@ -24,21 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->setTrustedProxies();
         $this->setupTheme();
-    }
-
-    protected function setTrustedProxies()
-    {
-        $trustedProxies = config('proxy.trusted');
-
-        if (isset($trustedProxies)) {
-            $trustedProxies = explode(',', $trustedProxies);
-
-            if (count($trustedProxies) > 0) {
-                Request::setTrustedProxies($trustedProxies, config('proxy.header_set'));
-            }
-        }
     }
 
     protected function setupTheme()
