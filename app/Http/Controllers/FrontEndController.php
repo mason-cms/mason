@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Entry;
 use App\Models\Locale;
-use App\Models\Post;
-use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
