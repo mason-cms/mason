@@ -27,6 +27,6 @@ return [
     |
     */
 
-    'header_set' => env('PROXY_HEADER_SET'),
+    'header_set' => \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_FOR,
 
 ];
