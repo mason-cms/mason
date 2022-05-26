@@ -24,23 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadTheme();
-    }
-
-    protected function loadTheme()
-    {
-        $siteTheme = config('site.theme');
-
-        if (! empty($siteTheme)) {
-            $siteThemeInfo = explode(':', $siteTheme, 2);
-            $siteThemePath = $siteThemeInfo[0];
-
-            if (! empty($siteThemePath)) {
-                $viewPaths = config('view.paths');
-                $viewPaths[] = base_path("vendor/{$siteThemePath}/resources/views");
-
-                config(['view.paths' => $viewPaths]);
-            }
-        }
+        $viewPaths = config('view.paths');
+        $viewPaths[] = theme_path("resources/views");
+        config(['view.paths' => $viewPaths]);
     }
 }
