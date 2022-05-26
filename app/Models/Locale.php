@@ -11,6 +11,7 @@ class Locale extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'region',
         'title',
         'is_default',
     ];
@@ -37,5 +38,14 @@ class Locale extends Model
     public function __toString()
     {
         return "{$this->title}";
+    }
+
+    /**
+     * Accessors & Mutators
+     */
+
+    public function getCodeAttribute()
+    {
+        return "{$this->name}_{$this->region}";
     }
 }

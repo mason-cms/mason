@@ -16,10 +16,12 @@ class LocaleSeeder extends Seeder
     {
         $data = [
             'en' => [
+                'region' => 'US',
                 'title' => "English",
                 'is_default' => true,
             ],
             'fr' => [
+                'region' => 'CA',
                 'title' => "Français",
                 'is_default' => false,
             ],
