@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\URL;
 
 class FrontEndController extends Controller
 {
-    protected function setLocale(&$locale = null)
+    protected function setLocale($locale = null)
     {
         $defaultLocale = Locale::default();
         $locale ??= $defaultLocale;
 
         if (is_string($locale)) {
-            $locale = Locale::byName($locale)->first();
+            $locale = Locale::findByName($locale);
         }
 
         if ($locale instanceof Locale) {
@@ -35,29 +35,62 @@ class FrontEndController extends Controller
         }
     }
 
-    public function entry(Request $request, string $locale = null, Entry $entry = null)
+    public function home(Request $request, $localeName = null)
     {
-        $this->setLocale($locale);
+        $locale = $this->setLocale($localeName);
 
-        if (isset($entry)) {
+        $views = [
+            "{$locale->code}/home",
+            "{$locale->name}/home",
+            "home",
+        ];
+
+        foreach ($views as $view) {
+            if (view()->exists($view)) {
+                return view($view, compact('locale'));
+            }
+        }
+
+        abort(404);
+    }
+
+    public function entry(Request $request, ...$params)
+    {
+        switch (count($params)) {
+            case 1:
+                $locale = $this->setLocale();
+                $entryName = $params[0];
+                break;
+
+            default:
+                $locale = $this->setLocale($suppliedLocale = $params[0]);
+                $entryName = $params[1];
+                break;
+        }
+
+        $entry = $locale->entries()->byName($entryName)->first();
+
+        if ($entry instanceof Entry) {
+            if (isset($suppliedLocale) && Locale::isDefault($suppliedLocale)) {
+                return redirect()->to($entry->url);
+            }
+
             $views = [
-                "{$locale}/{$entry->type->name}.{$entry->name}",
-                "{$locale}/{$entry->type->name}.default",
-                "{$locale}/{$entry->type->name}",
+                "{$locale->code}/{$entry->type->name}.{$entry->name}",
+                "{$locale->code}/{$entry->type->name}.default",
+                "{$locale->code}/{$entry->type->name}",
+                "{$locale->name}/{$entry->type->name}.{$entry->name}",
+                "{$locale->name}/{$entry->type->name}.default",
+                "{$locale->name}/{$entry->type->name}",
                 "{$entry->type->name}.{$entry->name}",
                 "{$entry->type->name}.default",
                 "{$entry->type->name}",
             ];
-        } else {
-            $views = [
-                "{$locale}/home",
-                "home",
-            ];
-        }
 
-        foreach ($views as $view) {
-            if (view()->exists($view)) {
-                return view($view, compact('locale', 'entry'));
+            foreach ($views as $view) {
+                if (view()->exists($view)) {
+                    return view($view, compact('locale', 'entry'));
+                }
             }
         }
 
