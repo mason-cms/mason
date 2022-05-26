@@ -21,8 +21,8 @@ passthru("npm install");
 
 passthru("php artisan key:generate --force");
 
-echo "Mason CMS installation complete." . PHP_EOL;
+passthru("php artisan mason:setup");
 
-echo "Please run: php artisan mason:setup" . PHP_EOL;
+passthru("php artisan mason:deploy");
 
 return 0;
