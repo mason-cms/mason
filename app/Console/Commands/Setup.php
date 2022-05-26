@@ -46,6 +46,7 @@ class Setup extends Command
         $this->setupDatabase();
         $this->setupMail();
         $this->setupStorage();
+        $this->setupApp();
         $this->setupSite();
         $this->clearCache();
         $this->installTheme();
@@ -115,6 +116,16 @@ class Setup extends Command
         }
     }
 
+    protected function setupApp()
+    {
+        $this->info("App setup...");
+
+        $this->setEnv([
+            'APP_URL' => $this->ask("What will be the URL of your site (include http(s))?", env('APP_URL')),
+            'APP_TIMEZONE' => $this->ask("Please enter your timezone (choose from: https://www.php.net/manual/en/timezones.php)", env('APP_TIMEZONE')),
+        ]);
+    }
+
     protected function setupSite()
     {
         $this->info("Site setup...");
@@ -122,7 +133,6 @@ class Setup extends Command
         $this->setEnv([
             'SITE_NAME' => $this->quote($this->ask("What will be the name of your site?", env('SITE_NAME'))),
             'SITE_DESCRIPTION' => $this->quote($this->ask("Short description of your site", env('SITE_DESCRIPTION'))),
-            'APP_URL' => $this->ask("What will be the URL of your site (include http(s))?", env('APP_URL')),
         ]);
 
         $this->setEnv([
@@ -175,7 +185,6 @@ class Setup extends Command
     protected function setupMisc()
     {
         $this->setEnv([
-            'APP_TIMEZONE' => $this->ask("Please enter your timezone (choose from: https://www.php.net/manual/en/timezones.php)", env('APP_TIMEZONE')),
             'FONTAWESOME_KIT' => $this->ask("Please enter your FontAwesome kit ID", env('FONTAWESOME_KIT')),
         ]);
     }
