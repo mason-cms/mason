@@ -67,6 +67,13 @@ class Entry extends Model
      * Scopes
      */
 
+    public static function scopeByName($query, $name)
+    {
+        return is_iterable($name)
+            ? $query->whereIn('name', $name)
+            : $query->where('name', $name);
+    }
+
     public static function scopeByType($query, $entryType)
     {
         return $query->whereIn('type_id', prepareValueForScope($entryType, EntryType::class));
@@ -132,10 +139,8 @@ class Entry extends Model
 
     public function getUrl($absolute = true)
     {
-        $defaultLocale = Setting::get('site_default_locale');
-
-        if (isset($this->locale) && $this->locale->name !== $defaultLocale) {
-            return route('entry', ['locale' => $this->locale->name, 'entry' => $this], $absolute);
+        if (isset($this->locale) && ! $this->locale->is_default) {
+            return route('locale.entry', ['locale' => $this->locale->name, 'entry' => $this], $absolute);
         } else {
             return route('entry', ['entry' => $this], $absolute);
         }
