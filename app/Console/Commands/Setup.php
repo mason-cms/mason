@@ -133,6 +133,7 @@ class Setup extends Command
         $this->setEnv([
             'SITE_NAME' => $this->quote($this->ask("What will be the name of your site?", env('SITE_NAME'))),
             'SITE_DESCRIPTION' => $this->quote($this->ask("Short description of your site", env('SITE_DESCRIPTION'))),
+            'SITE_THEME' => $this->ask("Which theme do you want to use for your site?", env('SITE_THEME')),
         ]);
 
         $this->setEnv([
@@ -157,15 +158,7 @@ class Setup extends Command
         $this->info("Installing theme...");
 
         if ($theme = env('SITE_THEME')) {
-            exec("composer require {$theme}", $output, $result_code);
-
-            $this->line($output);
-
-            if ($result_code === 0) {
-                Artisan::call('storage:link', [], $this->getOutput());
-            } else {
-                $this->error("Could not install theme.");
-            }
+            Artisan::call('mason:theme:install', ['theme' => $theme], $this->getOutput());
         } else {
             $this->error("No theme to install.");
         }
