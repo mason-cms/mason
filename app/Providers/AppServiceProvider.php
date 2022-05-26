@@ -2,12 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Setting;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\App;
-use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +24,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if ($this->app->environment('production')) {
+            $this->forceHttps();
+        }
+
+        $this->setupTheme();
+    }
+
+    protected function forceHttps()
+    {
+        URL::forceScheme('https');
+    }
+
+    protected function setupTheme()
+    {
         $siteTheme = config('site.theme');
 
         if (! empty($siteTheme)) {
@@ -37,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
             if (! empty($siteThemePath)) {
                 $viewPaths = config('view.paths');
                 $viewPaths[] = base_path("vendor/{$siteThemePath}/views");
+
                 config(['view.paths' => $viewPaths]);
             }
         }
