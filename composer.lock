@@ -1666,12 +1666,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LimestoneSoftware/granite.git",
-                "reference": "603c74eeecbb9652c0775d2e901b84fe33a19b0c"
+                "reference": "9213cae09fd7f6a2ef64d55285e5a0cb65ca06ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LimestoneSoftware/granite/zipball/603c74eeecbb9652c0775d2e901b84fe33a19b0c",
-                "reference": "603c74eeecbb9652c0775d2e901b84fe33a19b0c",
+                "url": "https://api.github.com/repos/LimestoneSoftware/granite/zipball/9213cae09fd7f6a2ef64d55285e5a0cb65ca06ee",
+                "reference": "9213cae09fd7f6a2ef64d55285e5a0cb65ca06ee",
                 "shasum": ""
             },
             "require": {
@@ -1681,12 +1681,19 @@
                 "phpunit/phpunit": "^9.5.10"
             },
             "default-branch": true,
-            "type": "theme",
+            "type": "library",
             "autoload": {
                 "psr-4": []
             },
             "license": [
                 "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Roy",
+                    "email": "jonathan@limestone.dev",
+                    "role": "developer"
+                }
             ],
             "description": "Mason CMS default theme",
             "keywords": [
@@ -1697,10 +1704,10 @@
                 "theme"
             ],
             "support": {
-                "source": "https://github.com/LimestoneSoftware/granite/tree/master",
+                "source": "https://github.com/LimestoneSoftware/granite/tree/develop",
                 "issues": "https://github.com/LimestoneSoftware/granite/issues"
             },
-            "time": "2022-05-20T14:20:19+00:00"
+            "time": "2022-05-26T03:26:31+00:00"
         },
         {
             "name": "monolog/monolog",
