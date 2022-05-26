@@ -79,7 +79,7 @@ class Setup extends Command
             'DB_PORT' => $this->ask("Database port", env('DB_PORT')),
             'DB_DATABASE' => $this->ask("Database name", env('DB_DATABASE')),
             'DB_USERNAME' => $this->ask("Database username", env('DB_USERNAME')),
-            'DB_PASSWORD' => $this->ask("Database password", env('DB_PASSWORD')),
+            'DB_PASSWORD' => $this->quote($this->ask("Database password", env('DB_PASSWORD'))),
         ]);
     }
 
@@ -92,7 +92,7 @@ class Setup extends Command
             'MAIL_HOST' => $this->ask("Mail host", env('MAIL_HOST')),
             'MAIL_PORT' => $this->ask("Mail port", env('MAIL_PORT')),
             'MAIL_USERNAME' => $this->ask("Mail username", env('MAIL_USERNAME')),
-            'MAIL_PASSWORD' => $this->ask("Mail password", env('MAIL_PASSWORD')),
+            'MAIL_PASSWORD' => $this->quote($this->ask("Mail password", env('MAIL_PASSWORD'))),
             'MAIL_ENCRYPTION' => $this->ask("Mail encryption", env('MAIL_ENCRYPTION')),
             'MAIL_FROM_ADDRESS' => $this->ask("Mail from address", env('MAIL_FROM_ADDRESS')),
             'MAIL_FROM_NAME' => $this->ask("Mail from name", env('MAIL_FROM_NAME')),
@@ -120,8 +120,8 @@ class Setup extends Command
         $this->info("Site setup...");
 
         $this->setEnv([
-            'SITE_NAME' => $this->ask("What will be the name of your site?", env('SITE_NAME')),
-            'SITE_DESCRIPTION' => $this->ask("Short description of your site", env('SITE_DESCRIPTION')),
+            'SITE_NAME' => $this->quote($this->ask("What will be the name of your site?", env('SITE_NAME'))),
+            'SITE_DESCRIPTION' => $this->quote($this->ask("Short description of your site", env('SITE_DESCRIPTION'))),
             'SITE_URL' => $this->ask("What will be the URL of your site (include http(s))?", env('SITE_URL')),
         ]);
 
@@ -136,7 +136,7 @@ class Setup extends Command
 
             if (env('SITE_RESTRICT_USER_EMAIL_DOMAIN')) {
                 $this->setEnv([
-                    'SITE_ALLOWED_USER_EMAIL_DOMAINS' => $this->ask("Please enter allowed domains (separated by a coma)", env('SITE_ALLOWED_USER_EMAIL_DOMAINS')),
+                    'SITE_ALLOWED_USER_EMAIL_DOMAINS' => $this->quote($this->ask("Please enter allowed domains (separated by a coma)", env('SITE_ALLOWED_USER_EMAIL_DOMAINS'))),
                 ]);
             }
         }
@@ -228,7 +228,7 @@ class Setup extends Command
         if (file_exists($path)) {
             foreach ($data as $key => $value) {
                 if ($forceQuote || str_contains($value, " ")) {
-                    $value = '"' . $value . '"';
+                    $value = $this->quote($value);
                 }
 
                 file_put_contents($path, str_replace(
@@ -236,5 +236,10 @@ class Setup extends Command
                 ));
             }
         }
+    }
+
+    protected function quote($string)
+    {
+        return strlen($string) > 0 ? '"' . $string . '"' : "";
     }
 }
