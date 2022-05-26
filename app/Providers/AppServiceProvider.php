@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,16 +24,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if ($this->app->environment('production')) {
-            $this->forceHttps();
-        }
-
+        $this->setTrustedProxy();
         $this->setupTheme();
     }
 
-    protected function forceHttps()
+    protected function setTrustedProxy()
     {
-        URL::forceScheme('https');
+        if (config('proxy.enabled')) {
+            $proxies = explode(',', config('proxy.list'));
+
+            if (count($proxies) > 0) {
+                Request::setTrustedProxies($proxies, config('proxy.header_set'));
+            }
+        }
     }
 
     protected function setupTheme()
