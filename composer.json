@@ -18,7 +18,7 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "limestonesoftware/granite": "dev-master"
+        "limestonesoftware/granite": "@dev"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -73,8 +73,13 @@
     "prefer-stable": true,
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/LimestoneSoftware/granite"
+            "x-type": "vcs",
+            "x-url": "https://github.com/LimestoneSoftware/granite",
+            "type": "path",
+            "url": "~/Code/granite",
+            "options": {
+                "symlink": false
+            }
         }
     ]
 }

@@ -46,14 +46,14 @@ class UpdateTheme extends Command
     public function handle()
     {
         if ($this->option('theme')) {
-            $this->theme = $this->option('theme');
+            $this->theme = theme($this->option('theme'));
         } else {
-            $this->theme = config('site.theme');
+            $this->theme = theme();
         }
 
-        if (isset($this->theme) && strlen($this->theme) > 0) {
-            $this->info("Updating theme: {$this->theme}");
-            $this->line(shell_exec("composer update {$this->theme} --no-interaction"));
+        if (isset($this->theme) && strlen($this->theme->name()) > 0) {
+            $this->info("Updating theme: {$this->theme->name()}");
+            $this->line(shell_exec("composer update {$this->theme->name()} --no-interaction"));
             return 0;
         } else {
             $this->error("No theme to update.");

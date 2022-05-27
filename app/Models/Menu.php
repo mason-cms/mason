@@ -13,6 +13,11 @@ class Menu extends Model
 
     const ICON = 'fa-list-dropdown';
 
+    public static function scopeByLocale($query, $locale)
+    {
+        return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
+    }
+
     public function location()
     {
         return $this->belongsTo(MenuLocation::class);

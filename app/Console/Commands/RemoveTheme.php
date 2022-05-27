@@ -46,15 +46,15 @@ class RemoveTheme extends Command
     public function handle()
     {
         if ($this->option('theme')) {
-            $this->theme = $this->option('theme');
+            $this->theme = theme($this->option('theme'));
         } else {
-            $this->theme = config('site.theme');
+            $this->theme = theme();
         }
 
-        if (isset($this->theme) && strlen($this->theme) > 0) {
-            $this->info("Removing theme: {$this->theme}");
+        if (isset($this->theme) && strlen($this->theme->name()) > 0) {
+            $this->info("Removing theme: {$this->theme->name()}");
 
-            $this->line(shell_exec("composer remove {$this->theme} --no-interaction"));
+            $this->line(shell_exec("composer remove {$this->theme->package()} --no-interaction"));
 
             $this->removeSymlink();
 
@@ -67,15 +67,17 @@ class RemoveTheme extends Command
 
     protected function removeSymlink()
     {
-        $link = theme_public_path('', $this->theme);
+        if (isset($this->theme)) {
+            $link = $this->theme->public_path();
 
-        if (is_link($link)) {
-            $this->line("Removing symlink: '{$link}'");
+            if (is_link($link)) {
+                $this->line("Removing symlink: '{$link}'");
 
-            if (unlink($link)) {
-                $this->info("Symlink removed");
-            } else {
-                $this->info("Symlink could not be removed");
+                if (unlink($link)) {
+                    $this->info("Symlink removed");
+                } else {
+                    $this->info("Symlink could not be removed");
+                }
             }
         }
     }

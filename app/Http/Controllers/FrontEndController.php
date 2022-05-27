@@ -37,6 +37,8 @@ class FrontEndController extends Controller
 
     public function home(Request $request, $localeName = null)
     {
+        $site = site();
+
         $locale = $this->setLocale($localeName);
 
         $views = [
@@ -47,7 +49,7 @@ class FrontEndController extends Controller
 
         foreach ($views as $view) {
             if (view()->exists($view)) {
-                return view($view, compact('locale'));
+                return view($view, compact('site', 'locale'));
             }
         }
 
@@ -56,6 +58,8 @@ class FrontEndController extends Controller
 
     public function entry(Request $request, ...$params)
     {
+        $site = site();
+
         switch (count($params)) {
             case 1:
                 $locale = $this->setLocale();
@@ -68,7 +72,7 @@ class FrontEndController extends Controller
                 break;
         }
 
-        $entry = $locale->entries()->byName($entryName)->first();
+        $entry = $site->entry($entryName, $locale);
 
         if ($entry instanceof Entry) {
             if (isset($suppliedLocale) && Locale::isDefault($suppliedLocale)) {
@@ -89,7 +93,7 @@ class FrontEndController extends Controller
 
             foreach ($views as $view) {
                 if (view()->exists($view)) {
-                    return view($view, compact('locale', 'entry'));
+                    return view($view, compact('site', 'entry', 'locale'));
                 }
             }
         }
