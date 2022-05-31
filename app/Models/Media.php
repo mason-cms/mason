@@ -21,13 +21,31 @@ class Media extends Model
 
     protected $fillable = [
         'title',
+        'locale_id',
         'file',
     ];
+
+    /**
+     * Scopes
+     */
+
+    public static function scopeByLocale($query, $locale)
+    {
+        return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
+    }
+
+    /**
+     * Helpers
+     */
 
     public function __toString()
     {
         return "{$this->title}";
     }
+
+    /**
+     * Accessors & Mutators
+     */
 
     public function setFileAttribute(File|UploadedFile $file)
     {
@@ -50,6 +68,10 @@ class Media extends Model
             return Storage::url($this->storage_key);
         }
     }
+
+    /**
+     * Relationships
+     */
 
     public function parent()
     {

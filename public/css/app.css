@@ -10398,6 +10398,12 @@ body.backend .filters .dropdown-content {
   min-width: 20rem;
   max-width: 90%;
 }
+body.backend .menu-items ul li {
+  margin: 0 0 1rem 0;
+}
+body.backend .menu-items ul li ul {
+  margin: 1rem 0 1rem 4rem;
+}
 
 body.auth {
   background-color: hsl(202deg, 40%, 14%);

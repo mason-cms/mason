@@ -1666,7 +1666,7 @@
             "dist": {
                 "type": "path",
                 "url": "/Users/j9y/Code/granite",
-                "reference": "a8dade6ad9708b1a9b5b4aeeef88c1d7f299a7fc"
+                "reference": "872d9615739f2cf2b2fd6503bff086b752f810b9"
             },
             "require": {
                 "php": "^8.0"

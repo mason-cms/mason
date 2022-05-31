@@ -2068,6 +2068,10 @@ __webpack_require__(/*! ./backend/backend */ "./resources/js/backend/backend.js"
 
 __webpack_require__(/*! ./backend/sameHeight */ "./resources/js/backend/sameHeight.js");
 
+__webpack_require__(/*! ./backend/modal */ "./resources/js/backend/modal.js");
+
+__webpack_require__(/*! ./backend/menus */ "./resources/js/backend/menus.js");
+
 /***/ }),
 
 /***/ "./resources/js/backend/backend.js":
@@ -2076,7 +2080,7 @@ __webpack_require__(/*! ./backend/sameHeight */ "./resources/js/backend/sameHeig
   \*****************************************/
 /***/ (() => {
 
-$(window).add(document).on('ready load resize', function () {
+$(window).add(document).on('ready load resize DOMSubtreeModified', function () {
   var windowWidth = $(window).width(),
       $body = $('body').removeClass('is-desktop is-tablet is-mobile');
 
@@ -2125,6 +2129,160 @@ $(document).on('change', 'form.autosave', function () {
   }
 }).on('click', '[data-confirm]', function () {
   return window.confirm($(this).data('confirm'));
+}).on('mason:lockable:init', '.is-lockable', function (e) {
+  var $this = $(this),
+      $input = $this.find('.input'),
+      $lock = $this.find('.lock'),
+      $unlock = $this.find('.unlock');
+
+  if ($this.hasClass('is-locked') || $input.prop('disabled')) {
+    $this.trigger('mason:lockable:lock');
+  } else {
+    $this.trigger('mason:lockable:unlock');
+  }
+
+  $lock.on('click', function (e) {
+    e.preventDefault();
+    $this.trigger('mason:lockable:lock');
+  });
+  $unlock.on('click', function (e) {
+    e.preventDefault();
+    $this.trigger('mason:lockable:unlock');
+  });
+}).on('mason:lockable:lock', '.is-lockable', function () {
+  var $this = $(this),
+      $input = $this.find('.input'),
+      $lock = $this.find('.lock'),
+      $unlock = $this.find('.unlock');
+  $this.addClass('is-locked');
+  $input.prop('disabled', true);
+  $lock.addClass('is-hidden');
+  $unlock.removeClass('is-hidden');
+}).on('mason:lockable:unlock', '.is-lockable', function () {
+  var $this = $(this),
+      $input = $this.find('.input'),
+      $lock = $this.find('.lock'),
+      $unlock = $this.find('.unlock');
+  $this.removeClass('is-locked');
+  $input.prop('disabled', false);
+  $unlock.addClass('is-hidden');
+  $lock.removeClass('is-hidden');
+}).on('ready DOMSubtreeModified', function () {
+  $('.is-lockable').trigger('mason:lockable:init');
+}).on('click', '[rel="expand"]', function (e) {
+  e.preventDefault();
+  var $this = $(this),
+      href = $this.attr('href'),
+      $href = $(href);
+  $href.removeClass('is-hidden');
+}).on('click', '[rel="collapse"]', function (e) {
+  e.preventDefault();
+  var $this = $(this),
+      href = $this.attr('href'),
+      $href = $(href);
+  $href.addClass('is-hidden');
+}).on('click', '[rel="toggle"]', function (e) {
+  e.preventDefault();
+  var $this = $(this),
+      href = $this.attr('href'),
+      $href = $(href);
+  $href.toggleClass('is-hidden');
+});
+
+/***/ }),
+
+/***/ "./resources/js/backend/menus.js":
+/*!***************************************!*\
+  !*** ./resources/js/backend/menus.js ***!
+  \***************************************/
+/***/ (() => {
+
+$(document).on('change', '#item-target', function () {
+  var $itemTarget = $(this),
+      $itemTargetOptionSelected = $itemTarget.find('option:selected'),
+      itemTargetValue = $itemTarget.val(),
+      itemTargetText = $itemTargetOptionSelected.length === 1 ? $itemTargetOptionSelected.text() : '',
+      itemTargetUrl = $itemTargetOptionSelected.length === 1 ? $itemTargetOptionSelected.data('url') : '',
+      $itemTitle = $('#item-title'),
+      $itemHref = $('#item-href');
+
+  if ($itemTitle.length === 1) {
+    if (itemTargetValue) {
+      $itemTitle.val(itemTargetText);
+    } else {
+      $itemTitle.val('');
+    }
+  }
+
+  if ($itemHref.length === 1) {
+    $itemHref.val(itemTargetUrl);
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/backend/modal.js":
+/*!***************************************!*\
+  !*** ./resources/js/backend/modal.js ***!
+  \***************************************/
+/***/ (() => {
+
+$(document).on('click', '[rel="open-modal"]', function (e) {
+  e.preventDefault();
+  var $this = $(this),
+      href = $this.attr('href'),
+      $modal;
+
+  if (typeof href === 'string' && href.length > 0 && href.indexOf("#") === 0) {
+    $modal = $(href);
+    $modal.trigger('mason:modal:open');
+  } else {
+    var $modalContainer = $('<div class="modal-container"></div>');
+    $modalContainer.appendTo($('body')).load(href, function () {
+      $modal = $modalContainer.children('.modal').last().addClass('is-ajax');
+      $modal.trigger('mason:modal:open');
+    });
+  }
+}).on('click', '[rel="close-modal"]', function (e) {
+  e.preventDefault();
+  var $this = $(this),
+      href = $this.attr('href'),
+      $modal;
+
+  if (typeof href === 'string' && href.length > 0 && href.indexOf("#") === 0) {
+    $modal = href;
+  } else {
+    $modal = $this.parents('.modal').first();
+  }
+
+  $modal.trigger('mason:modal:close');
+}).on('click', '.modal-background', function (e) {
+  e.preventDefault();
+  var $modalBackground = $(this),
+      $modal = $modalBackground.parents('.modal').first();
+  $modal.trigger('mason:modal:close');
+}).on('keyup', function (e) {
+  if (e.key === "Escape") {
+    $('.modal.is-active').trigger('mason:modal:close');
+  }
+}).on('mason:modal:open', '.modal', function () {
+  var $modal = $(this);
+  $modal.addClass('is-active');
+  $('html').addClass('is-clipped');
+  $modal.trigger('mason:modal:open:done');
+}).on('mason:modal:close', '.modal', function () {
+  var $modal = $(this);
+  $modal.removeClass('is-active');
+
+  if ($('.modal.is-active').length === 0) {
+    $('html').removeClass('is-clipped');
+  }
+
+  $modal.trigger('mason:modal:close:done');
+
+  if ($modal.hasClass('is-ajax')) {
+    $modal.remove();
+  }
 });
 
 /***/ }),

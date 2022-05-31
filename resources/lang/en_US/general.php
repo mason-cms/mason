@@ -8,4 +8,6 @@ return [
             'label' => "Choose a file...",
         ],
     ],
+    'lock' => "Lock",
+    'unlock' => "Unlock",
 ];

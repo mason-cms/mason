@@ -67,11 +67,11 @@ class EntryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
      * @param  \App\Models\Entry  $entry
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function show(Request $request, EntryType $entryType, Entry $entry)
     {
-        //
+        return redirect()->route('backend.entries.edit', [$entryType, $entry]);
     }
 
     /**
@@ -105,7 +105,7 @@ class EntryController extends Controller
             $entry->publish();
         }
 
-        return redirect()->route('backend.entries.edit', [$entryType, $entry]);
+        return redirect()->back();
     }
 
     /**
@@ -120,6 +120,6 @@ class EntryController extends Controller
     {
         $entry->delete();
 
-        return redirect()->route('backend.entries.index', [$entryType]);
+        return redirect()->back();
     }
 }

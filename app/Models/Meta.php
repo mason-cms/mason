@@ -10,9 +10,42 @@ class Meta extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function parent()
+    protected $fillable = [
+        'name',
+        'value',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
+
+    /**
+     * Static Methods
+     */
+
+    public static function findByName($name)
     {
-        return $this->morphTo();
+        return static::byName($name)->first();
+    }
+
+    /**
+     * Scopes
+     */
+
+    public static function scopeByName($query, $name)
+    {
+        return $query->where('name', $name);
+    }
+
+    /**
+     * Accessors & Mutators
+     */
+
+    public function getValueAttribute()
+    {
+        return isset($this->attributes['value']) ? unserialize($this->attributes['value']) : null;
     }
 
     public function setValueAttribute($value)
@@ -20,8 +53,12 @@ class Meta extends Model
         $this->attributes['value'] = isset($value) ? serialize($value) : null;
     }
 
-    public function getValueAttribute()
+    /**
+     * Relationships
+     */
+
+    public function parent()
     {
-        return isset($this->attributes['value']) ? unserialize($this->attributes['value']) : null;
+        return $this->morphTo();
     }
 }

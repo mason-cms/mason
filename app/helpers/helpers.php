@@ -2,10 +2,10 @@
 
 function site()
 {
-    return new \App\Models\Site;
+    return \App\Models\Site::getInstance();
 }
 
-function theme($name = null)
+function theme()
 {
-    return new \App\Models\Theme($name);
+    return \App\Models\Theme::getInstance();
 }

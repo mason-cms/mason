@@ -1,4 +1,4 @@
-$(window).add(document).on('ready load resize', function () {
+$(window).add(document).on('ready load resize DOMSubtreeModified', function () {
     var windowWidth = $(window).width(),
         $body = $('body').removeClass('is-desktop is-tablet is-mobile');
 

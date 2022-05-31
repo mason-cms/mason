@@ -24,8 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $viewPaths = config('view.paths');
-        $viewPaths[] = theme_path("resources/views");
-        config(['view.paths' => $viewPaths]);
+        //
     }
 }

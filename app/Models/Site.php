@@ -2,24 +2,40 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
 
-class Site extends Model
+class Site
 {
-    use HasFactory;
+    protected static $instance;
 
-    protected $name;
-    protected $description;
-    protected $theme;
+    public $name;
+    public $description;
+    public $theme;
+    public $locale;
 
-    public function __construct()
+    public static function getInstance()
     {
-        parent::__construct();
+        return static::$instance ??= new static;
+    }
 
+    public function __construct($boot = true)
+    {
         $this->name = config('site.name');
         $this->description = config('site.description');
         $this->theme = theme(config('site.theme'));
+
+        if ($boot) {
+            $this->boot();
+        }
+    }
+
+    public function boot()
+    {
+        $this->setLocale(Locale::default());
+
+        $this->theme()->boot();
     }
 
     public function name()
@@ -37,16 +53,49 @@ class Site extends Model
         return $this->theme;
     }
 
+    public function locale()
+    {
+        return $this->locale;
+    }
+
+    public function setLocale($locale)
+    {
+        if (is_string($locale)) {
+            $locale = Locale::findByName($locale);
+        }
+
+        if ($locale instanceof Locale) {
+            $this->locale = $locale;
+
+            setlocale(LC_ALL, $locale->system_name);
+
+            App::setLocale($locale->system_name);
+
+            if (! $locale->is_default) {
+                URL::defaults(['locale' => $locale->name]);
+            }
+
+            Carbon::setLocale($locale->system_name);
+        }
+    }
+
+    public function locales()
+    {
+        return Locale::query();
+    }
+
+    public function home($locale = null)
+    {
+        $locale ??= $this->locale;
+        return $locale->home();
+    }
+
     public function entries($type = null, $locale = null)
     {
-        $query = Entry::query();
+        $query = Entry::byLocale($locale ?? $this->locale);
 
         if (isset($type)) {
             $query->byType($type);
-        }
-
-        if (isset($locale)) {
-            $query->byLocale($locale);
         }
 
         return $query;
@@ -54,19 +103,17 @@ class Site extends Model
 
     public function entry($name, $locale = null, $type = null)
     {
-        return $this->entries($type, $locale)->byName($name)->first();
+        return $this->entries($type, $locale ?? $this->locale)
+            ->byName($name)
+            ->first();
     }
 
     public function taxonomies($type = null, $locale = null)
     {
-        $query = Taxonomy::query();
+        $query = Taxonomy::byLocale($locale ?? $this->locale);
 
         if (isset($type)) {
             $query->byType($type);
-        }
-
-        if (isset($locale)) {
-            $query->byLocale($locale);
         }
 
         return $query;
@@ -74,12 +121,9 @@ class Site extends Model
 
     public function taxonomy($name, $locale = null, $type = null)
     {
-        return $this->taxonomies($type, $locale)->byName($name)->first();
-    }
-
-    public function locales()
-    {
-        return Locale::query();
+        return $this->taxonomies($type, $locale ?? $this->locale)
+            ->byName($name)
+            ->first();
     }
 
     public function defaultLocale()
@@ -89,13 +133,14 @@ class Site extends Model
 
     public function menus($locale = null)
     {
-        $query = Menu::query();
+        return Menu::byLocale($locale ?? $this->locale);
+    }
 
-        if (isset($locale)) {
-            $query->byLocale($locale);
-        }
-
-        return $query;
+    public function menu($location, $locale = null)
+    {
+        return Menu::byLocation($location)
+            ->byLocale($locale ?? $this->locale)
+            ->first();
     }
 
     public function settings()

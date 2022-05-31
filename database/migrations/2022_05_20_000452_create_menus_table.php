@@ -15,9 +15,7 @@ class CreateMenusTable extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->integer('location_id')->unsigned()->index();
-            $table->string('name', 255)->index();
-            $table->string('title', 255);
+            $table->string('location', 255)->nullable()->index();
             $table->integer('locale_id')->unsigned()->index();
             $table->timestamps();
             $table->softDeletes();

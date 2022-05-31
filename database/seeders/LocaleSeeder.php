@@ -15,15 +15,12 @@ class LocaleSeeder extends Seeder
     public function run()
     {
         $data = [
-            'en' => [
-                'region' => 'US',
-                'title' => "English",
+            'en-US' => [
+                'title' => "English (US)",
                 'is_default' => true,
             ],
-            'fr' => [
-                'region' => 'CA',
-                'title' => "Français",
-                'is_default' => false,
+            'fr-CA' => [
+                'title' => "Français (Canada)",
             ],
         ];
 

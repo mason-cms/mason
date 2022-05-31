@@ -17,4 +17,24 @@ return [
         'updated_at' => "Updated on",
         'deleted_at' => "Deleted on",
     ],
+    'actions' => [
+        'create' => [
+            'label' => "New User",
+        ],
+        'view' => [
+            'label' => "View",
+        ],
+        'edit' => [
+            'label' => "Edit",
+        ],
+        'destroy' => [
+            'label' => "Delete",
+        ],
+        'save' => [
+            'label' => "Save",
+        ],
+        'cancel' => [
+            'label' => "Cancel",
+        ],
+    ],
 ];

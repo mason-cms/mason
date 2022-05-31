@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Theme extends Model
+class Theme
 {
-    use HasFactory;
+    protected static $instance;
 
-    protected $name;
-    protected $package;
-    protected $vendor;
-    protected $project;
-    protected $version;
+    public $name;
+    public $package;
+    public $vendor;
+    public $project;
+    public $version;
+
+    public static function getInstance()
+    {
+        return static::$instance ??= new static;
+    }
 
     public function __construct($name = null)
     {
-        parent::__construct();
-
         $this->name = $name ?? config('site.theme');
 
         $nameParts = explode(':', $this->name, 2);
@@ -28,6 +28,13 @@ class Theme extends Model
         $packageParts = explode('/', $this->package, 2);
         $this->vendor = $packageParts[0] ?? null;
         $this->project = $packageParts[1] ?? null;
+    }
+
+    public function boot()
+    {
+        $viewPaths = config('view.paths');
+        $viewPaths[] = $this->path("resources/views");
+        config(['view.paths' => array_unique($viewPaths)]);
     }
 
     public function name()
@@ -72,5 +79,22 @@ class Theme extends Model
     public function asset($path, $secure = null)
     {
         return asset("themes/{$this->project}/{$path}", $secure);
+    }
+
+    public function info($attribute = null)
+    {
+        $path = $this->path('theme.json');
+
+        if (file_exists($path) && is_readable($path)) {
+            $json = file_get_contents($path);
+            $info = json_decode($json);
+
+            return isset($attribute) ? ( $info->$attribute ?? null ) : $info;
+        }
+    }
+
+    public function menuLocations()
+    {
+        return $this->info('menuLocations') ?? [];
     }
 }

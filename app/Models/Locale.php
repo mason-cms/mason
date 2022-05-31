@@ -10,8 +10,11 @@ class Locale extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $attributes = [
+        'is_default' => false,
+    ];
+
     protected $fillable = [
-        'region',
         'title',
         'is_default',
     ];
@@ -49,13 +52,30 @@ class Locale extends Model
         return "{$this->title}";
     }
 
+    public function home()
+    {
+        return $this->is_default
+            ? route('home')
+            : route('locale.home', [$this]);
+    }
+
     /**
      * Accessors & Mutators
      */
 
-    public function getCodeAttribute()
+    public function getLanguageAttribute()
     {
-        return "{$this->name}_{$this->region}";
+        return explode('-', $this->name)[0] ?? null;
+    }
+
+    public function getRegionAttribute()
+    {
+        return explode('-', $this->name)[1] ?? null;
+    }
+
+    public function getSystemNameAttribute()
+    {
+        return str_replace('-', '_', $this->name);
     }
 
     /**
@@ -70,5 +90,10 @@ class Locale extends Model
     public function taxonomies()
     {
         return $this->hasMany(Taxonomy::class);
+    }
+
+    public function menus()
+    {
+        return $this->hasMany(Menu::class);
     }
 }

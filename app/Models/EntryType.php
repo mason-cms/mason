@@ -16,8 +16,21 @@ class EntryType extends Model
         'icon_class',
     ];
 
+    /**
+     * Helpers
+     */
+
     public function __toString()
     {
         return "{$this->plural_title}";
+    }
+
+    /**
+     * Relationships
+     */
+
+    public function entries()
+    {
+        return $this->hasMany(Entry::class, 'type_id');
     }
 }

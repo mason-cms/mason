@@ -17,10 +17,18 @@ class TaxonomyType extends Model
         'icon_class',
     ];
 
+    /**
+     * Helpers
+     */
+
     public function __toString()
     {
         return "{$this->plural_title}";
     }
+
+    /**
+     * Relationships
+     */
 
     public function taxonomies()
     {

@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\EntryController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\TaxonomyController;
 use App\Http\Controllers\Backend\MenuController;
+use App\Http\Controllers\Backend\MenuItemController;
 use App\Http\Controllers\Backend\SettingsController;
 
 Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(function () {
@@ -30,7 +31,23 @@ Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(functio
         Route::get('/{taxonomy}/destroy', [TaxonomyController::class, 'destroy'])->name('destroy');
     });
 
-    Route::resource('menus', MenuController::class);
+
+    Route::prefix('/menus')->name('menus.')->group(function () {
+        Route::get('/', [MenuController::class, 'index'])->name('index');
+        Route::get('/create', [MenuController::class, 'create'])->name('create');
+        Route::get('/{menu}', [MenuController::class, 'show'])->name('show');
+        Route::get('/{menu}/edit', [MenuController::class, 'edit'])->name('edit');
+        Route::patch('/{menu}', [MenuController::class, 'update'])->name('update');
+        Route::get('/{menu}/destroy', [MenuController::class, 'destroy'])->name('destroy');
+
+        Route::prefix('/{menu}/items')->name('items.')->group(function () {
+            Route::get('/create', [MenuItemController::class, 'create'])->name('create');
+            Route::get('/{item}', [MenuItemController::class, 'show'])->name('show');
+            Route::get('/{item}/edit', [MenuItemController::class, 'edit'])->name('edit');
+            Route::patch('/{item}', [MenuItemController::class, 'update'])->name('update');
+            Route::get('/{item}/destroy', [MenuItemController::class, 'destroy'])->name('destroy');
+        });
+    });
 
     Route::resource('users', UserController::class);
 
