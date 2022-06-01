@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\MenuItemable;
 use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +12,7 @@ use Illuminate\Support\Str;
 
 class Entry extends Model
 {
-    use HasFactory, SoftDeletes, Metable;
+    use HasFactory, SoftDeletes, Metable, MenuItemable;
 
     const ICON = 'fa-file';
 

@@ -2217,6 +2217,12 @@ $(document).on('change', '#item-target', function () {
   if ($itemHref.length === 1) {
     $itemHref.val(itemTargetUrl);
   }
+}).on('ready', function () {
+  /**
+   * When a new menu item has just been created it will bear the .is-new class and we should trigger the
+   * edit action right away, which will open a modal window.
+   */
+  $('.menu-item.is-new').first().find('.edit-menu-item').click();
 });
 
 /***/ }),

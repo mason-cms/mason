@@ -19,7 +19,7 @@
                                 value="{{ get_class($targetOption) }}:{{ $targetOption->id }}"
                                 data-url="{{ $targetOption->url ?? '' }}"
                                 {{ isset($item->target) && $item->target->is($targetOption) ? 'selected' : '' }}
-                            >{{ $targetOption }}</option>
+                            >{{ $targetOption->title ?? "{$targetOption}" }}</option>
                         @endforeach
                     </optgroup>
                 @endforeach
@@ -44,6 +44,12 @@
             placeholder="{{ config('app.url') }}"
         >
     </div>
+
+    @if (isset($item->target, $item->target->url) && $item->target->url !== $item->href)
+        <p class="help is-danger">
+            {{ __('menus.items.alerts.href_differs_from_target', ['target_url' => $item->target->url]) }}
+        </p>
+    @endif
 </div>
 
 <div class="field">
@@ -61,6 +67,12 @@
             value="{{ $item->title }}"
         >
     </div>
+
+    @if (isset($item->target, $item->target->title) && $item->target->title !== $item->title)
+        <p class="help is-danger">
+            {{ __('menus.items.alerts.title_differs_from_target', ['target_title' => $item->target->title]) }}
+        </p>
+    @endif
 </div>
 
 <div class="field">
@@ -98,16 +110,16 @@
 <div id="item-advanced-options" class="block is-hidden">
     <div class="field">
         <label
-            class="label is-small"
+            class="label"
             for="item-metadata-class"
         >
-            Class
+            {{ __('menus.items.meta.class') }}
         </label>
 
         <div class="control">
             <input
                 id="item-metadata-class"
-                class="input is-small"
+                class="input"
                 name="item[metadata][class]"
                 type="text"
                 value="{{ $item->metadata['class'] ?? '' }}"
@@ -117,16 +129,16 @@
 
     <div class="field">
         <label
-            class="label is-small"
+            class="label"
             for="item-metadata-rel"
         >
-            Rel
+            {{ __('menus.items.meta.rel') }}
         </label>
 
         <div class="control">
             <input
                 id="item-metadata-rel"
-                class="input is-small"
+                class="input"
                 name="item[metadata][rel]"
                 type="text"
                 value="{{ $item->metadata['rel'] ?? '' }}"
@@ -136,16 +148,16 @@
 
     <div class="field">
         <label
-            class="label is-small"
+            class="label"
             for="item-metadata-target"
         >
-            Target
+            {{ __('menus.items.meta.target') }}
         </label>
 
         <div class="control">
             <input
                 id="item-metadata-target"
-                class="input is-small"
+                class="input"
                 name="item[metadata][target]"
                 type="text"
                 value="{{ $item->metadata['target'] ?? '' }}"

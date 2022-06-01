@@ -28,20 +28,38 @@ class MenuItem extends Model
     ];
 
     /**
+     * ==================================================
      * Static Methods
+     * ==================================================
      */
 
     protected static function boot()
     {
         parent::boot();
 
+        /**
+         * When creating a new menu item, if the target is specified, set the href and title based on the target
+         * unless they have already been set.
+         */
+        static::creating(function ($item) {
+            if (isset($item->target)) {
+                $item->href ??= $item->target->url;
+                $item->title ??= $item->target->title;
+            }
+        });
+
+        /**
+         * When a menu item has been deleted, we need to delete all the children as well.
+         */
         static::deleted(function ($item) {
             $item->children()->delete();
         });
     }
 
     /**
+     * ==================================================
      * Scopes
+     * ==================================================
      */
 
     public function scopeTop($query)
@@ -50,17 +68,20 @@ class MenuItem extends Model
     }
 
     /**
+     * ==================================================
      * Helpers
+     * ==================================================
      */
 
     public function __toString()
     {
-        $str = $this->title ?? $this->target;
-        return "{$str}";
+        return "{$this->title}";
     }
 
     /**
+     * ==================================================
      * Accessors & Mutators
+     * ==================================================
      */
 
     public function getParentOptionsAttribute()
@@ -100,8 +121,16 @@ class MenuItem extends Model
         }
     }
 
+    public function getDiffersFromTargetAttribute()
+    {
+        return isset($this->target)
+            && ( $this->target->url !== $this->href || $this->target->title !== $this->title );
+    }
+
     /**
+     * ==================================================
      * Relationships
+     * ==================================================
      */
 
     public function menu()
