@@ -158,7 +158,7 @@ class Setup extends Command
         $this->info("Installing theme...");
 
         if ($theme = env('SITE_THEME')) {
-            Artisan::call('mason:theme:install', ['theme' => $theme], $this->getOutput());
+            Artisan::call("mason:theme:install --theme={$theme}", null, $this->getOutput());
         } else {
             $this->error("No theme to install.");
         }
