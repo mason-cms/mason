@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Theme;
 use Illuminate\Console\Command;
 
 class InstallTheme extends Command
@@ -44,41 +45,21 @@ class InstallTheme extends Command
      */
     public function handle()
     {
-        if ($this->option('theme')) {
-            $this->theme = theme($this->option('theme'));
-        } else {
-            $this->theme = theme();
-        }
+        $this->theme = theme($this->option('theme') ? $this->option('theme') : null);
 
-        if (isset($this->theme) && strlen($this->theme->name()) > 0) {
-            $this->info("Installing theme: {$this->theme->name()}");
+        if (isset($this->theme) && $this->theme instanceof Theme && isset($this->theme->name)) {
+            $this->info("Installing theme: {$this->theme->name}");
 
-            $this->line(shell_exec("composer require {$this->theme->name()} --no-interaction"));
-
-            $this->createSymlink();
-
-            return 0;
+            if ($this->theme->install()) {
+                $this->info("Theme installed");
+                return 0;
+            } else {
+                $this->error("Theme could not be installed");
+                return 1;
+            }
         } else {
             $this->error("No theme to install.");
             return 1;
-        }
-    }
-
-    protected function createSymlink()
-    {
-        if (isset($this->theme)) {
-            $target = $this->theme->path('public');
-            $link = $this->theme->public_path();
-
-            if (is_link($link)) unlink($link);
-
-            $this->line("Creating symlink between '{$target}' and '{$link}'");
-
-            if (symlink($target, $link)) {
-                $this->info("Symlink created");
-            } else {
-                $this->info("Symlink could not be created");
-            }
         }
     }
 }

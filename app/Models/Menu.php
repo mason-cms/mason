@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\Cancellable;
 use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Menu extends Model
 {
-    use HasFactory, SoftDeletes, Metable, Cancellable;
+    use HasFactory, SoftDeletes, Metable;
 
     const ICON = 'fa-list-dropdown';
 
@@ -26,7 +25,9 @@ class Menu extends Model
     ];
 
     /**
+     * ==================================================
      * Static Methods
+     * ==================================================
      */
 
     protected static function boot()
@@ -39,7 +40,9 @@ class Menu extends Model
     }
 
     /**
+     * ==================================================
      * Scopes
+     * ==================================================
      */
 
     public static function scopeByLocation($query, string $location)
@@ -53,7 +56,9 @@ class Menu extends Model
     }
 
     /**
+     * ==================================================
      * Helpers
+     * ==================================================
      */
 
     public function __toString()
@@ -88,7 +93,9 @@ class Menu extends Model
     }
 
     /**
+     * ==================================================
      * Accessors & Mutators
+     * ==================================================
      */
 
     public function getLocationTitleAttribute()
@@ -102,8 +109,15 @@ class Menu extends Model
         }
     }
 
+    public function getRootItemsAttribute()
+    {
+        return $this->items()->root()->get();
+    }
+
     /**
+     * ==================================================
      * Relationships
+     * ==================================================
      */
 
     public function locale()

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Cancellable;
 use App\Traits\MenuItemable;
 use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,7 +13,7 @@ use Illuminate\Support\Str;
 
 class Taxonomy extends Model
 {
-    use HasFactory, SoftDeletes, Metable, MenuItemable;
+    use HasFactory, SoftDeletes, Metable, Cancellable, MenuItemable;
 
     const ICON = 'fa-tags';
 
@@ -32,7 +33,9 @@ class Taxonomy extends Model
     ];
 
     /**
+     * ==================================================
      * Static Methods
+     * ==================================================
      */
 
     protected static function boot()
@@ -49,7 +52,9 @@ class Taxonomy extends Model
     }
 
     /**
+     * ==================================================
      * Scopes
+     * ==================================================
      */
 
     public static function scopeByType($query, $taxonomyType)
@@ -84,7 +89,9 @@ class Taxonomy extends Model
     }
 
     /**
+     * ==================================================
      * Helpers
+     * ==================================================
      */
 
     public function __toString()
@@ -116,7 +123,9 @@ class Taxonomy extends Model
     }
 
     /**
+     * ==================================================
      * Relationships
+     * ==================================================
      */
 
     public function type()

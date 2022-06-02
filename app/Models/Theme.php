@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Menu;
+use App\Models\Locale;
+
 class Theme
 {
     protected static $instance;
@@ -12,9 +15,9 @@ class Theme
     public $project;
     public $version;
 
-    public static function getInstance()
+    public static function getInstance($name = null)
     {
-        return static::$instance ??= new static;
+        return static::$instance ??= new static($name);
     }
 
     public function __construct($name = null)
@@ -96,5 +99,55 @@ class Theme
     public function menuLocations()
     {
         return $this->info('menuLocations') ?? [];
+    }
+
+    public function install()
+    {
+        if (isset($this->name)) {
+            return [
+                shell_exec("composer require {$this->name} --no-interaction"),
+                $this->createSymlink(),
+                $this->createMenus(),
+            ];
+        }
+
+        return false;
+    }
+
+    public function update()
+    {
+        if (isset($this->name)) {
+            return [
+                shell_exec("composer update {$this->name} --no-interaction"),
+                $this->createSymlink(),
+                $this->createMenus(),
+            ];
+        }
+
+        return false;
+    }
+
+    public function createSymlink()
+    {
+        $target = $this->path('public');
+        $link = $this->public_path();
+
+        if (is_link($link)) unlink($link);
+
+        return symlink($target, $link);
+    }
+
+    public function createMenus()
+    {
+        foreach ($this->menuLocations() as $menuLocation) {
+            foreach (Locale::all() as $locale) {
+                Menu::firstOrCreate([
+                    'location' => $menuLocation->name,
+                    'locale_id' => $locale->id,
+                ]);
+            }
+        }
+
+        return true;
     }
 }

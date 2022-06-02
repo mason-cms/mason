@@ -10380,19 +10380,10 @@ body.backend .navbar .navbar-brand {
   text-transform: uppercase;
   letter-spacing: 3px;
 }
-body.backend .sidebar {
-  min-width: 15%;
-}
 body.backend .no-records {
   font-size: 1.25rem;
   font-style: italic;
   color: hsl(0deg, 0%, 48%);
-}
-body.backend .pagination-count {
-  font-size: 0.875rem;
-}
-body.backend .is-disabled {
-  cursor: not-allowed;
 }
 body.backend .filters .dropdown-content {
   min-width: 20rem;
@@ -10403,6 +10394,20 @@ body.backend .menu-items ul li {
 }
 body.backend .menu-items ul li ul {
   margin: 1rem 0 1rem 4rem;
+}
+
+.is-centered {
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center !important;
+}
+
+.is-disabled {
+  cursor: not-allowed;
+}
+
+.has-text-small {
+  font-size: 0.875rem;
 }
 
 body.auth {

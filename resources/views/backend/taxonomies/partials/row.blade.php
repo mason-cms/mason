@@ -20,7 +20,7 @@
     </td>
 
     <td>
-        <div class="field is-grouped">
+        <div class="field has-addons">
             <div class="control">
                 <a
                     class="button is-small"
@@ -32,11 +32,11 @@
 
             <div class="control">
                 <a
-                    class="button is-small is-danger"
+                    class="button is-small"
                     href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
                     data-confirm="{{ __('general.confirm') }}"
                 >
-                    <span class="icon"><i class="fa-light fa-trash-can"></i></span>
+                    <span class="icon has-text-danger"><i class="fa-light fa-trash-can"></i></span>
                 </a>
             </div>
         </div>

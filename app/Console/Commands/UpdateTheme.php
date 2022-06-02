@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Theme;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 
 class UpdateTheme extends Command
 {
@@ -45,16 +45,18 @@ class UpdateTheme extends Command
      */
     public function handle()
     {
-        if ($this->option('theme')) {
-            $this->theme = theme($this->option('theme'));
-        } else {
-            $this->theme = theme();
-        }
+        $this->theme = theme($this->option('theme') ? $this->option('theme') : null);
 
-        if (isset($this->theme) && strlen($this->theme->name()) > 0) {
-            $this->info("Updating theme: {$this->theme->name()}");
-            $this->line(shell_exec("composer update {$this->theme->name()} --no-interaction"));
-            return 0;
+        if (isset($this->theme) && $this->theme instanceof Theme && isset($this->theme->name)) {
+            $this->info("Updating theme: {$this->theme->name}");
+
+            if ($this->theme->update()) {
+                $this->info("Theme updated");
+                return 0;
+            } else {
+                $this->error("Theme could not be updated");
+                return 1;
+            }
         } else {
             $this->error("No theme to update.");
             return 1;

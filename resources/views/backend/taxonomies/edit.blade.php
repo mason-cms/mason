@@ -30,7 +30,7 @@
                     </button>
                 </div>
 
-                @if (! isset($taxonomy->title))
+                @if ($taxonomy->is_cancellable)
                     <div class="level-item">
                         <a class="button" href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}">
                             <span class="icon"><i class="fa-light fa-ban"></i></span>

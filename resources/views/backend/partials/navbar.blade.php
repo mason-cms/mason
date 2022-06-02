@@ -28,7 +28,7 @@
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
                 <span class="icon has-text-success"><i class="fa-light fa-gauge"></i></span>
-                <span>{{ __('backend.dashboard.title') }}</span>
+                <span>{{ __('dashboard.title') }}</span>
             </a>
 
             <div class="navbar-item has-dropdown is-hoverable">

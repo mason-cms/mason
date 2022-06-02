@@ -1,112 +1,97 @@
 @extends('layouts.backend')
 
 @section('content')
-    <form
-        class="section"
-        action="{{ route('backend.menus.index') }}"
-        method="GET"
-    >
-        <div class="level">
-            <div class="level-left">
-                <div class="level-item">
-                    <div>
-                        <h1 class="title is-1">
-                            <a href="{{ route('backend.menus.index') }}">
-                                {{ __('menus.title') }}
-                            </a>
-                        </h1>
+    <section class="section">
+        <form
+            class="autosave"
+            action="{{ route('backend.menus.index') }}"
+            method="GET"
+        >
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <div>
+                            <h1 class="title is-1">
+                                <a href="{{ route('backend.menus.index') }}">
+                                    {{ __('menus.title') }}
+                                </a>
+                            </h1>
+                        </div>
+                    </div>
+                </div>
 
-                        <div class="pagination-count">
-                            {{ trans_choice('menus.pagination', $menus->count() , ['total' => $total]) }}
+                <div class="level-right">
+                    <div class="level-item">
+                        <div class="field">
+                            <div class="control">
+                                <div class="select">
+                                    <select name="location" autocomplete="off">
+                                        <option value="">{{ __('menus.attributes.location') }}</option>
+                                        @foreach($menuLocations as $menuLocation)
+                                            <option
+                                                value="{{ $menuLocation->name }}"
+                                                {{ isset($request->location) && $menuLocation->name === $request->location ? 'selected' : '' }}
+                                            >{{ $menuLocation->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="level-item">
+                        <div class="field">
+                            <div class="control">
+                                <div class="select">
+                                    <select name="locale_id" autocomplete="off">
+                                        <option value="">{{ __('menus.attributes.locale') }}</option>
+                                        @foreach($locales as $locale)
+                                            <option
+                                                value="{{ $locale->id }}"
+                                                {{ isset($request->locale_id) && $locale->id == $request->locale_id ? 'selected' : '' }}
+                                            >{{ $locale }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="level-right">
-                <div class="level-item">
-                    @include('backend.menus.partials.filters')
-                </div>
-
-                <div class="level-item">
-                    @include('backend.menus.partials.buttons.create')
-                </div>
-            </div>
-        </div>
+        </form>
 
         <hr />
 
-        @if ($menus->count() > 0)
-            <div class="card block">
-                <div class="card-content">
-                    <div class="table-container">
-                        <table class="table is-fullwidth">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        {{ __('menus.attributes.location') }}
-                                    </th>
+        @isset($menu)
+            @if ($menu->root_items->count() > 0)
+                <fieldset class="menu-items">
+                    <ul>
+                        @foreach($menu->root_items as $item)
+                            <li>
+                                @include('backend.menus.partials.item')
+                            </li>
+                        @endforeach
+                    </ul>
+                </fieldset>
 
-                                    <th>
-                                        {{ __('menus.attributes.locale') }}
-                                    </th>
-
-                                    <th class="is-narrow"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                @foreach($menus as $menu)
-                                    <tr>
-                                        <td>
-                                            {{ $menu->location_title }}
-                                        </td>
-
-                                        <td>
-                                            {{ $menu->locale }}
-                                        </td>
-
-                                        <td>
-                                            <div class="field is-grouped">
-                                                <div class="control">
-                                                    <a
-                                                        class="button is-small"
-                                                        href="{{ route('backend.menus.edit', [$menu]) }}"
-                                                    >
-                                                        <span class="icon"><i class="fa-light fa-pencil"></i></span>
-                                                    </a>
-                                                </div>
-
-                                                <div class="control">
-                                                    <a
-                                                        class="button is-small is-danger"
-                                                        href="{{ route('backend.menus.destroy', [$menu]) }}"
-                                                        data-confirm="{{ __('general.confirm') }}"
-                                                    >
-                                                        <span class="icon"><i class="fa-light fa-trash-can"></i></span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                <a
+                    class="button is-primary"
+                    href="{{ route('backend.menus.items.create', [$menu]) }}"
+                >
+                    <span class="icon"><i class="fa-light fa-plus"></i></span>
+                    <span>{{ __('menus.items.actions.create.label') }}</span>
+                </a>
+            @else
+                <div class="section has-text-centered">
+                    <a
+                        class="button is-primary"
+                        href="{{ route('backend.menus.items.create', [$menu]) }}"
+                    >
+                        <span class="icon"><i class="fa-light fa-plus"></i></span>
+                        <span>{{ __('menus.items.actions.create.label') }}</span>
+                    </a>
                 </div>
-            </div>
-
-            {{ $menus->appends(request()->input())->links('backend.partials.pagination') }}
-        @else
-            <div class="section is-medium has-text-centered">
-                <p class="block no-records">
-                    {{ __('menus.no_records') }}
-                </p>
-
-                <p class="block">
-                    @include('backend.menus.partials.buttons.create')
-                </p>
-            </div>
-        @endif
-    </form>
+            @endif
+        @endisset
+    </section>
 @endsection

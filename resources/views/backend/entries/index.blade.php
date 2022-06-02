@@ -16,7 +16,7 @@
                             </a>
                         </h1>
 
-                        <div class="pagination-count">
+                        <div class="pagination-count has-text-small">
                             {{ trans_choice('entries.pagination', $entries->count() , ['total' => $total]) }}
                         </div>
                     </div>

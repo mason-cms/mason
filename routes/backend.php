@@ -34,11 +34,6 @@ Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(functio
 
     Route::prefix('/menus')->name('menus.')->group(function () {
         Route::get('/', [MenuController::class, 'index'])->name('index');
-        Route::get('/create', [MenuController::class, 'create'])->name('create');
-        Route::get('/{menu}', [MenuController::class, 'show'])->name('show');
-        Route::get('/{menu}/edit', [MenuController::class, 'edit'])->name('edit');
-        Route::patch('/{menu}', [MenuController::class, 'update'])->name('update');
-        Route::get('/{menu}/destroy', [MenuController::class, 'destroy'])->name('destroy');
 
         Route::prefix('/{menu}/items')->name('items.')->group(function () {
             Route::get('/create', [MenuItemController::class, 'create'])->name('create');
@@ -49,7 +44,14 @@ Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(functio
         });
     });
 
-    Route::resource('users', UserController::class);
+    Route::prefix('/users')->name('users.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::get('/{user}', [UserController::class, 'show'])->name('show');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::patch('/{user}', [UserController::class, 'update'])->name('update');
+        Route::get('/{user}/destroy', [UserController::class, 'destroy'])->name('destroy');
+    });
 
     Route::prefix('/configuration')->name('configuration.')->group(function () {
         Route::get('/', [ConfigurationController::class, 'general'])->name('general');

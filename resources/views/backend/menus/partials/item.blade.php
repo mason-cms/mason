@@ -9,7 +9,7 @@
                     ><i class="fa-light fa-lg fa-triangle-exclamation"></i></span>
                 </div>
             @endif
-            
+
             <div class="level-item">
                 <div>
                     <h4 class="title is-4">

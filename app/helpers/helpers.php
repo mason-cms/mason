@@ -5,7 +5,7 @@ function site()
     return \App\Models\Site::getInstance();
 }
 
-function theme()
+function theme($name = null)
 {
-    return \App\Models\Theme::getInstance();
+    return \App\Models\Theme::getInstance($name);
 }

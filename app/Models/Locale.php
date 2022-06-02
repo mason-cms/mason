@@ -19,6 +19,10 @@ class Locale extends Model
         'is_default',
     ];
 
+    protected $casts = [
+        'id' => 'integer',
+    ];
+
     /**
      * Static Methods
      */

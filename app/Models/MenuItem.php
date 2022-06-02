@@ -62,7 +62,7 @@ class MenuItem extends Model
      * ==================================================
      */
 
-    public function scopeTop($query)
+    public function scopeRoot($query)
     {
         return $query->whereNull('parent_id');
     }

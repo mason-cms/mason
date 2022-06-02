@@ -30,7 +30,7 @@
                     </button>
                 </div>
 
-                @if (! isset($entry->title))
+                @if ($entry->is_cancellable)
                     <div class="level-item">
                         <a class="button" href="{{ route('backend.entries.destroy', [$entry->type, $entry]) }}">
                             <span class="icon"><i class="fa-light fa-ban"></i></span>
