@@ -96,6 +96,13 @@ class Theme
         }
     }
 
+    public function config($attribute = null)
+    {
+        if ($config = $this->info('config')) {
+            return isset($attribute) ? ( $config->$attribute ?? null ) : $config;
+        }
+    }
+
     public function menuLocations()
     {
         return $this->info('menuLocations') ?? [];
