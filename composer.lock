@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c2c6bfd22ade04aaefd58e95d4ee977",
+    "content-hash": "3237f0f814f8b1281dc7976acabc6c9d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1663,10 +1663,16 @@
         {
             "name": "limestonesoftware/granite",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LimestoneSoftware/granite.git",
+                "reference": "1af2ede50f0032f5977b5287a62afe1a3ec958a1"
+            },
             "dist": {
-                "type": "path",
-                "url": "/Users/j9y/Code/granite",
-                "reference": "872d9615739f2cf2b2fd6503bff086b752f810b9"
+                "type": "zip",
+                "url": "https://api.github.com/repos/LimestoneSoftware/granite/zipball/1af2ede50f0032f5977b5287a62afe1a3ec958a1",
+                "reference": "1af2ede50f0032f5977b5287a62afe1a3ec958a1",
+                "shasum": ""
             },
             "require": {
                 "php": "^8.0"
@@ -1674,6 +1680,7 @@
             "require-dev": {
                 "phpunit/phpunit": "^9.5.10"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": []
@@ -1696,10 +1703,11 @@
                 "mason",
                 "theme"
             ],
-            "transport-options": {
-                "symlink": false,
-                "relative": false
-            }
+            "support": {
+                "source": "https://github.com/LimestoneSoftware/granite/tree/master",
+                "issues": "https://github.com/LimestoneSoftware/granite/issues"
+            },
+            "time": "2022-06-02T17:44:51+00:00"
         },
         {
             "name": "monolog/monolog",
