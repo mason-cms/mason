@@ -157,9 +157,9 @@ class Entry extends Model
     public function view()
     {
         $views = [
-            "{$this->locale->name}/{$this->type->name}.{$this->name}",
-            "{$this->locale->name}/{$this->type->name}.default",
-            "{$this->locale->name}/{$this->type->name}",
+            "{$this->locale->name}.{$this->type->name}.{$this->name}",
+            "{$this->locale->name}.{$this->type->name}.default",
+            "{$this->locale->name}.{$this->type->name}",
             "{$this->type->name}.{$this->name}",
             "{$this->type->name}.default",
             "{$this->type->name}",
