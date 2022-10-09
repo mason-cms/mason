@@ -101,7 +101,20 @@
         </div>
 
         <div class="navbar-end">
-            <form class="navbar-item" action="{{ route('logout') }}" method="post">
+            <a
+                href="{{ route('home') }}"
+                class="navbar-item"
+                target="_blank"
+            >
+                <span>{{ config('site.name') }}</span>
+                <span class="icon"><i class="fa-light fa-arrow-up-right-from-square"></i></span>
+            </a>
+
+            <form
+                class="navbar-item"
+                action="{{ route('logout') }}"
+                method="POST"
+            >
                 @csrf
 
                 <button class="button is-small is-warning" type="submit">
