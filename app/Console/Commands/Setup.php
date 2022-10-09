@@ -120,8 +120,6 @@ class Setup extends Command
     {
         $this->info("App setup...");
 
-        Artisan::call('key:generate', [], $this->getOutput());
-
         $this->setEnv([
             'APP_URL' => $this->ask("What will be the URL of your site (include http(s))?", env('APP_URL')),
             'APP_TIMEZONE' => $this->ask("Please enter your timezone (choose from: https://www.php.net/manual/en/timezones.php)", env('APP_TIMEZONE')),
