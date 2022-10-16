@@ -13,7 +13,11 @@ use Illuminate\Support\Str;
 
 class Taxonomy extends Model
 {
-    use HasFactory, SoftDeletes, Metable, Cancellable, MenuItemable;
+    use HasFactory,
+        SoftDeletes,
+        Metable,
+        Cancellable,
+        MenuItemable;
 
     const ICON = 'fa-tags';
 
@@ -57,22 +61,22 @@ class Taxonomy extends Model
      * ==================================================
      */
 
-    public static function scopeByType($query, $taxonomyType)
+    public function scopeByType($query, $taxonomyType)
     {
         return $query->whereIn('type_id', prepareValueForScope($taxonomyType, TaxonomyType::class));
     }
 
-    public static function scopeTopLevel($query)
+    public function scopeTopLevel($query)
     {
         return $query->whereNull('parent_id');
     }
 
-    public static function scopeByLocale($query, $locale)
+    public function scopeByLocale($query, $locale)
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
-    public static function scopeFilter($query, $filters)
+    public function scopeFilter($query, $filters)
     {
         if (isset($filters['locale_id'])) {
             $query->byLocale($filters['locale_id']);
@@ -81,7 +85,7 @@ class Taxonomy extends Model
         return $query;
     }
 
-    public static function scopeSearch($query, $term)
+    public function scopeSearch($query, $term)
     {
         return $query
             ->where('title', 'LIKE', "%{$term}%")

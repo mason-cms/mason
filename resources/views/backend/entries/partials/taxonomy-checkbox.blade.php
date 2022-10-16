@@ -10,7 +10,7 @@
         name="entry[taxonomies][]"
         value="{{ $taxonomy->id }}"
         {{ $entry->taxonomies->contains($taxonomy) ? 'checked' : '' }}
-    >
+    />
 
     {{ $taxonomy }}
 </label><br />

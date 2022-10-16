@@ -1,4 +1,4 @@
-@extends('layouts.backend')
+@extends('backend.layout')
 
 @section('content')
     <section class="section">
@@ -10,13 +10,12 @@
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
-                        <div>
-                            <h1 class="title is-1">
-                                <a href="{{ route('backend.menus.index') }}">
-                                    {{ __('menus.title') }}
-                                </a>
-                            </h1>
-                        </div>
+                        <h1 class="title is-1">
+                            <a href="{{ route('backend.menus.index') }}">
+                                @icon(\App\Models\Menu::ICON)
+                                <span>@lang('menus.title')</span>
+                            </a>
+                        </h1>
                     </div>
                 </div>
 
@@ -25,9 +24,13 @@
                         <div class="field">
                             <div class="control">
                                 <div class="select">
-                                    <select name="location" autocomplete="off">
-                                        <option value="">{{ __('menus.attributes.location') }}</option>
-                                        @foreach($menuLocations as $menuLocation)
+                                    <select
+                                        name="location"
+                                        autocomplete="off"
+                                    >
+                                        <option value="">@lang('menus.attributes.location')</option>
+
+                                        @foreach ($menuLocations as $menuLocation)
                                             <option
                                                 value="{{ $menuLocation->name }}"
                                                 {{ isset($request->location) && $menuLocation->name === $request->location ? 'selected' : '' }}
@@ -43,9 +46,13 @@
                         <div class="field">
                             <div class="control">
                                 <div class="select">
-                                    <select name="locale_id" autocomplete="off">
-                                        <option value="">{{ __('menus.attributes.locale') }}</option>
-                                        @foreach($locales as $locale)
+                                    <select
+                                        name="locale_id"
+                                        autocomplete="off"
+                                    >
+                                        <option value="">@lang('menus.attributes.locale')</option>
+
+                                        @foreach ($locales as $locale)
                                             <option
                                                 value="{{ $locale->id }}"
                                                 {{ isset($request->locale_id) && $locale->id == $request->locale_id ? 'selected' : '' }}
@@ -66,7 +73,7 @@
             @if ($menu->root_items->count() > 0)
                 <fieldset class="menu-items">
                     <ul>
-                        @foreach($menu->root_items as $item)
+                        @foreach ($menu->root_items as $item)
                             <li>
                                 @include('backend.menus.partials.item')
                             </li>
@@ -78,8 +85,8 @@
                     class="button is-primary"
                     href="{{ route('backend.menus.items.create', [$menu]) }}"
                 >
-                    <span class="icon"><i class="fa-light fa-plus"></i></span>
-                    <span>{{ __('menus.items.actions.create.label') }}</span>
+                    @icon('fa-plus')
+                    <span>@lang('menus.items.actions.create.label')</span>
                 </a>
             @else
                 <div class="section has-text-centered">
@@ -87,8 +94,8 @@
                         class="button is-primary"
                         href="{{ route('backend.menus.items.create', [$menu]) }}"
                     >
-                        <span class="icon"><i class="fa-light fa-plus"></i></span>
-                        <span>{{ __('menus.items.actions.create.label') }}</span>
+                        @icon('fa-plus')
+                        <span>@lang('menus.items.actions.create.label')</span>
                     </a>
                 </div>
             @endif

@@ -1,12 +1,16 @@
 @if ($paginator->hasPages())
-    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+    <nav
+        class="pagination is-centered"
+        role="navigation"
+        aria-label="pagination"
+    >
         <a
             class="pagination-previous {{ $paginator->onFirstPage() ? 'is-disabled' : '' }}"
             href="{{ !$paginator->onFirstPage() ? $paginator->previousPageUrl() : '#' }}"
             rel="prev"
             aria-label="@lang('pagination.previous')"
         >
-            <span class="icon"><i class="fa-light fa-angle-left"></i></span>
+            @icon('fa-angle-left')
         </a>
 
         <a
@@ -15,7 +19,7 @@
             rel="next"
             aria-label="@lang('pagination.next')"
         >
-            <span class="icon"><i class="fa-light fa-angle-right"></i></span>
+            @icon('fa-angle-right')
         </a>
 
         <ul class="pagination-list">

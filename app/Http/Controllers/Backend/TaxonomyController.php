@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class TaxonomyController extends Controller
 {
     /**
-     * Display taxonomies.
+     * List Taxonomies
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\TaxonomyType  $taxonomyType
@@ -44,37 +44,38 @@ class TaxonomyController extends Controller
     }
 
     /**
-     * Show the form for creating a new taxonomy.
+     * Create Taxonomy
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\TaxonomyType  $taxonomyType
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
      */
     public function create(Request $request, TaxonomyType $taxonomyType)
     {
         $taxonomy = new Taxonomy;
         $taxonomy->type()->associate($taxonomyType);
         $taxonomy->locale()->associate(Locale::default());
-        $taxonomy->save();
+        $taxonomy->saveOrFail();
 
         return redirect()->route('backend.taxonomies.edit', [$taxonomyType, $taxonomy]);
     }
 
     /**
-     * Display the specified taxonomy.
+     * Show Taxonomy
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TaxonomyType  $taxonomyType
-     * @param  \App\Models\Taxonomy  $taxonomy
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param TaxonomyType $taxonomyType
+     * @param Taxonomy $taxonomy
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function show(Request $request, TaxonomyType $taxonomyType, Taxonomy $taxonomy)
     {
-        //
+        return redirect()->route('backend.taxonomies.edit', [$taxonomyType, $taxonomy]);
     }
 
     /**
-     * Show the form for editing the specified taxonomy.
+     * Edit Taxonomy
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\TaxonomyType  $taxonomyType
@@ -87,18 +88,19 @@ class TaxonomyController extends Controller
     }
 
     /**
-     * Update the specified taxonomy in storage.
+     * Update Taxonomy
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\TaxonomyType  $taxonomyType
      * @param  \App\Models\Taxonomy  $taxonomy
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
      */
     public function update(Request $request, TaxonomyType $taxonomyType, Taxonomy $taxonomy)
     {
         $requestInput = $request->all();
 
-        $taxonomy->update($requestInput['taxonomy'] ?? []);
+        $taxonomy->updateOrFail($requestInput['taxonomy'] ?? []);
 
         if ($request->has('publish')) {
             $taxonomy->publish();
@@ -108,16 +110,17 @@ class TaxonomyController extends Controller
     }
 
     /**
-     * Remove the specified taxonomy from storage.
+     * Destroy Taxonomy
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TaxonomyType  $taxonomyType
-     * @param  \App\Models\Taxonomy  $taxonomy
+     * @param Request $request
+     * @param TaxonomyType $taxonomyType
+     * @param Taxonomy $taxonomy
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
      */
     public function destroy(Request $request, TaxonomyType $taxonomyType, Taxonomy $taxonomy)
     {
-        $taxonomy->delete();
+        $taxonomy->deleteOrFail();
 
         return redirect()->route('backend.taxonomies.index', [$taxonomyType]);
     }

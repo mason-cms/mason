@@ -3,6 +3,7 @@
     <head>
         @include('partials.head')
     </head>
+
     <body class="auth">
         <header id="header" class="section has-text-centered">
             <h1 id="brand">

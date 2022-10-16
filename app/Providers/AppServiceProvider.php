@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\HttpFoundation\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Blade::directive('i', function ($expression) {
+            return "<?= i($expression); ?>";
+        });
+
+        Blade::directive('icon', function ($expression) {
+            return "<?= icon($expression); ?>";
+        });
     }
 }

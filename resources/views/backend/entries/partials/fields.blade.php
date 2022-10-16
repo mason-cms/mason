@@ -11,14 +11,14 @@
                             type="text"
                             value="{!! $entry->title !!}"
                             maxlength="255"
-                        >
+                        />
                     </div>
                 </div>
 
                 <div class="field has-addons">
                     <div class="control">
                         <button class="button is-static is-small">
-                            {{ __('entries.attributes.name') }}
+                            @lang('entries.attributes.name')
                         </button>
                     </div>
 
@@ -35,8 +35,12 @@
                     </div>
 
                     <div class="control">
-                        <a class="button is-small" href="{{ $entry->url }}" target="_blank">
-                            <span class="icon"><i class="fa-light fa-arrow-up-right-from-square"></i></span>
+                        <a
+                            class="button is-small"
+                            href="{{ $entry->url }}"
+                            target="_blank"
+                        >
+                            @icon('fa-arrow-up-right-from-square')
                         </a>
                     </div>
                 </div>
@@ -59,8 +63,11 @@
         <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
-                    <label class="label" for="entry-published-at">
-                        {{ __('entries.attributes.published_at') }}
+                    <label
+                        class="label"
+                        for="entry-published-at"
+                    >
+                        @lang('entries.attributes.published_at')
                     </label>
 
                     <div class="control">
@@ -70,7 +77,7 @@
                             name="entry[published_at]"
                             type="datetime-local"
                             value="{{ htmlInputDatetime($entry->published_at) }}"
-                        >
+                        />
                     </div>
                 </div>
             </div>
@@ -79,8 +86,11 @@
         <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
-                    <label class="label" for="entry-locale">
-                        {{ __('entries.attributes.locale') }}
+                    <label
+                        class="label"
+                        for="entry-locale"
+                    >
+                        @lang('entries.attributes.locale')
                     </label>
 
                     <div class="control">
@@ -90,7 +100,7 @@
                                 name="entry[locale_id]"
                                 autocomplete="off"
                             >
-                                @foreach(\App\Models\Locale::all() as $localeOption)
+                                @foreach (\App\Models\Locale::all() as $localeOption)
                                     <option
                                         value="{{ $localeOption->id }}"
                                         {{ isset($entry->locale) && $entry->locale->is($localeOption) ? 'selected' : '' }}
@@ -106,8 +116,11 @@
         <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
-                    <label class="label" for="entry-author">
-                        {{ __('entries.attributes.author') }}
+                    <label
+                        class="label"
+                        for="entry-author"
+                    >
+                        @lang('entries.attributes.author')
                     </label>
 
                     <div class="control">
@@ -117,7 +130,7 @@
                                 name="entry[author_id]"
                                 autocomplete="off"
                             >
-                                @foreach(\App\Models\User::all() as $authorOption)
+                                @foreach (\App\Models\User::all() as $authorOption)
                                     <option
                                         value="{{ $authorOption->id }}"
                                         {{ isset($entry->author) && $entry->author->is($authorOption) ? 'selected' : '' }}
@@ -133,14 +146,17 @@
         <fieldset class="card block">
             <div class="card-content">
                 <div class="field">
-                    <label class="label" for="entry-cover-file">
-                        {{ __('entries.attributes.cover') }}
+                    <label
+                        class="label"
+                        for="entry-cover-file"
+                    >
+                        @lang('entries.attributes.cover')
                     </label>
 
                     <div class="control">
                         @isset($entry->cover)
                             <figure class="image block">
-                                <img src="{{ $entry->cover->url }}">
+                                <img src="{{ $entry->cover->url }}" />
                             </figure>
                         @endisset
 
@@ -151,13 +167,13 @@
                                     class="file-input"
                                     type="file"
                                     name="entry[cover_file]"
-                                >
+                                />
 
                                 <span class="file-cta">
-                                    <span class="file-icon"><i class="fa-light fa-upload"></i></span>
+                                    <span class="file-icon">@i('fa-upload')</span>
 
                                     <span class="file-label">
-                                        {{ __('general.file.cta.label') }}
+                                        @lang('general.file.cta.label')
                                     </span>
                                 </span>
                             </label>
@@ -173,9 +189,9 @@
                     name="entry[taxonomies]"
                     type="hidden"
                     value=""
-                >
+                />
 
-                @foreach(\App\Models\TaxonomyType::all() as $taxonomyType)
+                @foreach (\App\Models\TaxonomyType::all() as $taxonomyType)
                     @if ($taxonomyType->taxonomies()->count() > 0)
                         <div class="field">
                             <label class="label">

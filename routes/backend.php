@@ -9,6 +9,8 @@ use App\Http\Controllers\Backend\TaxonomyController;
 use App\Http\Controllers\Backend\MenuController;
 use App\Http\Controllers\Backend\MenuItemController;
 use App\Http\Controllers\Backend\SettingsController;
+use App\Http\Controllers\Backend\EntryTypeController;
+use App\Http\Controllers\Backend\TaxonomyTypeController;
 
 Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(function () {
     Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
@@ -57,5 +59,7 @@ Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(functio
         Route::get('/', [ConfigurationController::class, 'general'])->name('general');
 
         Route::resource('setting', SettingsController::class);
+        Route::resource('entry-type', EntryTypeController::class);
+        Route::resource('taxonomy-type', TaxonomyTypeController::class);
     });
 });

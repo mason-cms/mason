@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('auth.layout')
 
 @section('content')
     <div
@@ -7,12 +7,12 @@
     >
         <div class="card-content">
             <p>
-                {{ __('auth.verify_email.intro') }}
+                @lang('auth.verify_email.intro')
             </p>
 
             @if (session('status') == 'verification-link-sent')
                 <p>
-                    {{ __('auth.verify_email.verification_link_sent') }}
+                    @lang('auth.verify_email.verification_link_sent')
                 </p>
             @endif
 
@@ -24,7 +24,7 @@
                 @csrf
 
                 <button>
-                    {{ __('auth.verify_email.resend_verification_email') }}
+                    @lang('auth.verify_email.resend_verification_email')
                 </button>
             </form>
 
@@ -35,8 +35,11 @@
             >
                 @csrf
 
-                <button class="button" type="submit">
-                    {{ __('auth.log_out') }}
+                <button
+                    class="button"
+                    type="submit"
+                >
+                    @lang('auth.log_out')
                 </button>
             </form>
         </div>

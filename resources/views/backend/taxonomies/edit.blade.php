@@ -1,4 +1,4 @@
-@extends('layouts.backend')
+@extends('backend.layout')
 
 @section('content')
     <form
@@ -15,7 +15,7 @@
                 <div class="level-item">
                     <h1 class="title is-1">
                         <a href="{{ route('backend.taxonomies.index', [$taxonomy->type]) }}">
-                            <span class="icon"><i class="fa-light fa-arrow-left-long"></i></span>
+                            @icon('fa-arrow-left-long')
                             <span>{{ $taxonomy->type }}</span>
                         </a>
                     </h1>
@@ -24,17 +24,23 @@
 
             <div class="level-right">
                 <div class="level-item">
-                    <button class="button is-dark" type="submit">
-                        <span class="icon"><i class="fa-light fa-floppy-disk"></i></span>
-                        <span>{{ __('taxonomies.actions.save.label') }}</span>
+                    <button
+                        class="button is-dark"
+                        type="submit"
+                    >
+                        @icon('fa-floppy-disk')
+                        <span>@lang('taxonomies.actions.save.label')</span>
                     </button>
                 </div>
 
                 @if ($taxonomy->is_cancellable)
                     <div class="level-item">
-                        <a class="button" href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}">
-                            <span class="icon"><i class="fa-light fa-ban"></i></span>
-                            <span>{{ __('taxonomies.actions.cancel.label') }}</span>
+                        <a
+                            class="button"
+                            href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
+                        >
+                            @icon('fa-ban')
+                            <span>@lang('taxonomies.actions.cancel.label')</span>
                         </a>
                     </div>
                 @endif

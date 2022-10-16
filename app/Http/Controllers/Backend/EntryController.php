@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class EntryController extends Controller
 {
     /**
-     * Display entries.
+     * List Entries
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -44,7 +44,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Show the form for creating a new entry.
+     * Create Entry
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -56,13 +56,13 @@ class EntryController extends Controller
         $entry->type()->associate($entryType);
         $entry->locale()->associate(Locale::default());
         $entry->author()->associate($request->user());
-        $entry->save();
+        $entry->saveOrFail();
 
         return redirect()->route('backend.entries.edit', [$entryType, $entry]);
     }
 
     /**
-     * Display the specified entry.
+     * Show Entry
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -75,7 +75,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified entry.
+     * Edit Entry
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -88,7 +88,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Update the specified entry in storage.
+     * Update Entry
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -99,7 +99,7 @@ class EntryController extends Controller
     {
         $requestInput = $request->all();
 
-        $entry->update($requestInput['entry'] ?? []);
+        $entry->updateOrFail($requestInput['entry'] ?? []);
 
         if ($request->has('publish')) {
             $entry->publish();
@@ -109,7 +109,7 @@ class EntryController extends Controller
     }
 
     /**
-     * Remove the specified entry from storage.
+     * Delete Entry
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\EntryType  $entryType
@@ -118,8 +118,8 @@ class EntryController extends Controller
      */
     public function destroy(Request $request, EntryType $entryType, Entry $entry)
     {
-        $entry->delete();
+        $entry->deleteOrFail();
 
-        return redirect()->back();
+        return redirect()->route('backend.entry.index', [$entryType]);
     }
 }

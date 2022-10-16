@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Menu extends Model
 {
-    use HasFactory, SoftDeletes, Metable;
+    use HasFactory,
+        SoftDeletes,
+        Metable;
 
-    const ICON = 'fa-list-dropdown';
+    const ICON = 'fa-bars';
 
     protected $fillable = [
         'location',

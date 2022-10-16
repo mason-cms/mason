@@ -12,7 +12,10 @@ use Illuminate\Support\Str;
 
 class Entry extends Model
 {
-    use HasFactory, SoftDeletes, Metable, MenuItemable;
+    use HasFactory,
+        SoftDeletes,
+        Metable,
+        MenuItemable;
 
     const ICON = 'fa-file';
 
@@ -68,29 +71,29 @@ class Entry extends Model
      * Scopes
      */
 
-    public static function scopeByName($query, $name)
+    public function scopeByName($query, $name)
     {
         return is_iterable($name)
             ? $query->whereIn('name', $name)
             : $query->where('name', $name);
     }
 
-    public static function scopeByType($query, $entryType)
+    public function scopeByType($query, $entryType)
     {
         return $query->whereIn('type_id', prepareValueForScope($entryType, EntryType::class));
     }
 
-    public static function scopeByLocale($query, $locale)
+    public function scopeByLocale($query, $locale)
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
-    public static function scopeByAuthor($query, $author)
+    public function scopeByAuthor($query, $author)
     {
         return $query->whereIn('author_id', prepareValueForScope($author, User::class));
     }
 
-    public static function scopeByStatus($query, string $status)
+    public function scopeByStatus($query, string $status)
     {
         switch ($status) {
             case static::STATUS_DRAFT:
@@ -104,7 +107,7 @@ class Entry extends Model
         }
     }
 
-    public static function scopeFilter($query, $filters)
+    public function scopeFilter($query, $filters)
     {
         if (isset($filters['status'])) {
             $query->byStatus($filters['status']);
@@ -121,7 +124,7 @@ class Entry extends Model
         return $query;
     }
 
-    public static function scopeSearch($query, $term)
+    public function scopeSearch($query, $term)
     {
         return $query
             ->where('title', 'LIKE', "%{$term}%")

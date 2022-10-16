@@ -15,7 +15,7 @@ class FrontEndController extends Controller
     }
 
     /**
-     * Show the home page.
+     * Show the home page
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $localeName
@@ -44,7 +44,7 @@ class FrontEndController extends Controller
     }
 
     /**
-     * Show a specified entry.
+     * Show a specified entry
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  $params

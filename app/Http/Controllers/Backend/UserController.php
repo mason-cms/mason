@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
-     * Display users.
+     * List Users
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -43,7 +43,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new user.
+     * Create user
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -56,7 +56,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified yser.
+     * Show User
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
@@ -68,7 +68,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified user.
+     * Edit User
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
@@ -80,31 +80,33 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified user in storage.
+     * Update User
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
      */
     public function update(Request $request, User $user)
     {
         $requestInput = $request->all();
 
-        $user->update($requestInput['user'] ?? []);
+        $user->updateOrFail($requestInput['user'] ?? []);
 
         return redirect()->back();
     }
 
     /**
-     * Remove the specified user from storage.
+     * Destroy User
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
      */
     public function destroy(Request $request, User $user)
     {
-        $user->delete();
+        $user->deleteOrFail();
 
         return redirect()->route('backend.users.index');
     }

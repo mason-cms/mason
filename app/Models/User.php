@@ -12,9 +12,14 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, Cancellable, Metable;
+    use HasApiTokens,
+        HasFactory,
+        Notifiable,
+        SoftDeletes,
+        Cancellable,
+        Metable;
 
-    const ICON = 'fa-users';
+    const ICON = 'fa-user-group';
 
     /**
      * The attributes that are mass assignable.

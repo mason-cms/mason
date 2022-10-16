@@ -12,7 +12,7 @@
     <div class="modal-card">
         <header class="modal-card-head">
             <h3 class="title is-3 modal-card-title">
-                {{ __('menus.items.actions.edit.label') }}
+                @lang('menus.items.actions.edit.label')
             </h3>
         </header>
 
@@ -21,12 +21,19 @@
         </section>
 
         <footer class="modal-card-foot">
-            <button class="button is-dark" type="submit">
-                <span class="icon"><i class="fa-light fa-floppy-disk"></i></span>
-                <span>{{ __('menus.items.actions.save.label') }}</span>
+            <button
+                class="button is-dark"
+                type="submit"
+            >
+                @icon('fa-floppy-disk')
+                <span>@lang('menus.items.actions.save.label')</span>
             </button>
         </footer>
     </div>
 
-    <button class="modal-close is-large" aria-label="close" rel="close-modal"></button>
+    <button
+        class="modal-close is-large"
+        aria-label="close"
+        rel="close-modal"
+    ></button>
 </form>

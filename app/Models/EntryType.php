@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EntryType extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory,
+        SoftDeletes;
 
     protected $fillable = [
+        'name',
         'singular_title',
         'plural_title',
         'icon_class',

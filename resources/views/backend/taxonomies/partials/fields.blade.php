@@ -4,7 +4,7 @@
             <div class="card-content">
                 <div class="field">
                     <label class="label">
-                        {{ __('taxonomies.attributes.title') }}
+                        @lang('taxonomies.attributes.title')
                     </label>
 
                     <div class="control">
@@ -15,13 +15,13 @@
                             type="text"
                             value="{!! $taxonomy->title !!}"
                             maxlength="255"
-                        >
+                        />
                     </div>
                 </div>
 
                 <div class="field">
                     <label class="label">
-                        {{ __('taxonomies.attributes.name') }}
+                        @lang('taxonomies.attributes.name')
                     </label>
 
                     <div class="control">
@@ -33,13 +33,13 @@
                             value="{!! $taxonomy->name !!}"
                             maxlength="255"
                             data-slug-from="#taxonomy-title"
-                        >
+                        />
                     </div>
                 </div>
 
                 <div class="field">
                     <label class="label">
-                        {{ __('taxonomies.attributes.description') }}
+                        @lang('taxonomies.attributes.description')
                     </label>
 
                     <div class="control">
@@ -60,7 +60,7 @@
             <div class="card-content">
                 <div class="field">
                     <label class="label">
-                        {{ __('taxonomies.attributes.locale') }}
+                        @lang('taxonomies.attributes.locale')
                     </label>
 
                     <div class="control">
@@ -70,7 +70,7 @@
                                 name="taxonomy[locale_id]"
                                 autocomplete="off"
                             >
-                                @foreach(\App\Models\Locale::all() as $localeOption)
+                                @foreach (\App\Models\Locale::all() as $localeOption)
                                     <option
                                         value="{{ $localeOption->id }}"
                                         {{ isset($taxonomy->locale) && $taxonomy->locale->is($localeOption) ? 'selected' : '' }}
@@ -87,7 +87,7 @@
             <div class="card-content">
                 <div class="field">
                     <label class="label">
-                        {{ __('taxonomies.attributes.parent') }}
+                        @lang('taxonomies.attributes.parent')
                     </label>
 
                     <div class="control">
@@ -99,7 +99,7 @@
                             >
                                 <option></option>
 
-                                @foreach($taxonomy->getParentOptions() as $taxonomyOption)
+                                @foreach ($taxonomy->getParentOptions() as $taxonomyOption)
                                     <option
                                         value="{{ $taxonomyOption->id }}"
                                         {{ isset($taxonomy->parent) && $taxonomy->parent->is($taxonomyOption) ? 'selected' : '' }}
@@ -116,13 +116,13 @@
             <div class="card-content">
                 <div class="field">
                     <label class="label">
-                        {{ __('taxonomies.attributes.cover') }}
+                        @lang('taxonomies.attributes.cover')
                     </label>
 
                     <div class="control">
                         @isset($taxonomy->cover)
                             <figure class="image block">
-                                <img src="{{ $taxonomy->cover->url }}">
+                                <img src="{{ $taxonomy->cover->url }}" />
                             </figure>
                         @endisset
 
@@ -133,13 +133,13 @@
                                     class="file-input"
                                     type="file"
                                     name="taxonomy[cover_file]"
-                                >
+                                />
 
                                 <span class="file-cta">
-                                    <span class="file-icon"><i class="fa-light fa-upload"></i></span>
+                                    <span class="file-icon">@i('fa-upload')</span>
 
                                     <span class="file-label">
-                                        {{ __('general.file.cta.label') }}
+                                        @lang('general.file.cta.label')
                                     </span>
                                 </span>
                             </label>

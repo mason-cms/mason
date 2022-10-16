@@ -26,7 +26,7 @@
                     class="button is-small"
                     href="{{ route('backend.taxonomies.edit', [$taxonomy->type, $taxonomy]) }}"
                 >
-                    <span class="icon"><i class="fa-light fa-pencil"></i></span>
+                    @icon('fa-pencil')
                 </a>
             </div>
 
@@ -34,15 +34,15 @@
                 <a
                     class="button is-small"
                     href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
-                    data-confirm="{{ __('general.confirm') }}"
+                    data-confirm="@lang('general.confirm')"
                 >
-                    <span class="icon has-text-danger"><i class="fa-light fa-trash-can"></i></span>
+                    @icon('fa-trash-can', 'has-text-danger')
                 </a>
             </div>
         </div>
     </td>
 </tr>
 
-@foreach($taxonomy->children as $taxonomy)
+@foreach ($taxonomy->children as $taxonomy)
     @include('backend.taxonomies.partials.row', ['depth' => $depth + 1])
 @endforeach

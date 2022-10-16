@@ -13,7 +13,9 @@ use Illuminate\Support\Str;
 
 class Media extends Model
 {
-    use HasFactory, SoftDeletes, Metable;
+    use HasFactory,
+        SoftDeletes,
+        Metable;
 
     const STORAGE_DIR = 'public/media';
     const DEFAULT_VISIBILITY = 'public';

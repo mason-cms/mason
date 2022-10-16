@@ -1,7 +1,13 @@
-<button class="button lock" title="{{ __('general.lock') }}">
-    <span class="icon"><i class="fa-light fa-lock-open"></i></span>
+<button
+    class="button lock"
+    title="@lang('general.lock')"
+>
+    @icon('fa-lock-open')
 </button>
 
-<button class="button unlock" title="{{ __('general.unlock') }}">
-    <span class="icon"><i class="fa-light fa-lock"></i></span>
+<button
+    class="button unlock"
+    title="@lang('general.unlock')"
+>
+    @icon('fa-lock')
 </button>

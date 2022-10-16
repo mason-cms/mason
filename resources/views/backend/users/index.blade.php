@@ -1,4 +1,4 @@
-@extends('layouts.backend')
+@extends('backend.layout')
 
 @section('content')
     <form
@@ -12,7 +12,8 @@
                     <div>
                         <h1 class="title is-1">
                             <a href="{{ route('backend.users.index') }}">
-                                {{ __('users.title') }}
+                                @icon(\App\Models\User::ICON)
+                                <span>@lang('users.title')</span>
                             </a>
                         </h1>
 
@@ -46,13 +47,18 @@
 
         @if ($users->count() > 0)
             <div class="columns is-multiline">
-                @foreach($users as $user)
+                @foreach ($users as $user)
                     <div class="column is-4-tablet is-3-desktop">
-                        <div class="user mb-4 has-text-centered">
+                        <div class="user user-{{ $user->getKey() }} mb-4 has-text-centered">
                             @isset($user->gravatar_url)
-                                <figure class="image is-128x128 is-centered block">
+                                <figure class="user-gravatar image is-128x128 is-centered block">
                                     <a href="{{ route('backend.users.edit', [$user]) }}">
-                                        <img class="is-rounded" src="{{ $user->gravatar_url }}?s=128">
+                                        <img
+                                            class="is-rounded"
+                                            src="{{ $user->gravatar_url }}?s=128"
+                                            width="128"
+                                            height="128"
+                                        />
                                     </a>
                                 </figure>
                             @endisset
@@ -71,7 +77,7 @@
                                         class="button is-small"
                                         href="{{ route('backend.users.edit', [$user]) }}"
                                     >
-                                        <span class="icon"><i class="fa-light fa-pencil"></i></span>
+                                        @icon('fa-pencil')
                                     </a>
                                 </div>
 
@@ -79,9 +85,9 @@
                                     <a
                                         class="button is-small"
                                         href="{{ route('backend.users.destroy', [$user]) }}"
-                                        data-confirm="{{ __('general.confirm') }}"
+                                        data-confirm="@lang('general.confirm')"
                                     >
-                                        <span class="icon has-text-danger"><i class="fa-light fa-trash-can"></i></span>
+                                        @icon('fa-trash-can', 'has-text-danger')
                                     </a>
                                 </div>
                             </div>
@@ -94,7 +100,7 @@
         @else
             <div class="section is-medium has-text-centered">
                 <p class="block no-records">
-                    {{ __('users.no_records') }}
+                    @lang('users.noRecords')
                 </p>
 
                 <p class="block">

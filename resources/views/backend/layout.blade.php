@@ -3,6 +3,7 @@
     <head>
         @include('partials.head')
     </head>
+
     <body class="backend">
         @include('backend.partials.navbar')
 

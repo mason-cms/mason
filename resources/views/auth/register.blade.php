@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('auth.layout')
 
 @section('content')
     <form
@@ -16,7 +16,7 @@
                         class="input"
                         type="text"
                         name="name"
-                        placeholder="{{ __('users.attributes.name') }}"
+                        placeholder="@lang('users.attributes.name')"
                         value="{{ old('name') }}"
                         required
                         autofocus
@@ -30,7 +30,7 @@
                         class="input"
                         type="email"
                         name="email"
-                        placeholder="{{ __('users.attributes.email') }}"
+                        placeholder="@lang('users.attributes.email')"
                         value="{{ old('email') }}"
                         required
                     />
@@ -43,7 +43,7 @@
                         class="input"
                         type="password"
                         name="password"
-                        placeholder="{{ __('users.attributes.password') }}"
+                        placeholder="@lang('users.attributes.password')"
                         required
                         autocomplete="new-password"
                     />
@@ -56,7 +56,7 @@
                         class="input"
                         type="password"
                         name="password_confirmation"
-                        placeholder="{{ __('users.attributes.password_confirmation') }}"
+                        placeholder="@lang('users.attributes.password_confirmation')"
                         required
                     />
                 </div>
@@ -65,8 +65,11 @@
             <div class="level is-mobile">
                 <div class="level-left">
                     <div class="level-item">
-                        <button class="button is-primary" type="submit">
-                            {{ __('auth.register') }}
+                        <button
+                            class="button is-primary"
+                            type="submit"
+                        >
+                            @lang('auth.register')
                         </button>
                     </div>
                 </div>
@@ -74,7 +77,7 @@
                 <div class="level-right">
                     <div class="level-item">
                         <a href="{{ route('login') }}">
-                            {{ __('auth.already_registered') }}
+                            @lang('auth.already_registered')
                         </a>
                     </div>
                 </div>

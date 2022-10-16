@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class MenuItemController extends Controller
 {
     /**
-     * Show the form for creating a new menu item.
+     * Create Menu Item
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Menu  $menu
@@ -22,13 +22,13 @@ class MenuItemController extends Controller
 
         $item = new MenuItem($requestInput['item'] ?? []);
         $item->menu()->associate($menu);
-        $item->save();
+        $item->saveOrFail();
 
         return redirect()->back();
     }
 
     /**
-     * Display the specified menu item.
+     * Show Menu Item
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Menu  $menu
@@ -41,7 +41,7 @@ class MenuItemController extends Controller
     }
 
     /**
-     * Show the form for editing the specified menu item.
+     * Edit Menu Item
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Menu  $menu
@@ -54,7 +54,7 @@ class MenuItemController extends Controller
     }
 
     /**
-     * Update the specified menu in storage.
+     * Update Menu Item
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Menu  $menu
@@ -65,13 +65,13 @@ class MenuItemController extends Controller
     {
         $requestInput = $request->all();
 
-        $item->update($requestInput['item'] ?? []);
+        $item->updateOrFail($requestInput['item'] ?? []);
 
         return redirect()->back();
     }
 
     /**
-     * Remove the specified menu item from storage.
+     * Destroy Menu Item
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Menu  $menu
@@ -80,7 +80,7 @@ class MenuItemController extends Controller
      */
     public function destroy(Request $request, Menu $menu, MenuItem $item)
     {
-        $item->delete();
+        $item->deleteOrFail();
 
         return redirect()->route('backend.menus.edit', [$menu]);
     }

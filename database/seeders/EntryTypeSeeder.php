@@ -18,8 +18,9 @@ class EntryTypeSeeder extends Seeder
             'page' => [
                 'singular_title' => "Page",
                 'plural_title' => "Pages",
-                'icon_class' => "fa-memo",
+                'icon_class' => "fa-file-lines",
             ],
+
             'post' => [
                 'singular_title' => "Post",
                 'plural_title' => "Posts",

@@ -1,4 +1,4 @@
-@extends('layouts.backend')
+@extends('backend.layout')
 
 @section('content')
     <form
@@ -12,7 +12,11 @@
                     <div>
                         <h1 class="title is-1">
                             <a href="{{ route('backend.taxonomies.index', [$taxonomyType]) }}">
-                                {{ $taxonomyType }}
+                                @isset($taxonomyType)
+                                    @icon($taxonomyType->icon_class)
+                                @endisset
+
+                                <span>{{ $taxonomyType }}</span>
                             </a>
                         </h1>
 
@@ -52,19 +56,19 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        {{ __('taxonomies.attributes.title') }}
+                                        @lang('taxonomies.attributes.title')
                                     </th>
 
                                     <th>
-                                        {{ __('taxonomies.attributes.name') }}
+                                        @lang('taxonomies.attributes.name')
                                     </th>
 
                                     <th>
-                                        {{ __('taxonomies.attributes.locale') }}
+                                        @lang('taxonomies.attributes.locale')
                                     </th>
 
                                     <th>
-                                        {{ __('entries.plural') }}
+                                        @lang('entries.plural')
                                     </th>
 
                                     <th class="is-narrow"></th>
@@ -72,7 +76,7 @@
                             </thead>
 
                             <tbody>
-                                @foreach($taxonomies as $taxonomy)
+                                @foreach ($taxonomies as $taxonomy)
                                     @include('backend.taxonomies.partials.row', ['depth' => 0])
                                 @endforeach
                             </tbody>
@@ -85,7 +89,7 @@
         @else
             <div class="section is-medium has-text-centered">
                 <p class="block no-records">
-                    {{ __('taxonomies.no_records', ['taxonomyType' => strtolower($taxonomyType->plural_title)]) }}
+                    @lang('taxonomies.noRecords', ['taxonomyType' => strtolower($taxonomyType->plural_title)])
                 </p>
 
                 <p class="block">

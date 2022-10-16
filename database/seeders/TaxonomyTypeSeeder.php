@@ -18,12 +18,13 @@ class TaxonomyTypeSeeder extends Seeder
             'category' => [
                 'singular_title' => "Category",
                 'plural_title' => "Categories",
-                'icon_class' => "fa-cabinet-filing",
+                'icon_class' => "fa-folder-open",
             ],
+
             'tag' => [
                 'singular_title' => "Tag",
                 'plural_title' => "Tags",
-                'icon_class' => "fa-tags",
+                'icon_class' => "fa-tag",
             ],
         ];
 

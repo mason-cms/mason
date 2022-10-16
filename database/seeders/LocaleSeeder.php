@@ -19,6 +19,7 @@ class LocaleSeeder extends Seeder
                 'title' => "English (US)",
                 'is_default' => true,
             ],
+
             'fr-CA' => [
                 'title' => "Français (Canada)",
             ],

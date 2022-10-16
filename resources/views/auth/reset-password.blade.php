@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('auth.layout')
 
 @section('content')
     <form
@@ -21,7 +21,7 @@
                     <input
                         type="email"
                         name="email"
-                        placeholder="{{ __('users.attributes.email') }}"
+                        placeholder="@lang('users.attributes.email')"
                         value="{{ old('email', $request->email) }}"
                         required
                         autofocus
@@ -34,7 +34,7 @@
                     <input
                         type="password"
                         name="password"
-                        placeholder="{{ __('users.attributes.password') }}"
+                        placeholder="@lang('users.attributes.password')"
                         required
                     />
                 </div>
@@ -45,14 +45,17 @@
                     <input
                         type="password"
                         name="password_confirmation"
-                        placeholder="{{ __('users.attributes.password_confirmation') }}"
+                        placeholder="@lang('users.attributes.password_confirmation')"
                         required
                     />
                 </div>
             </div>
 
-            <button class="button is-primary" type="submit">
-                {{ __('auth.reset_password') }}
+            <button
+                class="button is-primary"
+                type="submit"
+            >
+                @lang('auth.reset_password')
             </button>
         </div>
     </form>

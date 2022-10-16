@@ -2,9 +2,15 @@
     $requestUri = request()->getUri();
 @endphp
 
-<nav class="navbar is-primary" role="navigation">
+<nav
+    class="navbar is-primary"
+    role="navigation"
+>
     <div class="navbar-brand">
-        <a class="navbar-item" href="{{ route('backend.dashboard') }}">
+        <a
+            class="navbar-item"
+            href="{{ route('backend.dashboard') }}"
+        >
             <strong>Mason</strong><span class="has-text-success">&times;</span>CMS
         </a>
 
@@ -21,30 +27,33 @@
         </a>
     </div>
 
-    <div id="primary-menu" class="navbar-menu">
+    <div
+        id="primary-menu"
+        class="navbar-menu"
+    >
         <div class="navbar-start">
             <a
                 href="{{ $routeUri = route('backend.dashboard') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
-                <span class="icon has-text-success"><i class="fa-light fa-gauge"></i></span>
-                <span>{{ __('dashboard.title') }}</span>
+                @icon(\App\Http\Controllers\Backend\DashboardController::ICON, 'has-text-success')
+                <span>@lang('dashboard.title')</span>
             </a>
 
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
-                    <span class="icon has-text-success"><i class="fa-light {{ \App\Models\Entry::ICON }}"></i></span>
-                    <span>{{ __('entries.title') }}</span>
+                    @icon(\App\Models\Entry::ICON, 'has-text-success')
+                    <span>@lang('entries.title')</span>
                 </a>
 
                 <div class="navbar-dropdown">
-                    @foreach(\App\Models\EntryType::all() as $entryType)
+                    @foreach (\App\Models\EntryType::all() as $entryType)
                         <a
                             href="{{ $routeUri = route('backend.entries.index', [$entryType]) }}"
                             class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
                         >
                             @isset($entryType->icon_class)
-                                <span class="icon"><i class="fa-light {{ $entryType->icon_class }}"></i></span>
+                                @icon($entryType->icon_class)
                             @endisset
 
                             <span>{{ $entryType }}</span>
@@ -55,18 +64,18 @@
 
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
-                    <span class="icon has-text-success"><i class="fa-light {{ \App\Models\Taxonomy::ICON }}"></i></span>
-                    <span>{{ __('taxonomies.title') }}</span>
+                    @icon(\App\Models\Taxonomy::ICON, 'has-text-success')
+                    <span>@lang('taxonomies.title')</span>
                 </a>
 
                 <div class="navbar-dropdown">
-                    @foreach(\App\Models\TaxonomyType::all() as $taxonomyType)
+                    @foreach (\App\Models\TaxonomyType::all() as $taxonomyType)
                         <a
                             href="{{ $routeUri = route('backend.taxonomies.index', [$taxonomyType]) }}"
                             class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
                         >
                             @isset($taxonomyType->icon_class)
-                                <span class="icon"><i class="fa-light {{ $taxonomyType->icon_class }}"></i></span>
+                                @icon($taxonomyType->icon_class)
                             @endisset
 
                             <span>{{ $taxonomyType }}</span>
@@ -79,24 +88,24 @@
                 href="{{ $routeUri = route('backend.menus.index') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
-                <span class="icon has-text-success"><i class="fa-light {{ \App\Models\Menu::ICON }}"></i></span>
-                <span>{{ __('menus.title') }}</span>
+                @icon(\App\Models\Menu::ICON, 'has-text-success')
+                <span>@lang('menus.title')</span>
             </a>
 
             <a
                 href="{{ $routeUri = route('backend.users.index') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
-                <span class="icon has-text-success"><i class="fa-light {{ \App\Models\User::ICON }}"></i></span>
-                <span>{{ __('users.title') }}</span>
+                @icon(\App\Models\User::ICON, 'has-text-success')
+                <span>@lang('users.title')</span>
             </a>
 
             <a
                 href="{{ $routeUri = route('backend.configuration.general') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
-                <span class="icon has-text-success"><i class="fa-light fa-screwdriver-wrench"></i></span>
-                <span>{{ __('configuration.title') }}</span>
+                @icon(\App\Http\Controllers\Backend\ConfigurationController::ICON, 'has-text-success')
+                <span>@lang('configuration.title')</span>
             </a>
         </div>
 
@@ -107,7 +116,7 @@
                 target="_blank"
             >
                 <span>{{ config('site.name') }}</span>
-                <span class="icon"><i class="fa-light fa-arrow-up-right-from-square"></i></span>
+                @icon('fa-arrow-up-right-from-square')
             </a>
 
             <form
@@ -117,9 +126,12 @@
             >
                 @csrf
 
-                <button class="button is-small is-warning" type="submit">
-                    <span>{{ __('auth.log_out') }}</span>
-                    <span class="icon"><i class="fa-light fa-right-from-bracket"></i></span>
+                <button
+                    class="button is-small is-warning"
+                    type="submit"
+                >
+                    <span>@lang('auth.log_out')</span>
+                    @icon('fa-right-from-bracket')
                 </button>
             </form>
         </div>

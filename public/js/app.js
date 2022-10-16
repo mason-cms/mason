@@ -2187,6 +2187,13 @@ $(document).on('change', 'form.autosave', function () {
       href = $this.attr('href'),
       $href = $(href);
   $href.toggleClass('is-hidden');
+}).on('click', '[data-method]', function (e) {
+  e.preventDefault();
+  var $this = $(this),
+      method = $this.data('method'),
+      href = $this.attr('href');
+  var $form = $('<form>').attr('action', href).attr('method', 'POST').append($('<input>').attr('type', 'hidden').attr('name', '_method').attr('value', method)).append($('<input>').attr('type', 'hidden').attr('name', '_token').attr('value', $('meta[name="csrf-token"]').attr('content'))).appendTo('body');
+  return $form.submit();
 });
 
 /***/ }),

@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MenuItem extends Model
 {
-    use HasFactory, SoftDeletes, Metable;
+    use HasFactory,
+        SoftDeletes,
+        Metable;
 
     protected $fillable = [
         'parent_id',

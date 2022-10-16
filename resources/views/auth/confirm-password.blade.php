@@ -13,6 +13,6 @@
     />
 
     <button>
-        {{ __('Confirm') }}
+        @lang('Confirm')
     </button>
 </form>

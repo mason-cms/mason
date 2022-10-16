@@ -1,4 +1,4 @@
-@extends('layouts.backend')
+@extends('backend.layout')
 
 @section('content')
     <form
@@ -12,7 +12,11 @@
                     <div>
                         <h1 class="title is-1">
                             <a href="{{ route('backend.entries.index', [$entryType]) }}">
-                                {{ $entryType }}
+                                @isset($entryType)
+                                    @icon($entryType->icon_class)
+                                @endisset
+
+                                <span>{{ $entryType }}</span>
                             </a>
                         </h1>
 
@@ -46,7 +50,7 @@
 
         @if ($entries->count() > 0)
             <div class="columns is-multiline same-height-cards">
-                @foreach($entries as $entry)
+                @foreach ($entries as $entry)
                     <div class="column is-4 is-3-desktop">
                         @include('backend.entries.partials.card')
                     </div>
@@ -59,7 +63,7 @@
         @else
             <div class="section is-medium has-text-centered">
                 <p class="block no-records">
-                    {{ __('entries.no_records', ['entryType' => strtolower($entryType->plural_title)]) }}
+                    @lang('entries.noRecords', ['entryType' => strtolower($entryType->plural_title)])
                 </p>
 
                 <p class="block">

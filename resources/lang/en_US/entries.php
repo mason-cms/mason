@@ -5,7 +5,8 @@ return [
     'singular' => "Entry",
     'plural' => "Entries",
     'pagination' => "{0} No entries|{1} One entry|[2,*] Showing :count entries out of :total",
-    'no_records' => "There are no :entryType at this moment.",
+    'noRecords' => "There are no :entryType at this moment.",
+
     'attributes' => [
         'id' => "ID",
         'name' => "Name",
@@ -20,30 +21,38 @@ return [
         'updated_at' => "Updated on",
         'deleted_at' => "Deleted on",
     ],
+
     'statuses' => [
         'draft' => "Draft",
         'published' => "Published",
         'scheduled' => "Scheduled",
     ],
+
     'actions' => [
         'create' => [
             'label' => "New :entryType",
         ],
+
         'view' => [
             'label' => "View",
         ],
+
         'edit' => [
             'label' => "Edit",
         ],
+
         'destroy' => [
             'label' => "Delete",
         ],
+
         'save' => [
             'label' => "Save",
         ],
+
         'publish' => [
             'label' => "Publish",
         ],
+
         'cancel' => [
             'label' => "Cancel",
         ],

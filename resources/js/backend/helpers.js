@@ -5,7 +5,7 @@ $(document)
     .on('click', '[data-clear]', function (e) {
         e.preventDefault();
 
-        var $this = $(this),
+        let $this = $(this),
             target = $this.data('clear'),
             $target = $(target),
             $inputs = $target.find(':input');
@@ -17,18 +17,18 @@ $(document)
         }
     })
     .on('input', 'input.slug', function () {
-        var $input = $(this),
+        let $input = $(this),
             slug = $input.val().toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
 
         $input.val(slug);
     })
     .on('focus', 'input.slug[data-slug-from]', function () {
-        var $input = $(this),
+        let $input = $(this),
             from = $input.data('slug-from'),
             $from = $(from).first();
 
         if (! $input.val() && $from.length === 1) {
-            var slug = $from.val().toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+            let slug = $from.val().toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
 
             $input.val(slug).trigger('input');
         }
@@ -37,7 +37,7 @@ $(document)
         return window.confirm($(this).data('confirm'));
     })
     .on('mason:lockable:init', '.is-lockable', function (e) {
-        var $this = $(this),
+        let $this = $(this),
             $input = $this.find('.input'),
             $lock = $this.find('.lock'),
             $unlock = $this.find('.unlock');
@@ -61,7 +61,7 @@ $(document)
         });
     })
     .on('mason:lockable:lock', '.is-lockable', function () {
-        var $this = $(this),
+        let $this = $(this),
             $input = $this.find('.input'),
             $lock = $this.find('.lock'),
             $unlock = $this.find('.unlock');
@@ -72,7 +72,7 @@ $(document)
         $unlock.removeClass('is-hidden');
     })
     .on('mason:lockable:unlock', '.is-lockable', function () {
-        var $this = $(this),
+        let $this = $(this),
             $input = $this.find('.input'),
             $lock = $this.find('.lock'),
             $unlock = $this.find('.unlock');
@@ -88,7 +88,7 @@ $(document)
     .on('click', '[rel="expand"]', function (e) {
         e.preventDefault();
 
-        var $this = $(this),
+        let $this = $(this),
             href = $this.attr('href'),
             $href = $(href);
 
@@ -97,7 +97,7 @@ $(document)
     .on('click', '[rel="collapse"]', function (e) {
         e.preventDefault();
 
-        var $this = $(this),
+        let $this = $(this),
             href = $this.attr('href'),
             $href = $(href);
 
@@ -106,9 +106,35 @@ $(document)
     .on('click', '[rel="toggle"]', function (e) {
         e.preventDefault();
 
-        var $this = $(this),
+        let $this = $(this),
             href = $this.attr('href'),
             $href = $(href);
 
         $href.toggleClass('is-hidden');
+    })
+    .on('click', '[data-method]', function (e) {
+        e.preventDefault();
+
+        let $this = $(this),
+            method = $this.data('method'),
+            href = $this.attr('href');
+
+        let $form = $('<form>')
+            .attr('action', href)
+            .attr('method', 'POST')
+            .append(
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', '_method')
+                    .attr('value', method)
+            )
+            .append(
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', '_token')
+                    .attr('value', $('meta[name="csrf-token"]').attr('content'))
+            )
+            .appendTo('body');
+
+        return $form.submit();
     });

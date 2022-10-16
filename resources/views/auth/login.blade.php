@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('auth.layout')
 
 @section('content')
     <form
@@ -16,7 +16,7 @@
                         class="input"
                         type="email"
                         name="email"
-                        placeholder="{{ __('users.attributes.email') }}"
+                        placeholder="@lang('users.attributes.email')"
                         value="{{ old('email') }}"
                         required
                         autofocus
@@ -30,7 +30,7 @@
                         class="input"
                         type="password"
                         name="password"
-                        placeholder="{{ __('users.attributes.password') }}"
+                        placeholder="@lang('users.attributes.password')"
                         required
                         autocomplete="current-password"
                     />
@@ -43,8 +43,7 @@
                         <input
                             type="checkbox"
                             name="remember"
-                        >
-                        <span>{{ __('auth.remember_me') }}</span>
+                        /> <span>@lang('auth.remember_me')</span>
                     </label>
                 </div>
             </div>
@@ -53,8 +52,8 @@
                 <div class="level-left">
                     <div class="level-item">
                         <button class="button is-primary" type="submit">
-                            <span>{{ __('auth.log_in') }}</span>
-                            <span class="icon"><i class="fa-light fa-right-to-bracket"></i></span>
+                            <span>@lang('auth.log_in')</span>
+                            @icon('fa-right-to-bracket')
                         </button>
                     </div>
                 </div>
@@ -63,7 +62,7 @@
                     @if (Route::has('password.request'))
                         <div class="level-item">
                             <a href="{{ route('password.request') }}">
-                                {{ __('auth.forgot_password') }}
+                                @lang('auth.forgot_password')
                             </a>
                         </div>
                     @endif
