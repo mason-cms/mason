@@ -50,7 +50,6 @@
                         <pre
                             id="entry-content-editor"
                             class="code-editor"
-                            style="height: 400px;"
                         >{!! $entry->content !!}</pre>
 
                         <textarea
