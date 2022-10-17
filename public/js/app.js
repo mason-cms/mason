@@ -2094,9 +2094,13 @@ $(window).add(document).on('ready load resize DOMSubtreeModified', function () {
 });
 $(document).ready(function () {
   $('.code-editor').each(function () {
-    var $codeEditor = $(this),
-        codeEditorId = $codeEditor.attr('id');
-    var editor = ace.edit(codeEditorId);
+    var $editor = $(this),
+        mode = $editor.data('editor-mode') || "ace/mode/html",
+        maxLines = $editor.data('editor-max-lines') || 30;
+    var editor = ace.edit(this, {
+      mode: mode,
+      maxLines: maxLines
+    });
   });
 });
 
