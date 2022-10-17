@@ -45,13 +45,13 @@
                     </div>
                 </div>
 
+                <div
+                    class="code-editor"
+                    data-editor-input="#entry-content"
+                >{!! $entry->content !!}</div>
+
                 <div class="field">
                     <div class="control">
-                        <div
-                            class="code-editor"
-                            data-editor-input="#entry-content"
-                        >{!! $entry->content !!}</div>
-
                         <textarea
                             id="entry-content"
                             class="textarea is-hidden"
