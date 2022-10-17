@@ -13,6 +13,13 @@ $(window).add(document).on('ready load resize DOMSubtreeModified', function () {
 
 $(document).ready(function () {
     $('.code-editor').each(function () {
-        let editor = ace.edit(this);
+        let $editor = $(this),
+            mode = $editor.data('editor-mode') || "ace/mode/html",
+            maxLines = $editor.data('editor-max-lines') || 30;
+
+        let editor = ace.edit(this, {
+            mode: mode,
+            maxLines: maxLines
+        });
     });
 });

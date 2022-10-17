@@ -47,11 +47,11 @@
 
                 <div class="field">
                     <div class="control">
-                        <div
+                        <pre
                             id="entry-content-editor"
                             class="code-editor"
                             style="height: 400px;"
-                        >{!! $entry->content !!}</div>
+                        >{!! $entry->content !!}</pre>
 
                         <textarea
                             id="entry-content"

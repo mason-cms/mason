@@ -4,8 +4,12 @@
         @include('partials.head')
 
         <!-- Ace Editor -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.12.1/ace.min.js" integrity="sha512-5rJEyoleRpqGQiEviKvrKQscsMACeHCyrr73ojwMbq5MCHIFEGMN6rxBvvUkZysfYM52M3TqBCYAcNYMlA+HBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.12.1/ext-beautify.min.js" integrity="sha512-uXfi0GwpQZcHIhGOMMHeNYtBSjt7qDXjXHmjShWSp+RWMSmjdy69N7M/pufinvQLv6rSYlpbSXqSnLRzWE952w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.12.1/ace.min.js"
+            integrity="sha512-5rJEyoleRpqGQiEviKvrKQscsMACeHCyrr73ojwMbq5MCHIFEGMN6rxBvvUkZysfYM52M3TqBCYAcNYMlA+HBg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
         <!-- End Ace Editor -->
 
         @if ($tinyMceApiKey = config('services.tinymce.api.key'))
