@@ -2096,11 +2096,22 @@ $(document).ready(function () {
   $('.code-editor').each(function () {
     var $editor = $(this),
         mode = $editor.data('editor-mode') || "ace/mode/html",
-        maxLines = $editor.data('editor-max-lines') || 30;
+        maxLines = $editor.data('editor-max-lines') || 30,
+        input = $editor.data('input');
     var editor = ace.edit(this, {
       mode: mode,
       maxLines: maxLines
     });
+
+    if (typeof input === 'string' && input.length > 0) {
+      var $input = $(input);
+
+      if ($input.length > 0) {
+        editor.getSession().on('change', function () {
+          $input.val(editor.getSession().getValue());
+        });
+      }
+    }
   });
 });
 

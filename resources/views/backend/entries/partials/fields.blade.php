@@ -47,9 +47,14 @@
 
                 <div class="field">
                     <div class="control">
+                        <div
+                            class="code-editor"
+                            data-input="#entry-content"
+                        >{!! $entry->content !!}</div>
+
                         <textarea
                             id="entry-content"
-                            class="textarea code-editor"
+                            class="textarea is-hidden"
                             name="entry[content]"
                             rows="20"
                         >{!! $entry->content !!}</textarea>
