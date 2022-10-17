@@ -47,10 +47,10 @@
 
                 <div class="field">
                     <div class="control">
-                        <div
+                        <pre
                             class="code-editor"
-                            data-input="#entry-content"
-                        >{!! $entry->content !!}</div>
+                            data-editor-input="#entry-content"
+                        >{!! $entry->content !!}</pre>
 
                         <textarea
                             id="entry-content"
