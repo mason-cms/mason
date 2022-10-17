@@ -20,7 +20,8 @@ $(document).ready(function () {
 
         let editor = ace.edit(this, {
             mode: editorMode,
-            maxLines: editorMaxLines
+            maxLines: editorMaxLines,
+            useWorker: false
         });
 
         if (typeof editorInput === 'string' && editorInput.length > 0) {

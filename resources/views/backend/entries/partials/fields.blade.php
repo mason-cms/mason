@@ -45,19 +45,20 @@
                     </div>
                 </div>
 
-                <div
-                    class="code-editor"
-                    data-editor-input="#entry-content"
-                >{!! $entry->content !!}</div>
-
                 <div class="field">
                     <div class="control">
+                        <div
+                            class="code-editor"
+                            data-editor-input="#entry-content"
+                            style="min-height: 400px;"
+                        >{{ $entry->content }}</div>
+
                         <textarea
                             id="entry-content"
                             class="textarea is-hidden"
                             name="entry[content]"
                             rows="20"
-                        >{!! $entry->content !!}</textarea>
+                        >{{ $entry->content }}</textarea>
                     </div>
                 </div>
             </div>

@@ -2100,7 +2100,8 @@ $(document).ready(function () {
         editorInput = $editor.data('editor-input');
     var editor = ace.edit(this, {
       mode: editorMode,
-      maxLines: editorMaxLines
+      maxLines: editorMaxLines,
+      useWorker: false
     });
 
     if (typeof editorInput === 'string' && editorInput.length > 0) {

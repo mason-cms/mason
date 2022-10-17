@@ -12,4 +12,11 @@
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
 ></script>
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.12.1/mode-markdown.min.js"
+    integrity="sha512-cLX+uoryBriyf4vV8FHdDL9fbWlYNGh+ure5g9g103O6gIBvp5P5WdDziXxJSDSvYH3lbRE91K5qll+Khov3iQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+></script>
 <!-- End Ace Editor -->
