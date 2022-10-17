@@ -2095,20 +2095,20 @@ $(window).add(document).on('ready load resize DOMSubtreeModified', function () {
 $(document).ready(function () {
   $('.code-editor').each(function () {
     var $editor = $(this),
-        mode = $editor.data('editor-mode') || "ace/mode/html",
-        maxLines = $editor.data('editor-max-lines') || 30,
-        input = $editor.data('input');
+        editorMode = $editor.data('editor-mode') || "ace/mode/html",
+        editorMaxLines = $editor.data('editor-max-lines') || 30,
+        editorInput = $editor.data('editor-input');
     var editor = ace.edit(this, {
-      mode: mode,
-      maxLines: maxLines
+      mode: editorMode,
+      maxLines: editorMaxLines
     });
 
-    if (typeof input === 'string' && input.length > 0) {
-      var $input = $(input);
+    if (typeof editorInput === 'string' && editorInput.length > 0) {
+      var $editorInput = $(editorInput);
 
-      if ($input.length > 0) {
+      if ($editorInput.length > 0) {
         editor.getSession().on('change', function () {
-          $input.val(editor.getSession().getValue());
+          $editorInput.val(editor.getSession().getValue());
         });
       }
     }
