@@ -10,6 +10,13 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
         ></script>
+
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.12.1/mode-html.min.js"
+            integrity="sha512-X45zBTERdMd5a+Y7d6sLTjOspEl9gN9nEorwR9vJV/dYGdQRfz0JpWIri00D/uzYtiLGwv+cwg0R2j07wW8eFw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
         <!-- End Ace Editor -->
 
         @if ($tinyMceApiKey = config('services.tinymce.api.key'))
