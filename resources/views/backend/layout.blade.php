@@ -7,7 +7,9 @@
             <script src="https://cdn.tiny.cloud/1/{{ $tinyMceApiKey }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
             <script>
                 tinymce.init({
-                    selector: '.tinymce'
+                    selector: '.tinymce',
+                    plugins: 'code',
+                    toolbar: 'code'
                 });
             </script>
         @endif
