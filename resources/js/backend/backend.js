@@ -27,8 +27,8 @@ $(document).ready(function () {
             let $editorInput = $(editorInput);
 
             if ($editorInput.length > 0) {
-                editor.session.on('change', function(delta) {
-                    console.log(delta);
+                editor.session.on('change', function() {
+                    console.log(editor.session.getValue());
                     $editorInput.val(editor.session.getValue());
                 });
             }
