@@ -13,9 +13,6 @@ $(window).add(document).on('ready load resize DOMSubtreeModified', function () {
 
 $(document).ready(function () {
     $('.code-editor').each(function () {
-        let $codeEditor = $(this),
-            codeEditorId = $codeEditor.attr('id');
-
-        let editor = ace.edit(codeEditorId);
+        let editor = ace.edit(this);
     });
 });
