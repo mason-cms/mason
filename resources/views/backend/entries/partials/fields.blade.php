@@ -86,6 +86,25 @@
                         />
                     </div>
                 </div>
+
+                <div class="field">
+                    <div class="control">
+                        <input
+                            type="hidden"
+                            name="entry[is_home]"
+                            value="0"
+                        />
+
+                        <label class="checkbox">
+                            <input
+                                type="checkbox"
+                                name="entry[is_home]"
+                                value="1"
+                                {{ $entry->is_home ? 'checked' : '' }}
+                            /> @lang('entries.attributes.is_home')
+                        </label>
+                    </div>
+                </div>
             </div>
         </fieldset>
 

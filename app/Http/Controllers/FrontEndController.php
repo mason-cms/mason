@@ -40,6 +40,10 @@ class FrontEndController extends Controller
             }
         }
 
+        if ($home = $this->site->entries()->home()->first()) {
+            return response()->view($home->view(), ['site' => $this->site, 'entry' => $home]);
+        }
+
         abort(404);
     }
 

@@ -15,6 +15,12 @@
     <div class="card-content">
         <div class="block">
             <h2 class="title is-2 entry-title">
+                @if ($entry->is_home)
+                    <span title="@lang('entries.attributes.is_home')">
+                        @icon('fa-house')
+                    </span>
+                @endif
+
                 <a href="{{ route('backend.entries.edit', [$entry->type, $entry]) }}">
                     {{ $entry->title }}
                 </a>
@@ -59,7 +65,7 @@
 
                 @isset($entry->published_at)
                     <div class="control entry-published-at">
-                        @icon('fa-calendar-arrow-up')
+                        @icon('fa-calendar')
                         <span>{{ $entry->published_at }}</span>
                     </div>
                 @endisset

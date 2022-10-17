@@ -15,6 +15,7 @@ return [
         'content' => "Content",
         'author' => "Author",
         'cover' => "Cover image",
+        'is_home' => "Homepage",
         'published_at' => "Published on",
         'status' => "Status",
         'created_at' => "Created on",
