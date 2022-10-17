@@ -21,7 +21,7 @@ class FrontEndController extends Controller
      * @param  string  $localeName
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function home(Request $request, $localeName = null)
+    public function home(Request $request, string $localeName = null)
     {
         if (isset($localeName) && Locale::isDefault($localeName)) {
             return redirect()->route('home');

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Metable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -31,7 +32,7 @@ class Media extends Model
      * Scopes
      */
 
-    public static function scopeByLocale($query, $locale)
+    public static function scopeByLocale(Builder $query, $locale)
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }

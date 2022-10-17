@@ -61,22 +61,22 @@ class Taxonomy extends Model
      * ==================================================
      */
 
-    public function scopeByType($query, $taxonomyType)
+    public function scopeByType(Builder $query, $taxonomyType)
     {
         return $query->whereIn('type_id', prepareValueForScope($taxonomyType, TaxonomyType::class));
     }
 
-    public function scopeTopLevel($query)
+    public function scopeTopLevel(Builder $query)
     {
         return $query->whereNull('parent_id');
     }
 
-    public function scopeByLocale($query, $locale)
+    public function scopeByLocale(Builder $query, $locale)
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
-    public function scopeFilter($query, $filters)
+    public function scopeFilter(Builder $query, $filters)
     {
         if (isset($filters['locale_id'])) {
             $query->byLocale($filters['locale_id']);
@@ -85,7 +85,7 @@ class Taxonomy extends Model
         return $query;
     }
 
-    public function scopeSearch($query, $term)
+    public function scopeSearch(Builder $query, $term)
     {
         return $query
             ->where('title', 'LIKE', "%{$term}%")

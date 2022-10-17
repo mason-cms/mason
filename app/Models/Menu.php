@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Metable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -47,12 +48,12 @@ class Menu extends Model
      * ==================================================
      */
 
-    public static function scopeByLocation($query, string $location)
+    public static function scopeByLocation(Builder $query, string $location)
     {
         return $query->where('location', $location);
     }
 
-    public static function scopeByLocale($query, $locale)
+    public static function scopeByLocale(Builder $query, $locale)
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }

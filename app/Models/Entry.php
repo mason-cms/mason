@@ -30,6 +30,7 @@ class Entry extends Model
         'content',
         'summary',
         'author_id',
+        'is_home',
         'cover_id',
         'cover_file',
         'published_at',
@@ -37,10 +38,15 @@ class Entry extends Model
     ];
 
     protected $casts = [
+        'is_home' => 'boolean',
         'published_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
+    ];
+
+    protected $attributes = [
+        'is_home' => false,
     ];
 
     /**
@@ -57,8 +63,18 @@ class Entry extends Model
                 ->orderBy('created_at', 'desc');
         });
 
-        static::saving(function ($entry) {
+        static::saving(function (Entry $entry) {
             $entry->name ??= Str::slug($entry->title);
+        });
+
+        static::saved(function (Entry $entry) {
+            if ($entry->is_home) {
+                $conflicts = Entry::home()->byLocale($entry->locale)->not($entry)->get();
+
+                foreach ($conflicts as $conflict) {
+                    $conflict->update(['is_home' => false]);
+                }
+            }
         });
     }
 
@@ -71,29 +87,34 @@ class Entry extends Model
      * Scopes
      */
 
-    public function scopeByName($query, $name)
+    public function scopeByName(Builder $query, $name)
     {
         return is_iterable($name)
             ? $query->whereIn('name', $name)
             : $query->where('name', $name);
     }
 
-    public function scopeByType($query, $entryType)
+    public function scopeByType(Builder $query, $entryType)
     {
         return $query->whereIn('type_id', prepareValueForScope($entryType, EntryType::class));
     }
 
-    public function scopeByLocale($query, $locale)
+    public function scopeByLocale(Builder $query, $locale)
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
-    public function scopeByAuthor($query, $author)
+    public function scopeByAuthor(Builder $query, $author)
     {
         return $query->whereIn('author_id', prepareValueForScope($author, User::class));
     }
 
-    public function scopeByStatus($query, string $status)
+    public function scopeNot(Builder $query, Entry $entry)
+    {
+        return $query->where($entry->getKeyName(), '!=', $entry->getKey());
+    }
+
+    public function scopeByStatus(Builder $query, string $status)
     {
         switch ($status) {
             case static::STATUS_DRAFT:
@@ -107,7 +128,12 @@ class Entry extends Model
         }
     }
 
-    public function scopeFilter($query, $filters)
+    public function scopeHome(Builder $query, bool $isHome = true)
+    {
+        return $query->where('is_home', $isHome);
+    }
+
+    public function scopeFilter(Builder $query, $filters)
     {
         if (isset($filters['status'])) {
             $query->byStatus($filters['status']);
@@ -124,7 +150,7 @@ class Entry extends Model
         return $query;
     }
 
-    public function scopeSearch($query, $term)
+    public function scopeSearch(Builder $query, $term)
     {
         return $query
             ->where('title', 'LIKE', "%{$term}%")
