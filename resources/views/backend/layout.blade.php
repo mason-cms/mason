@@ -2,33 +2,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         @include('partials.head')
-
-        <!-- Ace Editor -->
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.12.1/ace.min.js"
-            integrity="sha512-5rJEyoleRpqGQiEviKvrKQscsMACeHCyrr73ojwMbq5MCHIFEGMN6rxBvvUkZysfYM52M3TqBCYAcNYMlA+HBg=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        ></script>
-
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.12.1/mode-html.min.js"
-            integrity="sha512-X45zBTERdMd5a+Y7d6sLTjOspEl9gN9nEorwR9vJV/dYGdQRfz0JpWIri00D/uzYtiLGwv+cwg0R2j07wW8eFw=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        ></script>
-        <!-- End Ace Editor -->
-
-        @if ($tinyMceApiKey = config('services.tinymce.api.key'))
-            <!-- TinyMCE -->
-            <script src="https://cdn.tiny.cloud/1/{{ $tinyMceApiKey }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-            <script>
-                tinymce.init({
-                    selector: '.tinymce'
-                });
-            </script>
-            <!-- End TinyMCE -->
-        @endif
     </head>
     <body class="backend">
         @include('backend.partials.navbar')
@@ -36,5 +9,7 @@
         <main id="content">
             @yield('content')
         </main>
+
+        @include('backend.partials.scripts')
     </body>
 </html>
