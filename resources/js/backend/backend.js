@@ -1,5 +1,5 @@
 $(window).add(document).on('ready load resize DOMSubtreeModified', function () {
-    var windowWidth = $(window).width(),
+    let windowWidth = $(window).width(),
         $body = $('body').removeClass('is-desktop is-tablet is-mobile');
 
     if (windowWidth >= 1024) {
@@ -9,4 +9,13 @@ $(window).add(document).on('ready load resize DOMSubtreeModified', function () {
     } else {
         $body.addClass('is-mobile');
     }
+});
+
+$(document).ready(function () {
+    $('.code-editor').each(function () {
+        let $codeEditor = $(this),
+            codeEditorId = $codeEditor.attr('id');
+
+        let editor = ace.edit(codeEditorId);
+    });
 });

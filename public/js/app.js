@@ -2092,6 +2092,13 @@ $(window).add(document).on('ready load resize DOMSubtreeModified', function () {
     $body.addClass('is-mobile');
   }
 });
+$(document).ready(function () {
+  $('.code-editor').each(function () {
+    var $codeEditor = $(this),
+        codeEditorId = $codeEditor.attr('id');
+    var editor = ace.edit(codeEditorId);
+  });
+});
 
 /***/ }),
 

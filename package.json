@@ -23,6 +23,7 @@
     },
     "dependencies": {
         "bulma": "^0.9.4",
+        "codemirror": "^6.0.1",
         "jquery": "1.11"
     }
 }

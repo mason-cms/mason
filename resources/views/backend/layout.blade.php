@@ -3,15 +3,19 @@
     <head>
         @include('partials.head')
 
+        <!-- Ace Editor -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.12.1/ace.min.js" integrity="sha512-5rJEyoleRpqGQiEviKvrKQscsMACeHCyrr73ojwMbq5MCHIFEGMN6rxBvvUkZysfYM52M3TqBCYAcNYMlA+HBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- End Ace Editor -->
+
         @if ($tinyMceApiKey = config('services.tinymce.api.key'))
+            <!-- TinyMCE -->
             <script src="https://cdn.tiny.cloud/1/{{ $tinyMceApiKey }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
             <script>
                 tinymce.init({
-                    selector: '.tinymce',
-                    plugins: 'code',
-                    toolbar: 'code'
+                    selector: '.tinymce'
                 });
             </script>
+            <!-- End TinyMCE -->
         @endif
     </head>
     <body class="backend">
