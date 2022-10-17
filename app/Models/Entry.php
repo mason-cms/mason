@@ -192,6 +192,9 @@ class Entry extends Model
             "{$this->type->name}.{$this->name}",
             "{$this->type->name}.default",
             "{$this->type->name}",
+            "entry.{$this->name}",
+            "entry.default",
+            "entry",
         ];
 
         foreach ($views as $view) {
