@@ -49,7 +49,7 @@
                     <div class="control">
                         <textarea
                             id="entry-content"
-                            class="textarea"
+                            class="textarea tinymce"
                             name="entry[content]"
                             rows="20"
                         >{!! $entry->content !!}</textarea>

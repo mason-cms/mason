@@ -34,4 +34,10 @@ return [
         'kit' => env('FONTAWESOME_KIT'),
     ],
 
+    'tinymce' => [
+        'api' => [
+            'key' => env('TINYMCE_API_KEY'),
+        ],
+    ],
+
 ];
