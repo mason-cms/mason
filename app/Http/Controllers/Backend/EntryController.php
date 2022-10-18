@@ -54,7 +54,7 @@ class EntryController extends Controller
     {
         $entry = new Entry;
         $entry->type()->associate($entryType);
-        $entry->locale()->associate(Locale::default());
+        $entry->locale()->associate(Locale::getDefault());
         $entry->author()->associate($request->user());
         $entry->saveOrFail();
 

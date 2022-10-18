@@ -20,6 +20,15 @@
 
         <li>
             <a
+                href="{{ route($routeName = 'backend.configuration.locale.index') }}"
+                class="{{ $routeName === $currentRouteName ? 'is-active' : '' }}"
+            >
+                @lang('locales.title')
+            </a>
+        </li>
+
+        <li>
+            <a
                 href="{{ route($routeName = 'backend.configuration.entry-type.index') }}"
                 class="{{ $routeName === $currentRouteName ? 'is-active' : '' }}"
             >

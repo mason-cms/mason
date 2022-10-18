@@ -35,7 +35,7 @@ class Site
 
     public function boot()
     {
-        $this->setLocale(Locale::default());
+        $this->setLocale(Locale::getDefault());
 
         $this->loadLang();
 
@@ -162,7 +162,7 @@ class Site
 
     public function defaultLocale()
     {
-        return Locale::default();
+        return Locale::getDefault();
     }
 
     public function menus($locale = null)

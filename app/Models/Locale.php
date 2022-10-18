@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,26 +17,41 @@ class Locale extends Model
     ];
 
     protected $fillable = [
+        'name',
         'title',
         'is_default',
     ];
 
     protected $casts = [
         'id' => 'integer',
+        'is_default' => 'boolean',
     ];
 
     /**
      * Static Methods
      */
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function (Locale $locale) {
+            if ($locale->is_default) {
+                foreach (Locale::default()->not($locale)->get() as $l) {
+                    $l->update(['is_default' => false]);
+                }
+            }
+        });
+    }
+
     public static function findByName($name)
     {
         return static::where('name', $name)->first();
     }
 
-    public static function default()
+    public static function getDefault()
     {
-        return static::where('is_default', true)->first()
+        return static::default()->first()
             ?? static::findByName(config('app.locale'));
     }
 
@@ -46,6 +62,20 @@ class Locale extends Model
         }
 
         return $locale instanceof static && $locale->is_default;
+    }
+
+    /**
+     * Scopes
+     */
+
+    public function scopeDefault(Builder $query, bool $isDefault = true)
+    {
+        return $query->where('is_default', $isDefault);
+    }
+
+    public function scopeNot(Builder $query, Locale $locale)
+    {
+        return $query->where($locale->getKeyName(), '!=', $locale->getKey());
     }
 
     /**

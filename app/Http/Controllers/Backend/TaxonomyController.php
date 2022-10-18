@@ -55,7 +55,7 @@ class TaxonomyController extends Controller
     {
         $taxonomy = new Taxonomy;
         $taxonomy->type()->associate($taxonomyType);
-        $taxonomy->locale()->associate(Locale::default());
+        $taxonomy->locale()->associate(Locale::getDefault());
         $taxonomy->saveOrFail();
 
         return redirect()->route('backend.taxonomies.edit', [$taxonomyType, $taxonomy]);
