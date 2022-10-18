@@ -71,7 +71,8 @@ class Site
         if ($locale instanceof Locale) {
             $this->locale = $locale;
 
-            setlocale(LC_ALL, $locale->system_name);
+            setlocale(LC_TIME, $locale->system_name);
+            setlocale(LC_MONETARY, $locale->system_name);
 
             App::setLocale($locale->system_name);
 
