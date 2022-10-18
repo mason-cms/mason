@@ -35,7 +35,10 @@ class Site
 
     public function boot()
     {
+        $this->setLocale(Locale::default());
+
         $this->loadLang();
+
         $this->theme()->boot();
     }
 
@@ -94,20 +97,18 @@ class Site
 
     public function langPath()
     {
-        if (isset($this->locale, $this->locale->system_name)) {
-            return $this->theme->path("resources/lang/{$this->locale->system_name}");
-        }
+        return $this->theme->path("resources/lang/{$this->locale->system_name}");
     }
 
     public function loadLang()
     {
         $lang = [];
 
-        if ($langPath = $this->langPath()) {
-            foreach (glob("{$langPath}/*.php") as $langFile) {
-                $filename = pathinfo($langFile)['filename'];
-                $lang[$filename] = include $langFile;
-            }
+        $langPath = $this->langPath();
+
+        foreach (glob("{$langPath}/*.php") as $langFile) {
+            $filename = pathinfo($langFile)['filename'];
+            $lang[$filename] = include $langFile;
         }
 
         $this->lang = Arr::dot($lang);

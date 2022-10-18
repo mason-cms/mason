@@ -23,19 +23,18 @@ class FrontEndController extends Controller
      */
     public function home(Request $request, string $localeName = null)
     {
-        if (isset($localeName) && Locale::isDefault($localeName)) {
-            return redirect()->route('home');
-        }
-
-        $views = [];
-
         if (isset($localeName)) {
-            $this->site->setLocale($localeName);
+            if (Locale::isDefault($localeName)) {
+                return redirect()->route('home');
+            }
 
-            $views[] = "{$localeName}/home";
+            $this->site->setLocale($localeName);
         }
 
-        $views[] = "home";
+        $views = [
+            "{$this->site->locale->system_name}/home",
+            "home",
+        ];
 
         foreach ($views as $view) {
             if (view()->exists($view)) {
