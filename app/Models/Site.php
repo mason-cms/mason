@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 
@@ -14,6 +15,7 @@ class Site
     public $description;
     public $theme;
     public $locale;
+    public $lang;
 
     public static function getInstance()
     {
@@ -34,6 +36,8 @@ class Site
     public function boot()
     {
         $this->setLocale(Locale::default());
+
+        $this->loadLang();
 
         $this->theme()->boot();
     }
@@ -88,6 +92,35 @@ class Site
     {
         $locale ??= $this->locale;
         return $locale->home();
+    }
+
+    public function langPath()
+    {
+        return $this->theme->path("resources/lang/{$this->locale->system_name}");
+    }
+
+    public function loadLang()
+    {
+        $lang = [];
+
+        $langPath = $this->langPath();
+
+        foreach (glob("{$langPath}/*.php") as $langFile) {
+            $filename = pathinfo($langFile)['filename'];
+            $lang[$filename] = include $langFile;
+        }
+
+        $this->lang = Arr::dot($lang);
+    }
+
+    public function lang()
+    {
+        return $this->lang;
+    }
+
+    public function trans($key)
+    {
+        return $this->lang[$key] ?? $key;
     }
 
     public function entries($type = null, $locale = null)
