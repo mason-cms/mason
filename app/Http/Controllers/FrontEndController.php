@@ -27,12 +27,15 @@ class FrontEndController extends Controller
             return redirect()->route('home');
         }
 
-        $this->site->setLocale($localeName);
+        $views = [];
 
-        $views = [
-            "{$this->site->locale->name}/home",
-            "home",
-        ];
+        if (isset($localeName)) {
+            $this->site->setLocale($localeName);
+
+            $views[] = "{$localeName}/home";
+        }
+
+        $views[] = "home";
 
         foreach ($views as $view) {
             if (view()->exists($view)) {
