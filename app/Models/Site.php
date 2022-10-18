@@ -35,10 +35,7 @@ class Site
 
     public function boot()
     {
-        $this->setLocale(Locale::default());
-
         $this->loadLang();
-
         $this->theme()->boot();
     }
 
