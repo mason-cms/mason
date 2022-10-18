@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $site = site();
+
         Blade::directive('i', function ($expression) {
             return "<?= i($expression); ?>";
         });
