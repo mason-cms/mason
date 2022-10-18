@@ -26,7 +26,7 @@ class MenuController extends Controller
 
         return response()->view('backend.menus.index', [
             'request' => $request,
-            'site' => $site = site(),
+            'site' => $site = site(false),
             'menuLocations' => $site->theme()->menuLocations(),
             'location' => $location ?? null,
             'locales' => Locale::all(),
