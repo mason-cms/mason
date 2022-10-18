@@ -1,8 +1,8 @@
 <?php
 
-function site()
+function site($boot = true)
 {
-    return \App\Models\Site::getInstance();
+    return \App\Models\Site::getInstance($boot);
 }
 
 function theme($name = null)

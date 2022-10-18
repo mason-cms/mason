@@ -17,9 +17,9 @@ class Site
     public $locale;
     public $lang;
 
-    public static function getInstance()
+    public static function getInstance($boot = true)
     {
-        return static::$instance ??= new static;
+        return static::$instance ??= new static($boot);
     }
 
     public function __construct($boot = true)
