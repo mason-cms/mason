@@ -43,7 +43,7 @@ class UserController extends Controller
     }
 
     /**
-     * Create user
+     * Create User
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -53,6 +53,24 @@ class UserController extends Controller
         $user = new User;
 
         return response()->view('backend.users.create', compact('user'));
+    }
+
+    /**
+     * Store User
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
+     */
+    public function store(Request $request)
+    {
+        $requestInput = $request->input();
+
+        $user = new User($requestInput['user'] ?? []);
+
+        $user->saveOrFail();
+
+        return redirect()->route('backend.users.index');
     }
 
     /**
