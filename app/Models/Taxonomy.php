@@ -110,19 +110,25 @@ class Taxonomy extends Model
         return "{$this->title}";
     }
 
-    public function getUrl($absolute = true)
+    public function getUrl($entryType = null, $absolute = true)
     {
         if ($this->exists()) {
+            if ($entryType instanceof EntryType) {
+                $entryType = $entryType->name;
+            }
+
             if (isset($this->locale) && ! $this->locale->is_default) {
                 return route('locale.taxonomy', [
                     'locale' => $this->locale->name,
                     'taxonomyType' => $this->type,
                     'taxonomy' => $this,
+                    'entryType' => $entryType ?? null,
                 ], $absolute);
             } else {
                 return route('taxonomy', [
                     'taxonomyType' => $this->type,
                     'taxonomy' => $this,
+                    'entryType' => $entryType ?? null,
                 ], $absolute);
             }
         }
@@ -180,17 +186,17 @@ class Taxonomy extends Model
 
     public function getUrlAttribute()
     {
-        return $this->getUrl(true);
+        return $this->getUrl(null, true);
     }
 
     public function getAbsoluteUrlAttribute()
     {
-        return $this->getUrl(true);
+        return $this->getUrl(null, true);
     }
 
     public function getRelativeUrlAttribute()
     {
-        return $this->getUrl(false);
+        return $this->getUrl(null, false);
     }
 
     public function setCoverFileAttribute($file)
