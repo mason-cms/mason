@@ -29,6 +29,27 @@ class Media extends Model
 
     /**
      * ==================================================
+     * Static Methods
+     * ==================================================
+     */
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (Media $media) {
+            if (! isset($media->locale)) {
+                if (isset($media->parent, $media->parent->locale)) {
+                    $media->locale()->associate($media->parent->locale);
+                } elseif ($defaultLocale = Locale::getDefault()) {
+                    $media->locale()->associate($defaultLocale);
+                }
+            }
+        });
+    }
+
+    /**
+     * ==================================================
      * Scopes
      * ==================================================
      */
@@ -79,5 +100,10 @@ class Media extends Model
     public function parent()
     {
         return $this->morphTo();
+    }
+
+    public function locale()
+    {
+        return $this->belongsTo(Locale::class);
     }
 }
