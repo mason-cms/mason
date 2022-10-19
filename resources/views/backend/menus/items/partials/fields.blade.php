@@ -44,7 +44,7 @@
             id="item-href"
             class="input"
             name="item[href]"
-            type="url"
+            type="text"
             maxlength="255"
             value="{{ $item->href }}"
             placeholder="{{ config('app.url') }}"
