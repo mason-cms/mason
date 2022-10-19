@@ -72,11 +72,5 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/LimestoneSoftware/granite"
-        }
-    ]
+    "prefer-stable": true
 }
