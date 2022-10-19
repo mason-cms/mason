@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EntryType;
 use App\Models\Locale;
 use Illuminate\Http\Request;
 
@@ -38,12 +39,19 @@ class FrontEndController extends Controller
 
         foreach ($views as $view) {
             if (view()->exists($view)) {
-                return response()->view($view, ['site' => $this->site]);
+                return response()->view($view, [
+                    'site' => $this->site,
+                ]);
             }
         }
 
         if ($home = $this->site->entries()->home()->first()) {
-            return response()->view($home->view(), ['site' => $this->site, 'entry' => $home]);
+            if ($view = $home->view()) {
+                return response()->view($view, [
+                    'site' => $this->site,
+                    'entry' => $home,
+                ]);
+            }
         }
 
         abort(404);
@@ -58,15 +66,11 @@ class FrontEndController extends Controller
      */
     public function entry(Request $request, ...$params)
     {
-        switch (count($params)) {
-            case 1:
-                $entryName = $params[0];
-                break;
-
-            case 2:
-                $this->site->setLocale($localeName = $params[0]);
-                $entryName = $params[1];
-                break;
+        if (isset($params[0]) && Locale::exists($params[0])) {
+            $this->site->setLocale($localeName = $params[0]);
+            $entryName = $params[1] ?? null;
+        } else {
+            $entryName = $params[0] ?? null;
         }
 
         if (isset($entryName)) {
@@ -76,7 +80,10 @@ class FrontEndController extends Controller
                 }
 
                 if ($view = $entry->view()) {
-                    return response()->view($view, ['site' => $this->site, 'entry' => $entry]);
+                    return response()->view($view, [
+                        'site' => $this->site,
+                        'entry' => $entry,
+                    ]);
                 }
             }
         }
@@ -97,11 +104,11 @@ class FrontEndController extends Controller
             $this->site->setLocale($localeName = $params[0]);
             $taxonomyType = $params[1] ?? null;
             $taxonomyName = $params[2] ?? null;
-            $entryType = $params[3] ?? null;
+            $entryTypeName = $params[3] ?? null;
         } else {
             $taxonomyType = $params[0] ?? null;
             $taxonomyName = $params[1] ?? null;
-            $entryType = $params[2] ?? null;
+            $entryTypeName = $params[2] ?? null;
         }
 
         if (isset($taxonomyType, $taxonomyName)) {
@@ -112,7 +119,7 @@ class FrontEndController extends Controller
 
                 $entriesQuery = $taxonomy->entries();
 
-                if (isset($entryType)) {
+                if (isset($entryTypeName) && $entryType = EntryType::findByName($entryTypeName)) {
                     $entriesQuery->byType($entryType);
                 }
 
@@ -120,7 +127,7 @@ class FrontEndController extends Controller
                     return response()->view($view, [
                         'site' => $this->site,
                         'taxonomy' => $taxonomy,
-                        'entryType' => $entryType,
+                        'entryType' => $entryType ?? null,
                         'entries' => $entriesQuery->paginate(),
                     ]);
                 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,7 +20,33 @@ class EntryType extends Model
     ];
 
     /**
+     * ==================================================
+     * Static Methods
+     * ==================================================
+     */
+
+    public static function findByName($name)
+    {
+        return static::where('name', $name)->first();
+    }
+
+    /**
+     * ==================================================
+     * Scopes
+     * ==================================================
+     */
+
+    public function scopeByName(Builder $query, $name)
+    {
+        return is_iterable($name)
+            ? $query->whereIn('name', $name)
+            : $query->where('name', $name);
+    }
+
+    /**
+     * ==================================================
      * Helpers
+     * ==================================================
      */
 
     public function __toString()
@@ -28,7 +55,9 @@ class EntryType extends Model
     }
 
     /**
+     * ==================================================
      * Relationships
+     * ==================================================
      */
 
     public function entries()
