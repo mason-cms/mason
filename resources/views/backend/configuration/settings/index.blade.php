@@ -48,7 +48,7 @@
                                 <div class="field">
                                     <div class="control">
                                         @if ($setting->type === 'file')
-                                            <div class="file">
+                                            <div class="file {{ isset($setting->value) ? 'has-name' : '' }}">
                                                 <label class="file-label">
                                                     <input
                                                         class="file-input"
@@ -60,6 +60,10 @@
                                                         <span class="file-icon">@i('fa-upload')</span>
                                                         <span class="file-label">@lang('settings.fields.file.cta')</span>
                                                     </span>
+
+                                                    @isset($setting->value)
+                                                        <span class="file-name">{{ $setting->value }}</span>
+                                                    @endisset
                                                 </label>
                                             </div>
                                         @endif
