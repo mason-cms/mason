@@ -19,7 +19,7 @@
                     <optgroup label="{{ $group }}">
                         @foreach ($groupTargetOptions as $targetOption)
                             <option
-                                value="{{ get_class($targetOption) }}:{{ $targetOption->id }}"
+                                value="{{ get_class($targetOption) }}:{{ $targetOption->getKey() }}"
                                 data-url="{{ $targetOption->url ?? '' }}"
                                 {{ isset($item->target) && $item->target->is($targetOption) ? 'selected' : '' }}
                             >{{ $targetOption->title ?? "{$targetOption}" }}</option>

@@ -54,7 +54,7 @@ class FrontEndController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  $params
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse|void
      */
     public function entry(Request $request, ...$params)
     {
@@ -74,7 +74,42 @@ class FrontEndController extends Controller
                 return redirect()->to($entry->url);
             }
 
-            return response()->view($entry->view(), ['site' => $this->site, 'entry' => $entry]);
+            if ($view = $entry->view()) {
+                return response()->view($view, ['site' => $this->site, 'entry' => $entry]);
+            }
+        }
+
+        abort(404);
+    }
+
+    /**
+     * Show a specified taxonomy
+     *
+     * @param Request $request
+     * @param ...$params
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|void
+     */
+    public function taxonomy(Request $request, ...$params)
+    {
+        switch (count($params)) {
+            case 1:
+                $taxonomyName = $params[0];
+                break;
+
+            default:
+                $this->site->setLocale($localeName = $params[0]);
+                $taxonomyName = $params[1];
+                break;
+        }
+
+        if ($taxonomy = $this->site->taxonomy($taxonomyName)) {
+            if (isset($localeName) && Locale::isDefault($localeName)) {
+                return redirect()->to($taxonomy->url);
+            }
+
+            if ($view = $taxonomy->view()) {
+                return response()->view($view, ['site' => $this->site, 'taxonomy' => $taxonomy]);
+            }
         }
 
         abort(404);

@@ -50,7 +50,9 @@ class Entry extends Model
     ];
 
     /**
+     * ==================================================
      * Static Methods
+     * ==================================================
      */
 
     protected static function boot()
@@ -84,7 +86,9 @@ class Entry extends Model
     }
 
     /**
+     * ==================================================
      * Scopes
+     * ==================================================
      */
 
     public function scopeByName(Builder $query, $name)
@@ -159,7 +163,9 @@ class Entry extends Model
     }
 
     /**
+     * ==================================================
      * Helpers
+     * ==================================================
      */
 
     public function __toString()
@@ -205,7 +211,9 @@ class Entry extends Model
     }
 
     /**
+     * ==================================================
      * Accessors & Mutators
+     * ==================================================
      */
 
     public function getTextAttribute()
@@ -262,7 +270,9 @@ class Entry extends Model
     }
 
     /**
+     * ==================================================
      * Relationships
+     * ==================================================
      */
 
     public function type()

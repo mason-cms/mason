@@ -103,6 +103,17 @@ class Taxonomy extends Model
         return "{$this->title}";
     }
 
+    public function getUrl($absolute = true)
+    {
+        if ($this->exists() && $taxonomy = $this) {
+            if (isset($this->locale) && ! $this->locale->is_default) {
+                return route('locale.taxonomy', ['locale' => $this->locale->name, $taxonomy], $absolute);
+            } else {
+                return route('taxonomy', [$taxonomy], $absolute);
+            }
+        }
+    }
+
     public function getAllChildren()
     {
         $children = collect();
@@ -124,6 +135,48 @@ class Taxonomy extends Model
             ->where('id', '!=', $this->id)
             ->whereNotIn('id', $allChildrenIds)
             ->get();
+    }
+
+    public function view()
+    {
+        $views = [
+            "{$this->locale->name}.{$this->type->name}.{$this->name}",
+            "{$this->locale->name}.{$this->type->name}.default",
+            "{$this->locale->name}.{$this->type->name}",
+            "{$this->type->name}.{$this->name}",
+            "{$this->type->name}.default",
+            "{$this->type->name}",
+            "taxonomy.{$this->name}",
+            "taxonomy.default",
+            "taxonomy",
+        ];
+
+        foreach ($views as $view) {
+            if (view()->exists($view)) {
+                return $view;
+            }
+        }
+    }
+
+    /**
+     * ==================================================
+     * Accessors & Mutators
+     * ==================================================
+     */
+
+    public function getUrlAttribute()
+    {
+        return $this->getUrl(true);
+    }
+
+    public function getAbsoluteUrlAttribute()
+    {
+        return $this->getUrl(true);
+    }
+
+    public function getRelativeUrlAttribute()
+    {
+        return $this->getUrl(false);
     }
 
     /**
