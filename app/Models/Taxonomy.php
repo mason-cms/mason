@@ -61,6 +61,13 @@ class Taxonomy extends Model
      * ==================================================
      */
 
+    public function scopeByName(Builder $query, $name)
+    {
+        return is_iterable($name)
+            ? $query->whereIn('name', $name)
+            : $query->where('name', $name);
+    }
+
     public function scopeByType(Builder $query, $taxonomyType)
     {
         return $query->whereIn('type_id', prepareValueForScope($taxonomyType, TaxonomyType::class));
@@ -105,11 +112,18 @@ class Taxonomy extends Model
 
     public function getUrl($absolute = true)
     {
-        if ($this->exists() && $taxonomy = $this) {
+        if ($this->exists()) {
             if (isset($this->locale) && ! $this->locale->is_default) {
-                return route('locale.taxonomy', ['locale' => $this->locale->name, $taxonomy], $absolute);
+                return route('locale.taxonomy', [
+                    'locale' => $this->locale->name,
+                    'taxonomyType' => $this->type,
+                    'taxonomy' => $this,
+                ], $absolute);
             } else {
-                return route('taxonomy', [$taxonomy], $absolute);
+                return route('taxonomy', [
+                    'taxonomyType' => $this->type,
+                    'taxonomy' => $this,
+                ], $absolute);
             }
         }
     }

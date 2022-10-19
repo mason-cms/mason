@@ -12,8 +12,11 @@ Route::get('/{entry:name}', [FrontEndController::class, 'entry'])
     ->where(['entry' => '[0-9A-Za-z\-]{3,255}'])
     ->name('entry');
 
-Route::get('/{taxonomy:name}', [FrontEndController::class, 'taxonomy'])
-    ->where(['taxonomy' => '[0-9A-Za-z\-]{3,255}'])
+Route::get('/{taxonomyType:name}/{taxonomy:name}', [FrontEndController::class, 'taxonomy'])
+    ->where([
+        'taxonomy' => '[0-9A-Za-z\-]{3,255}',
+        'taxonomyType' => '[0-9A-Za-z\-]{3,255}',
+    ])
     ->name('taxonomy');
 
 if (Schema::hasTable('locales')) {
@@ -28,8 +31,11 @@ if (Schema::hasTable('locales')) {
         ->where(['entry' => '[0-9A-Za-z\-]{3,255}'])
         ->name('locale.entry');
 
-    Route::get('/{locale:name}/{taxonomy:name}', [FrontEndController::class, 'taxonomy'])
+    Route::get('/{locale:name}/{taxonomyType:name}/{taxonomy:name}', [FrontEndController::class, 'taxonomy'])
         ->where(['locale' => $locales])
-        ->where(['taxonomy' => '[0-9A-Za-z\-]{3,255}'])
+        ->where([
+            'taxonomy' => '[0-9A-Za-z\-]{3,255}',
+            'taxonomyType' => '[0-9A-Za-z\-]{3,255}',
+        ])
         ->name('locale.taxonomy');
 }

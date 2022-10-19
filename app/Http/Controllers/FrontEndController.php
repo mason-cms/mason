@@ -63,19 +63,21 @@ class FrontEndController extends Controller
                 $entryName = $params[0];
                 break;
 
-            default:
+            case 2:
                 $this->site->setLocale($localeName = $params[0]);
                 $entryName = $params[1];
                 break;
         }
 
-        if ($entry = $this->site->entry($entryName)) {
-            if (isset($localeName) && Locale::isDefault($localeName)) {
-                return redirect()->to($entry->url);
-            }
+        if (isset($entryName)) {
+            if ($entry = $this->site->entry($entryName)) {
+                if (isset($localeName) && Locale::isDefault($localeName)) {
+                    return redirect()->to($entry->url);
+                }
 
-            if ($view = $entry->view()) {
-                return response()->view($view, ['site' => $this->site, 'entry' => $entry]);
+                if ($view = $entry->view()) {
+                    return response()->view($view, ['site' => $this->site, 'entry' => $entry]);
+                }
             }
         }
 
@@ -92,23 +94,27 @@ class FrontEndController extends Controller
     public function taxonomy(Request $request, ...$params)
     {
         switch (count($params)) {
-            case 1:
-                $taxonomyName = $params[0];
+            case 2:
+                $taxonomyType = $params[0];
+                $taxonomyName = $params[1];
                 break;
 
-            default:
+            case 3:
                 $this->site->setLocale($localeName = $params[0]);
-                $taxonomyName = $params[1];
+                $taxonomyType = $params[1];
+                $taxonomyName = $params[2];
                 break;
         }
 
-        if ($taxonomy = $this->site->taxonomy($taxonomyName)) {
-            if (isset($localeName) && Locale::isDefault($localeName)) {
-                return redirect()->to($taxonomy->url);
-            }
+        if (isset($taxonomyType, $taxonomyName)) {
+            if ($taxonomy = $this->site->taxonomy($taxonomyName, $localeName ?? null, $taxonomyType)) {
+                if (isset($localeName) && Locale::isDefault($localeName)) {
+                    return redirect()->to($taxonomy->url);
+                }
 
-            if ($view = $taxonomy->view()) {
-                return response()->view($view, ['site' => $this->site, 'taxonomy' => $taxonomy]);
+                if ($view = $taxonomy->view()) {
+                    return response()->view($view, ['site' => $this->site, 'taxonomy' => $taxonomy]);
+                }
             }
         }
 
