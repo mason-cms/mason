@@ -112,7 +112,7 @@ class Theme
     {
         if (isset($this->name)) {
             return [
-                shell_exec("composer require {$this->name} --no-interaction --prefer-dist --optimize-autoloader --no-dev"),
+                shell_exec("composer require {$this->name} --no-interaction --prefer-dist --optimize-autoloader"),
                 $this->createSymlink(),
                 $this->createMenus(),
             ];
