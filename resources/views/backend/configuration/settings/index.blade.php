@@ -4,6 +4,7 @@
     <form
         action="{{ route('backend.configuration.setting.update') }}"
         method="POST"
+        enctype="multipart/form-data"
     >
         @method('PATCH')
         @csrf

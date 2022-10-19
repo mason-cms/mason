@@ -163,9 +163,14 @@ class Theme
         $settings = $this->info('settings') ?? [];
 
         foreach ($settings as &$setting) {
-            Setting::get($setting->name);
+            $setting->value = Setting::get($setting->name);
         }
 
         return collect($settings);
+    }
+
+    public function setting($key)
+    {
+        return Setting::get($key);
     }
 }
