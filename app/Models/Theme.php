@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Menu;
 use App\Models\Locale;
+use Illuminate\Support\Facades\Storage;
 
 class Theme
 {
@@ -163,7 +164,17 @@ class Theme
         $settings = $this->info('settings') ?? [];
 
         foreach ($settings as &$setting) {
-            $setting->value = Setting::get($setting->name);
+            $value = Setting::get($setting->name);
+
+            if (isset($setting->type)) {
+                switch ($setting->type) {
+                    case 'file':
+                        $value = Storage::url($value);
+                        break;
+                }
+            }
+
+            $setting->value = $value;
         }
 
         return collect($settings);
