@@ -164,17 +164,7 @@ class Theme
         $settings = $this->info('settings') ?? [];
 
         foreach ($settings as &$setting) {
-            $value = Setting::get($setting->name);
-
-            if (isset($setting->type)) {
-                switch ($setting->type) {
-                    case 'file':
-                        $value = Storage::url($value);
-                        break;
-                }
-            }
-
-            $setting->value = $value;
+            $setting->value = Setting::get($setting->name);
         }
 
         return collect($settings);
