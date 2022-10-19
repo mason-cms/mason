@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class Media extends Model
 {
@@ -18,9 +17,9 @@ class Media extends Model
         SoftDeletes,
         Metable;
 
-    const STORAGE_DIR = 'public/media';
+    const STORAGE_DISK = 'public';
+    const STORAGE_PATH = 'media';
     const DEFAULT_VISIBILITY = 'public';
-    const RANDOM_PATH_LENGTH = 8;
 
     protected $fillable = [
         'title',
@@ -29,16 +28,20 @@ class Media extends Model
     ];
 
     /**
+     * ==================================================
      * Scopes
+     * ==================================================
      */
 
-    public static function scopeByLocale(Builder $query, $locale)
+    public function scopeByLocale(Builder $query, $locale)
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
     /**
+     * ==================================================
      * Helpers
+     * ==================================================
      */
 
     public function __toString()
@@ -47,22 +50,17 @@ class Media extends Model
     }
 
     /**
+     * ==================================================
      * Accessors & Mutators
+     * ==================================================
      */
 
     public function setFileAttribute(File|UploadedFile $file)
     {
         $this->title ??= $file->getClientOriginalName();
 
-        $date = date('Y/m');
-        $randomString = Str::random(static::RANDOM_PATH_LENGTH);
-
-        $this->storage_key = Storage::putFileAs(
-            static::STORAGE_DIR,
-            $file,
-            "{$date}/{$randomString}/{$this->title}",
-            static::DEFAULT_VISIBILITY
-        );
+        $this->storage_key = Storage::disk(self::STORAGE_DISK)
+            ->put(static::STORAGE_PATH, $file, static::DEFAULT_VISIBILITY);
     }
 
     public function getUrlAttribute()
@@ -73,7 +71,9 @@ class Media extends Model
     }
 
     /**
+     * ==================================================
      * Relationships
+     * ==================================================
      */
 
     public function parent()

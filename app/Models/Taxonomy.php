@@ -193,6 +193,16 @@ class Taxonomy extends Model
         return $this->getUrl(false);
     }
 
+    public function setCoverFileAttribute($file)
+    {
+        $media = new Media(['file' => $file]);
+        $media->parent()->associate($this);
+
+        if ($media->save()) {
+            $this->cover()->associate($media);
+        }
+    }
+
     /**
      * ==================================================
      * Relationships
@@ -212,6 +222,11 @@ class Taxonomy extends Model
     public function parent()
     {
         return $this->belongsTo(Taxonomy::class);
+    }
+
+    public function cover()
+    {
+        return $this->belongsTo(Media::class);
     }
 
     public function children()
