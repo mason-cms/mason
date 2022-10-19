@@ -74,26 +74,6 @@
 
                     <div class="control">
                         <a
-                            class="button is-white rank-up-menu-item"
-                            href="#"
-                            title="@lang('menus.items.actions.rankUp.label')"
-                        >
-                            @icon('fa-chevron-up')
-                        </a>
-                    </div>
-
-                    <div class="control">
-                        <a
-                            class="button is-white rank-down-menu-item"
-                            href="#"
-                            title="@lang('menus.items.actions.rankDown.label')"
-                        >
-                            @icon('fa-chevron-down')
-                        </a>
-                    </div>
-
-                    <div class="control">
-                        <a
                             class="button is-white destroy-menu-item"
                             href="{{ route('backend.menus.items.destroy', [$item->menu, $item]) }}"
                             title="@lang('menus.items.actions.destroy.label')"
