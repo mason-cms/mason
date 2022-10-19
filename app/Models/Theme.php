@@ -15,6 +15,7 @@ class Theme
     public $vendor;
     public $project;
     public $version;
+    public $settings;
 
     public static function getInstance($name = null)
     {
@@ -159,7 +160,7 @@ class Theme
         return true;
     }
 
-    public function settings()
+    public function loadSettings()
     {
         $settings = $this->info('settings') ?? [];
 
@@ -177,11 +178,22 @@ class Theme
             $setting->value = $value;
         }
 
-        return collect($settings);
+        $this->settings = collect($settings);
     }
 
-    public function setting($key)
+    public function settings()
     {
-        return Setting::get($key);
+        if (! isset($this->settings)) {
+            $this->loadSettings();
+        }
+
+        return $this->settings;
+    }
+
+    public function setting($name)
+    {
+        if ($setting = $this->settings()->where('name', $name)->first()) {
+            return $setting->value;
+        }
     }
 }
