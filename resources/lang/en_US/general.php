@@ -10,4 +10,6 @@ return [
     ],
     'lock' => "Lock",
     'unlock' => "Unlock",
+    'yes' => "Yes",
+    'no' => "No",
 ];

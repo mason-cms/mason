@@ -8,4 +8,16 @@ return [
     'attributes' => [
         'id' => "ID",
     ],
+
+    'actions' => [
+        'save' => [
+            'label' => "Save",
+        ],
+    ],
+
+    'fields' => [
+        'file' => [
+            'cta' => "Choose a file...",
+        ],
+    ],
 ];

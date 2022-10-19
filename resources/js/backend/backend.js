@@ -36,3 +36,23 @@ $(document).ready(function () {
         }
     });
 });
+
+$(document)
+    .on('change', '.file .file-input', function (e) {
+        let $fileInput = $(this),
+            $file = $fileInput.parents('.file').first(),
+            $fileLabel = $file.find('label.file-label').first(),
+            $fileName = $file.find('.file-name').first();
+
+        $file.addClass('has-name');
+
+        if ($fileName.length === 0) {
+            $fileName = $('<span class="file-name"></span>').appendTo($fileLabel);
+        }
+
+        if (typeof e.target.files === 'object' && e.target.files.length > 0) {
+            $fileName.text(e.target.files[0].name);
+        } else {
+            $fileName.text('');
+        }
+    });

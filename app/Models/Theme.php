@@ -157,4 +157,15 @@ class Theme
 
         return true;
     }
+
+    public function settings()
+    {
+        $settings = $this->info('settings') ?? [];
+
+        foreach ($settings as &$setting) {
+            Setting::get($setting->name);
+        }
+
+        return collect($settings);
+    }
 }

@@ -74,13 +74,13 @@ class Setup extends Command
     {
         $this->info("Database setup...");
 
-        $this->setEnv([
+        setEnv([
             'DB_CONNECTION' => $this->ask("Database connection", env('DB_CONNECTION')),
             'DB_HOST' => $this->ask("Database host", env('DB_HOST')),
             'DB_PORT' => $this->ask("Database port", env('DB_PORT')),
             'DB_DATABASE' => $this->ask("Database name", env('DB_DATABASE')),
             'DB_USERNAME' => $this->ask("Database username", env('DB_USERNAME')),
-            'DB_PASSWORD' => $this->quote($this->ask("Database password", env('DB_PASSWORD'))),
+            'DB_PASSWORD' => quote($this->ask("Database password", env('DB_PASSWORD'))),
         ]);
     }
 
@@ -88,12 +88,12 @@ class Setup extends Command
     {
         $this->info("Mail setup...");
 
-        $this->setEnv([
+        setEnv([
             'MAIL_MAILER' => $this->ask("Mailer", env('MAIL_MAILER')),
             'MAIL_HOST' => $this->ask("Mail host", env('MAIL_HOST')),
             'MAIL_PORT' => $this->ask("Mail port", env('MAIL_PORT')),
             'MAIL_USERNAME' => $this->ask("Mail username", env('MAIL_USERNAME')),
-            'MAIL_PASSWORD' => $this->quote($this->ask("Mail password", env('MAIL_PASSWORD'))),
+            'MAIL_PASSWORD' => quote($this->ask("Mail password", env('MAIL_PASSWORD'))),
             'MAIL_ENCRYPTION' => $this->ask("Mail encryption", env('MAIL_ENCRYPTION')),
             'MAIL_FROM_ADDRESS' => $this->ask("Mail from address", env('MAIL_FROM_ADDRESS')),
             'MAIL_FROM_NAME' => $this->ask("Mail from name", env('MAIL_FROM_NAME')),
@@ -105,7 +105,7 @@ class Setup extends Command
         $this->info("Storage setup...");
 
         if ($filesystemDriver = $this->ask("Which filesystem driver do you want to use?", env('FILESYSTEM_DRIVER'))) {
-            $this->setEnv(['FILESYSTEM_DRIVER' => $filesystemDriver]);
+            setEnv(['FILESYSTEM_DRIVER' => $filesystemDriver]);
 
             switch ($filesystemDriver) {
                 case 'local':
@@ -120,7 +120,7 @@ class Setup extends Command
     {
         $this->info("App setup...");
 
-        $this->setEnv([
+        setEnv([
             'APP_URL' => $this->ask("What will be the URL of your site (include http(s))?", env('APP_URL')),
             'APP_TIMEZONE' => $this->ask("Please enter your timezone (choose from: https://www.php.net/manual/en/timezones.php)", env('APP_TIMEZONE')),
         ]);
@@ -130,24 +130,24 @@ class Setup extends Command
     {
         $this->info("Site setup...");
 
-        $this->setEnv([
-            'SITE_NAME' => $this->quote($this->ask("What will be the name of your site?", env('SITE_NAME'))),
-            'SITE_DESCRIPTION' => $this->quote($this->ask("Short description of your site", env('SITE_DESCRIPTION'))),
+        setEnv([
+            'SITE_NAME' => $this->ask("What will be the name of your site?", env('SITE_NAME')),
+            'SITE_DESCRIPTION' => $this->ask("Short description of your site", env('SITE_DESCRIPTION')),
             'SITE_THEME' => $this->ask("Which theme do you want to use for your site?", env('SITE_THEME')),
         ]);
 
-        $this->setEnv([
+        setEnv([
             'SITE_ALLOW_USER_REGISTRATION' => $this->confirm("Do you want to allow user registration?", env('SITE_ALLOW_USER_REGISTRATION', false)),
         ]);
 
         if (env('SITE_ALLOW_USER_REGISTRATION')) {
-            $this->setEnv([
+            setEnv([
                 'SITE_RESTRICT_USER_EMAIL_DOMAIN' => $this->confirm("Do you want to put a restriction on the users' email domain (eg: myorganization.com)?", env('SITE_RESTRICT_USER_EMAIL_DOMAIN', false)),
             ]);
 
             if (env('SITE_RESTRICT_USER_EMAIL_DOMAIN')) {
-                $this->setEnv([
-                    'SITE_ALLOWED_USER_EMAIL_DOMAINS' => $this->quote($this->ask("Please enter allowed domains (separated by a coma)", env('SITE_ALLOWED_USER_EMAIL_DOMAINS'))),
+                setEnv([
+                    'SITE_ALLOWED_USER_EMAIL_DOMAINS' => $this->ask("Please enter allowed domains (separated by a coma)", env('SITE_ALLOWED_USER_EMAIL_DOMAINS')),
                 ]);
             }
         }
@@ -167,12 +167,12 @@ class Setup extends Command
     protected function setupMode()
     {
         if ($this->confirm("Is this site in production?", env('APP_ENV') === 'production')) {
-            $this->setEnv([
+            setEnv([
                 'APP_ENV' => 'production',
                 'APP_DEBUG' => 'false',
             ]);
         } else {
-            $this->setEnv([
+            setEnv([
                 'APP_ENV' => 'local',
                 'APP_DEBUG' => 'true',
             ]);
@@ -181,7 +181,7 @@ class Setup extends Command
 
     protected function setupMisc()
     {
-        $this->setEnv([
+        setEnv([
             'FONTAWESOME_KIT' => $this->ask("Please enter your FontAwesome kit ID", env('FONTAWESOME_KIT')),
         ]);
     }
@@ -225,27 +225,5 @@ class Setup extends Command
     protected function clearCache()
     {
         Artisan::call('config:clear', [], $this->getOutput());
-    }
-
-    protected function setEnv($data = [], $forceQuote = false)
-    {
-        $path = base_path('.env');
-
-        if (file_exists($path)) {
-            foreach ($data as $key => $value) {
-                if ($forceQuote || str_contains($value, " ")) {
-                    $value = $this->quote($value);
-                }
-
-                file_put_contents($path, str_replace(
-                    $key . '=' . env($key), $key . '=' . $value, file_get_contents($path)
-                ));
-            }
-        }
-    }
-
-    protected function quote($string)
-    {
-        return strlen($string) > 0 ? '"' . $string . '"' : "";
     }
 }

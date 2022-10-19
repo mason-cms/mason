@@ -58,8 +58,13 @@ Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(functio
 
     Route::prefix('/configuration')->name('configuration.')->group(function () {
         Route::get('/', [ConfigurationController::class, 'general'])->name('general');
+        Route::patch('/', [ConfigurationController::class, 'update'])->name('update');
 
-        Route::resource('setting', SettingsController::class);
+        Route::prefix('/setting')->name('setting.')->group(function () {
+            Route::get('/', [SettingsController::class, 'index'])->name('index');
+            Route::patch('/', [SettingsController::class, 'update'])->name('update');
+        });
+
         Route::resource('locale', LocaleController::class);
         Route::resource('entry-type', EntryTypeController::class);
         Route::resource('taxonomy-type', TaxonomyTypeController::class);

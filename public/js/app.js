@@ -2080,6 +2080,8 @@ __webpack_require__(/*! ./backend/menus */ "./resources/js/backend/menus.js");
   \*****************************************/
 /***/ (() => {
 
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
 $(window).add(document).on('ready load resize DOMSubtreeModified', function () {
   var windowWidth = $(window).width(),
       $body = $('body').removeClass('is-desktop is-tablet is-mobile');
@@ -2115,6 +2117,23 @@ $(document).ready(function () {
       }
     }
   });
+});
+$(document).on('change', '.file .file-input', function (e) {
+  var $fileInput = $(this),
+      $file = $fileInput.parents('.file').first(),
+      $fileLabel = $file.find('label.file-label').first(),
+      $fileName = $file.find('.file-name').first();
+  $file.addClass('has-name');
+
+  if ($fileName.length === 0) {
+    $fileName = $('<span class="file-name"></span>').appendTo($fileLabel);
+  }
+
+  if (_typeof(e.target.files) === 'object' && e.target.files.length > 0) {
+    $fileName.text(e.target.files[0].name);
+  } else {
+    $fileName.text('');
+  }
 });
 
 /***/ }),
