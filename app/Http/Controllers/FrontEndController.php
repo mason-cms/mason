@@ -93,17 +93,15 @@ class FrontEndController extends Controller
      */
     public function taxonomy(Request $request, ...$params)
     {
-        switch (count($params)) {
-            case 2:
-                $taxonomyType = $params[0];
-                $taxonomyName = $params[1];
-                break;
-
-            case 3:
-                $this->site->setLocale($localeName = $params[0]);
-                $taxonomyType = $params[1];
-                $taxonomyName = $params[2];
-                break;
+        if (isset($params[0]) && Locale::exists($params[0])) {
+            $this->site->setLocale($localeName = $params[0]);
+            $taxonomyType = $params[1] ?? null;
+            $taxonomyName = $params[2] ?? null;
+            $entryType = $params[3] ?? null;
+        } else {
+            $taxonomyType = $params[0] ?? null;
+            $taxonomyName = $params[1] ?? null;
+            $entryType = $params[2] ?? null;
         }
 
         if (isset($taxonomyType, $taxonomyName)) {
@@ -112,8 +110,19 @@ class FrontEndController extends Controller
                     return redirect()->to($taxonomy->url);
                 }
 
+                $entriesQuery = $taxonomy->entries();
+
+                if (isset($entryType)) {
+                    $entriesQuery->byType($entryType);
+                }
+
                 if ($view = $taxonomy->view()) {
-                    return response()->view($view, ['site' => $this->site, 'taxonomy' => $taxonomy]);
+                    return response()->view($view, [
+                        'site' => $this->site,
+                        'taxonomy' => $taxonomy,
+                        'entryType' => $entryType,
+                        'entries' => $entriesQuery->paginate(),
+                    ]);
                 }
             }
         }
