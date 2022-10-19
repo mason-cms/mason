@@ -127,7 +127,7 @@ class Theme
     {
         if (isset($this->name)) {
             return [
-                shell_exec("composer update {$this->name} --no-interaction --update-no-dev --prefer-dist --optimize-autoloader"),
+                shell_exec("composer update {$this->name} --no-interaction --no-dev --prefer-dist --optimize-autoloader"),
                 $this->createSymlink(),
                 $this->createMenus(),
             ];
