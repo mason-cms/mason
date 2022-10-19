@@ -61,7 +61,7 @@ class MenuItem extends Model
             if (! isset($item->rank)) {
                 if (isset($item->menu)) {
                     if ($lastMenuItem = $item->menu->items->last()) {
-                        $item->rank = $lastMenuItem + 1;
+                        $item->rank = $lastMenuItem->rank + 1;
                     }
                 }
             }
