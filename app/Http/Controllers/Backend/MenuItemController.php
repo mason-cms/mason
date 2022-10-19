@@ -82,6 +82,6 @@ class MenuItemController extends Controller
     {
         $item->deleteOrFail();
 
-        return redirect()->route('backend.menus.edit', [$menu]);
+        return redirect()->back();
     }
 }
