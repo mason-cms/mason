@@ -1,4 +1,10 @@
 <div class="box menu-item {{ $item->created_at->diffInSeconds() < 5 ? 'is-new' : '' }}">
+    <input
+        type="hidden"
+        name="menu[items][]"
+        value="{{ $item->getKey() }}"
+    />
+
     <div class="level">
         <div class="level-left">
             @if (isset($item->target) && $item->differs_from_target)
@@ -68,6 +74,26 @@
 
                     <div class="control">
                         <a
+                            class="button is-white rank-up-menu-item"
+                            href="#"
+                            title="@lang('menus.items.actions.rankUp.label')"
+                        >
+                            @icon('fa-chevron-up')
+                        </a>
+                    </div>
+
+                    <div class="control">
+                        <a
+                            class="button is-white rank-down-menu-item"
+                            href="#"
+                            title="@lang('menus.items.actions.rankDown.label')"
+                        >
+                            @icon('fa-chevron-down')
+                        </a>
+                    </div>
+
+                    <div class="control">
+                        <a
                             class="button is-white destroy-menu-item"
                             href="{{ route('backend.menus.items.destroy', [$item->menu, $item]) }}"
                             title="@lang('menus.items.actions.destroy.label')"
@@ -82,7 +108,7 @@
 </div>
 
 @if ($item->children->count() > 0)
-    <ul>
+    <ul class="ui-sortable">
         @foreach ($item->children as $child)
             <li>
                 @include('backend.menus.partials.item', ['item' => $child])

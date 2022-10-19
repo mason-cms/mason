@@ -1,5 +1,5 @@
 $(document)
-    .on('change', 'form.autosave', function () {
+    .on('change sortupdate', 'form.autosave', function () {
         $(this).submit();
     })
     .on('click', '[data-clear]', function (e) {

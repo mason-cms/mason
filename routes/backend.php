@@ -37,6 +37,7 @@ Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(functio
 
     Route::prefix('/menus')->name('menus.')->group(function () {
         Route::get('/', [MenuController::class, 'index'])->name('index');
+        Route::patch('/{menu}', [MenuController::class, 'update'])->name('update');
 
         Route::prefix('/{menu}/items')->name('items.')->group(function () {
             Route::get('/create', [MenuItemController::class, 'create'])->name('create');

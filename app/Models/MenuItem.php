@@ -21,13 +21,19 @@ class MenuItem extends Model
         'target',
         'href',
         'title',
+        'rank',
         'metadata',
     ];
 
     protected $casts = [
+        'rank' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
+    ];
+
+    protected $attributes = [
+        'rank' => 0,
     ];
 
     /**
@@ -40,6 +46,12 @@ class MenuItem extends Model
     {
         parent::boot();
 
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder
+                ->orderBy('rank')
+                ->orderBy('created_at');
+        });
+
         /**
          * When creating a new menu item, if the target is specified, set the href and title based on the target
          * unless they have already been set.
@@ -48,6 +60,14 @@ class MenuItem extends Model
             if (isset($item->target)) {
                 $item->href ??= $item->target->url;
                 $item->title ??= $item->target->title;
+            }
+
+            if (! isset($item->rank)) {
+                if (isset($item->menu)) {
+                    if ($lastMenuItem = $item->menu->items->last()) {
+                        $item->rank = $lastMenuItem + 1;
+                    }
+                }
             }
         });
 
@@ -81,11 +101,37 @@ class MenuItem extends Model
         return "{$this->title}";
     }
 
+    public function rankUp()
+    {
+
+    }
+
     /**
      * ==================================================
      * Accessors & Mutators
      * ==================================================
      */
+
+    public function getSiblingsAttribute()
+    {
+        if (isset($this->menu)) {
+            return $this->menu->items;
+        }
+    }
+
+    public function getNextItemAttribute()
+    {
+        if (isset($this->siblings, $this->rank)) {
+            return $this->siblings->where('rank', '>', $this->rank)->first();
+        }
+    }
+
+    public function getPreviousItemAttribute()
+    {
+        if (isset($this->siblings, $this->rank)) {
+            return $this->siblings->where('rank', '<', $this->rank)->last();
+        }
+    }
 
     public function getParentOptionsAttribute()
     {

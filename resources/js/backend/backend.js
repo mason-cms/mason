@@ -12,6 +12,11 @@ $(window).add(document).on('ready load resize DOMSubtreeModified', function () {
 });
 
 $(document).ready(function () {
+    /**
+     * Init jQuery UI plugins
+     */
+    $('.ui-sortable').sortable();
+
     $('.code-editor').each(function () {
         let $editor = $(this),
             editorMode = $editor.data('editor-mode') || "ace/mode/html",

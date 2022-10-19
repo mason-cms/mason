@@ -71,32 +71,29 @@
 
         @isset($menu)
             @if ($menu->root_items->count() > 0)
-                <fieldset class="menu-items">
-                    <ul>
-                        @foreach ($menu->root_items as $item)
-                            <li>
-                                @include('backend.menus.partials.item')
-                            </li>
-                        @endforeach
-                    </ul>
-                </fieldset>
-
-                <a
-                    class="button is-primary"
-                    href="{{ route('backend.menus.items.create', [$menu]) }}"
+                <form
+                    class="autosave"
+                    action="{{ route('backend.menus.update', [$menu]) }}"
+                    method="POST"
                 >
-                    @icon('fa-plus')
-                    <span>@lang('menus.items.actions.create.label')</span>
-                </a>
+                    @method('PATCH')
+                    @csrf
+
+                    <fieldset class="menu-items">
+                        <ul class="ui-sortable">
+                            @foreach ($menu->root_items as $item)
+                                <li>
+                                    @include('backend.menus.partials.item')
+                                </li>
+                            @endforeach
+                        </ul>
+                    </fieldset>
+                </form>
+
+                @include('backend.menus.items.partials.buttons.create')
             @else
                 <div class="section has-text-centered">
-                    <a
-                        class="button is-primary"
-                        href="{{ route('backend.menus.items.create', [$menu]) }}"
-                    >
-                        @icon('fa-plus')
-                        <span>@lang('menus.items.actions.create.label')</span>
-                    </a>
+                    @include('backend.menus.items.partials.buttons.create')
                 </div>
             @endif
         @endisset

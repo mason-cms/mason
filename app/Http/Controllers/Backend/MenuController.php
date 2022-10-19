@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Locale;
 use App\Models\Menu;
+use App\Models\MenuItem;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -32,5 +33,22 @@ class MenuController extends Controller
             'locales' => Locale::all(),
             'menu' => $menu ?? null,
         ]);
+    }
+
+    public function update(Request $request, Menu $menu)
+    {
+        $requestInput = $request->all();
+
+        if (isset($requestInput['menu']['items'])) {
+            $rank = 0;
+
+            foreach ($requestInput['menu']['items'] as $menuItemKey) {
+                if ($menuItem = MenuItem::find($menuItemKey)) {
+                    $menuItem->update(['rank' => $rank++]);
+                }
+            }
+        }
+
+        return redirect()->back();
     }
 }
