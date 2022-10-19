@@ -32,10 +32,6 @@ class MenuItem extends Model
         'deleted_at' => 'datetime',
     ];
 
-    protected $attributes = [
-        'rank' => 0,
-    ];
-
     /**
      * ==================================================
      * Static Methods
