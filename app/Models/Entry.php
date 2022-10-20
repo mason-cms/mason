@@ -61,6 +61,7 @@ class Entry extends Model
 
         static::addGlobalScope('order', function (Builder $builder) {
             $builder
+                ->orderBy('is_home', 'desc')
                 ->orderBy('published_at', 'desc')
                 ->orderBy('created_at', 'desc');
         });
