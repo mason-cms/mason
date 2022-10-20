@@ -53,9 +53,6 @@ class Deploy extends Command
         $this->info("Clearing cache...");
         Artisan::call('clear-compiled', [], $this->getOutput());
 
-        $this->info("Optimizing...");
-        Artisan::call('optimize', [], $this->getOutput());
-
         $this->info("Restarting queues...");
         Artisan::call('queue:restart', [], $this->getOutput());
 
