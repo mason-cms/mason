@@ -58,10 +58,10 @@ class RemoveTheme extends Command
 
             $this->removeSymlink();
 
-            return 0;
+            return Command::SUCCESS;
         } else {
             $this->error("No theme to remove.");
-            return 1;
+            return Command::FAILURE;
         }
     }
 

@@ -67,7 +67,7 @@ class Setup extends Command
 
         $this->info("Mason CMS setup completed.");
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     protected function setupDatabase()

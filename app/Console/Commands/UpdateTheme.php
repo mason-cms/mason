@@ -52,14 +52,14 @@ class UpdateTheme extends Command
 
             if ($this->theme->update()) {
                 $this->info("Theme updated");
-                return 0;
+                return Command::SUCCESS;
             } else {
                 $this->error("Theme could not be updated");
-                return 1;
+                return Command::FAILURE;
             }
         } else {
             $this->error("No theme to update.");
-            return 1;
+            return Command::FAILURE;
         }
     }
 }

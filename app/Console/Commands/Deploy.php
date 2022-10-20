@@ -19,7 +19,7 @@ class Deploy extends Command
      *
      * @var string
      */
-    protected $description = 'Initialize Mason CMS app.';
+    protected $description = 'Deploy Mason CMS app.';
 
     /**
      * Create a new command instance.
@@ -61,6 +61,6 @@ class Deploy extends Command
 
         $this->info("Mason deployment completed.");
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
