@@ -104,10 +104,10 @@ class Setup extends Command
     {
         $this->info("Storage setup...");
 
-        if ($filesystemDriver = $this->ask("Which filesystem driver do you want to use?", env('FILESYSTEM_DRIVER'))) {
-            setEnv(['FILESYSTEM_DRIVER' => $filesystemDriver]);
+        if ($filesystemDisk = $this->ask("Which filesystem driver do you want to use?", env('FILESYSTEM_DISK'))) {
+            setEnv(['FILESYSTEM_DISK' => $filesystemDisk]);
 
-            switch ($filesystemDriver) {
+            switch ($filesystemDisk) {
                 case 'local':
                     $this->info("Creating storage symlink...");
                     Artisan::call('storage:link', [], $this->getOutput());
