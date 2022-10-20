@@ -61,6 +61,7 @@ Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(functio
     Route::prefix('/configuration')->name('configuration.')->group(function () {
         Route::get('/', [ConfigurationController::class, 'general'])->name('general');
         Route::patch('/', [ConfigurationController::class, 'update'])->name('update');
+        Route::get('/app/update', [ConfigurationController::class, 'updateApp'])->name('app.update');
         Route::get('/theme/update', [ConfigurationController::class, 'updateTheme'])->name('theme.update');
 
         Route::prefix('/setting')->name('setting.')->group(function () {

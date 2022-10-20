@@ -93,13 +93,23 @@
                     </div>
 
                     <div class="card-content">
-                        <a
-                            class="button is-info {{ ! config('site.theme') ? 'is-disabled' : '' }}"
-                            href="{{ config('site.theme') ? route('backend.configuration.theme.update') : '' }}"
-                        >
-                            @icon('fa-rotate')
-                            <span>@lang('configuration.general.actions.updateTheme.label')</span>
-                        </a>
+                        <div class="buttons">
+                            <a
+                                class="button is-info"
+                                href="{{ route('backend.configuration.app.update') }}"
+                            >
+                                @icon('fa-rotate')
+                                <span>@lang('configuration.general.actions.updateApp.label')</span>
+                            </a>
+
+                            <a
+                                class="button is-info {{ ! config('site.theme') ? 'is-disabled' : '' }}"
+                                href="{{ config('site.theme') ? route('backend.configuration.theme.update') : '' }}"
+                            >
+                                @icon('fa-rotate')
+                                <span>@lang('configuration.general.actions.updateTheme.label')</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

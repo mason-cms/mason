@@ -68,6 +68,19 @@ class ConfigurationController extends Controller
     }
 
     /**
+     * Update App
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateApp(Request $request)
+    {
+        Artisan::call('mason:update --deploy');
+
+        return redirect()->back();
+    }
+
+    /**
      * Update Theme
      *
      * @param Request $request
@@ -75,8 +88,7 @@ class ConfigurationController extends Controller
      */
     public function updateTheme(Request $request)
     {
-        $site = site(false);
-        $site->theme()->update();
+        Artisan::call('mason:theme:update');
 
         return redirect()->back();
     }

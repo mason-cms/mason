@@ -39,6 +39,10 @@ return [
                 'label' => "Save",
             ],
 
+            'updateApp' => [
+                'label' => "Update Mason CMS",
+            ],
+
             'updateTheme' => [
                 'label' => "Update Theme",
             ],

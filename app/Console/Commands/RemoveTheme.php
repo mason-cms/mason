@@ -54,7 +54,7 @@ class RemoveTheme extends Command
         if (isset($this->theme) && strlen($this->theme->name()) > 0) {
             $this->info("Removing theme: {$this->theme->name()}");
 
-            $this->line(shell_exec("composer remove {$this->theme->package()} --no-interaction"));
+            $this->exec("composer remove {$this->theme->package()} --no-interaction");
 
             $this->removeSymlink();
 
@@ -79,6 +79,15 @@ class RemoveTheme extends Command
                     $this->info("Symlink could not be removed");
                 }
             }
+        }
+    }
+
+    protected function exec($cmd, $print = true)
+    {
+        $output = shell_exec($cmd);
+
+        if ($print) {
+            $this->line("{$output}");
         }
     }
 }

@@ -33,9 +33,7 @@ class Update extends Command
         $basePath = base_path();
         $branch = $this->option('branch');
 
-        $cmdOutput = shell_exec("cd {$basePath}; git checkout {$branch}; git pull origin {$branch};");
-
-        $this->line("{$cmdOutput}");
+        $this->exec("cd {$basePath}; git checkout {$branch}; git pull origin {$branch};");
 
         if ($this->option('deploy')) {
             Artisan::call('mason:deploy');
@@ -44,5 +42,14 @@ class Update extends Command
         $this->info("Mason update completed.");
 
         return Command::SUCCESS;
+    }
+
+    protected function exec($cmd, $print = true)
+    {
+        $output = shell_exec($cmd);
+
+        if ($print) {
+            $this->line("{$output}");
+        }
     }
 }
