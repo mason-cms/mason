@@ -12,7 +12,7 @@ class Update extends Command
      *
      * @var string
      */
-    protected $signature = 'mason:update {--deploy}';
+    protected $signature = 'mason:update {--branch=master} {--deploy}';
 
     /**
      * The console command description.
@@ -31,8 +31,9 @@ class Update extends Command
         $this->info("Updating Mason CMS...");
 
         $basePath = base_path();
+        $branch = $this->option('branch');
 
-        $cmdOutput = shell_exec("cd {$basePath}; git pull;");
+        $cmdOutput = shell_exec("cd {$basePath}; git checkout {$branch}; git pull origin {$branch};");
 
         $this->line("{$cmdOutput}");
 
