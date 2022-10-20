@@ -76,7 +76,7 @@ class ConfigurationController extends Controller
     public function updateTheme(Request $request)
     {
         $site = site(false);
-        dd($site->theme()->update());
+        $site->theme()->update();
 
         return redirect()->back();
     }
