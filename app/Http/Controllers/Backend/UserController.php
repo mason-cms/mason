@@ -3,9 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Entry;
-use App\Models\EntryType;
-use App\Models\Locale;
 use App\Models\User;
 use Illuminate\Http\Request;
 
