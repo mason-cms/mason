@@ -67,6 +67,20 @@ class ConfigurationController extends Controller
         return redirect()->route('backend.configuration.general');
     }
 
+    /**
+     * Update Theme
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateTheme(Request $request)
+    {
+        $site = site(false);
+        dd($site->theme()->update());
+
+        return redirect()->back();
+    }
+
     protected function getFields()
     {
         return [

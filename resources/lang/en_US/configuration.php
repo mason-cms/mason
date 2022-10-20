@@ -33,8 +33,14 @@ return [
         ],
 
         'actions' => [
+            'title' => "Actions",
+
             'save' => [
                 'label' => "Save",
+            ],
+
+            'updateTheme' => [
+                'label' => "Update Theme",
             ],
         ],
     ],

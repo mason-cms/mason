@@ -32,52 +32,76 @@
 
         <hr />
 
-        <div class="card">
-            <div class="card-content">
-                @foreach ($fields as $field)
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">
-                                {{ $field['label'] }}
-                            </label>
-                        </div>
+        <div class="columns">
+            <div class="column is-8">
+                <div class="card">
+                    <div class="card-content">
+                        @foreach ($fields as $field)
+                            <div class="field is-horizontal">
+                                <div class="field-label is-normal">
+                                    <label class="label">
+                                        {{ $field['label'] }}
+                                    </label>
+                                </div>
 
-                        <div class="field-body">
-                            <div class="field">
-                                <div class="control">
-                                    @if ($field['type'] === 'text')
-                                        <input
-                                            class="input"
-                                            type="text"
-                                            name="configuration[{{ $field['name'] }}]"
-                                            maxlength="255"
-                                            value="{!! $field['value'] !!}"
-                                            {{ $field['required'] ? 'required' : '' }}
-                                        />
-                                    @elseif ($field['type'] === 'boolean')
-                                        <label class="radio">
-                                            <input
-                                                type="radio"
-                                                name="configuration[{{ $field['name'] }}]"
-                                                value="1"
-                                                {{ $field['value'] === true ? 'checked' : '' }}
-                                            /> @lang('general.yes')
-                                        </label>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <div class="control">
+                                            @if ($field['type'] === 'text')
+                                                <input
+                                                    class="input"
+                                                    type="text"
+                                                    name="configuration[{{ $field['name'] }}]"
+                                                    maxlength="255"
+                                                    value="{!! $field['value'] !!}"
+                                                    {{ $field['required'] ? 'required' : '' }}
+                                                />
+                                            @elseif ($field['type'] === 'boolean')
+                                                <label class="radio">
+                                                    <input
+                                                        type="radio"
+                                                        name="configuration[{{ $field['name'] }}]"
+                                                        value="1"
+                                                        {{ $field['value'] === true ? 'checked' : '' }}
+                                                    /> @lang('general.yes')
+                                                </label>
 
-                                        <label class="radio">
-                                            <input
-                                                type="radio"
-                                                name="configuration[{{ $field['name'] }}]"
-                                                value="0"
-                                                {{ $field['value'] === false ? 'checked' : '' }}
-                                            /> @lang('general.no')
-                                        </label>
-                                    @endif
+                                                <label class="radio">
+                                                    <input
+                                                        type="radio"
+                                                        name="configuration[{{ $field['name'] }}]"
+                                                        value="0"
+                                                        {{ $field['value'] === false ? 'checked' : '' }}
+                                                    /> @lang('general.no')
+                                                </label>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
+            </div>
+
+            <div class="column is-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-header-title">
+                            @lang('configuration.general.actions.title')
+                        </h3>
+                    </div>
+
+                    <div class="card-content">
+                        <a
+                            class="button is-info {{ ! config('site.theme') ? 'is-disabled' : '' }}"
+                            href="{{ config('site.theme') ? route('backend.configuration.theme.update') : '' }}"
+                        >
+                            @icon('fa-rotate')
+                            <span>@lang('configuration.general.actions.updateTheme.label')</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
