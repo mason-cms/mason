@@ -12,7 +12,7 @@ class Deploy extends Command
      *
      * @var string
      */
-    protected $signature = 'mason:deploy';
+    protected $signature = 'mason:deploy {--quick}';
 
     /**
      * The console command description.
@@ -38,12 +38,14 @@ class Deploy extends Command
      */
     public function handle()
     {
-        $this->info("Installing composer dependencies...");
-        $this->line(shell_exec("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev"));
+        if (! $this->option('quick')) {
+            $this->info("Installing composer dependencies...");
+            $this->line(shell_exec("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev"));
 
-        $this->info("Installing npm dependencies...");
-        $this->line(shell_exec("npm install"));
-        $this->line(shell_exec("npm run production"));
+            $this->info("Installing npm dependencies...");
+            $this->line(shell_exec("npm install"));
+            $this->line(shell_exec("npm run production"));
+        }
 
         $this->info("Running database migrations...");
         Artisan::call('migrate --force', [], $this->getOutput());
