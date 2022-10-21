@@ -34,7 +34,6 @@ $(document).ready(function () {
 
             if ($editorInput.length > 0) {
                 editor.session.on('change', function() {
-                    console.log(editor.session.getValue());
                     $editorInput.val(editor.session.getValue());
                 });
             }
