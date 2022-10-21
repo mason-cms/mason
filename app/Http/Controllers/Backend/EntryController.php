@@ -120,6 +120,6 @@ class EntryController extends Controller
     {
         $entry->deleteOrFail();
 
-        return redirect()->route('backend.entry.index', [$entryType]);
+        return redirect()->route('backend.entries.index', [$entryType]);
     }
 }
