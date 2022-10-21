@@ -45,7 +45,7 @@
                     <div class="control">
                         <textarea
                             id="taxonomy-description"
-                            class="textarea"
+                            class="textarea is-code"
                             name="taxonomy[description]"
                             rows="20"
                         >{!! $taxonomy->description !!}</textarea>
