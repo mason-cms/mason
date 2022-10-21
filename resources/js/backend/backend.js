@@ -17,27 +17,30 @@ $(document).ready(function () {
      */
     $('.ui-sortable').sortable();
 
-    $('.code-editor').each(function () {
-        let $editor = $(this),
-            editorMode = $editor.data('editor-mode') || "ace/mode/html",
-            editorMaxLines = $editor.data('editor-max-lines') || 30,
-            editorInput = $editor.data('editor-input');
+    /**
+     * Init Ace Code Editor
+     */
+    $('textarea.is-code').each(function () {
+        let $textarea = $(this).hide(),
+            editorMode = $textarea.data('editor-mode') || "ace/mode/html",
+            editorMaxLines = $textarea.data('editor-max-lines') || $textarea.attr('rows') || 30;
 
-        let editor = ace.edit(this, {
+        let $editor = $('<div />')
+            .addClass('code-editor')
+            .css('min-height', editorMaxLines + 'em')
+            .insertAfter($textarea);
+
+        let editor = ace.edit($editor.get(0), {
             mode: editorMode,
-            maxLines: editorMaxLines,
+            maxLines: parseInt(editorMaxLines),
             useWorker: false
         });
 
-        if (typeof editorInput === 'string' && editorInput.length > 0) {
-            let $editorInput = $(editorInput);
+        editor.setValue($textarea.val(), -1);
 
-            if ($editorInput.length > 0) {
-                editor.session.on('change', function() {
-                    $editorInput.val(editor.session.getValue());
-                });
-            }
-        }
+        editor.session.on('change', function() {
+            $textarea.val(editor.session.getValue());
+        });
     });
 });
 

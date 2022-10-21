@@ -47,18 +47,12 @@
 
                 <div class="field">
                     <div class="control">
-                        <div
-                            class="code-editor"
-                            data-editor-input="#entry-content"
-                            style="min-height: 400px;"
-                        >{{ $entry->content }}</div>
-
                         <textarea
                             id="entry-content"
-                            class="textarea is-hidden"
+                            class="textarea is-code"
                             name="entry[content]"
-                            rows="20"
-                        >{{ $entry->content }}</textarea>
+                            rows="30"
+                        >{!! $entry->content !!}</textarea>
                     </div>
                 </div>
             </div>
