@@ -18,9 +18,7 @@ class MenuItemController extends Controller
      */
     public function create(Request $request, Menu $menu)
     {
-        $requestInput = $request->all();
-
-        $item = new MenuItem($requestInput['item'] ?? []);
+        $item = new MenuItem($request->all()['item'] ?? []);
         $item->menu()->associate($menu);
         $item->saveOrFail();
 
@@ -63,9 +61,7 @@ class MenuItemController extends Controller
      */
     public function update(Request $request, Menu $menu, MenuItem $item)
     {
-        $requestInput = $request->all();
-
-        $item->updateOrFail($requestInput['item'] ?? []);
+        $item->updateOrFail($request->all()['item'] ?? []);
 
         return redirect()->back();
     }

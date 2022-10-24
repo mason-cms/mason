@@ -43,9 +43,7 @@ class EntryTypeController extends Controller
      */
     public function create(Request $request)
     {
-        $requestInput = $request->all();
-
-        $entryType = new EntryType($requestInput['entry_type'] ?? []);
+        $entryType = new EntryType($request->all()['entry_type'] ?? []);
 
         return response()->view('backend.configuration.entry-types.create', compact('entryType'));
     }
@@ -59,9 +57,7 @@ class EntryTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $requestInput = $request->all();
-
-        $entryType = new EntryType($requestInput['entry_type'] ?? []);
+        $entryType = new EntryType($request->all()['entry_type'] ?? []);
 
         $entryType->saveOrFail();
 
@@ -101,9 +97,7 @@ class EntryTypeController extends Controller
      */
     public function update(Request $request, EntryType $entryType)
     {
-        $requestInput = $request->all();
-
-        $entryType->updateOrFail($requestInput['entry_type'] ?? []);
+        $entryType->updateOrFail($request->all()['entry_type'] ?? []);
 
         return redirect()->route('backend.configuration.entry-type.index');
     }

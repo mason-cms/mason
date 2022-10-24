@@ -43,9 +43,7 @@ class LocaleController extends Controller
      */
     public function create(Request $request)
     {
-        $requestInput = $request->all();
-
-        $locale = new Locale($requestInput['locale'] ?? []);
+        $locale = new Locale($request->all()['locale'] ?? []);
 
         return response()->view('backend.configuration.locales.create', compact('locale'));
     }
@@ -59,9 +57,7 @@ class LocaleController extends Controller
      */
     public function store(Request $request)
     {
-        $requestInput = $request->all();
-
-        $locale = new Locale($requestInput['locale'] ?? []);
+        $locale = new Locale($request->all()['locale'] ?? []);
 
         $locale->saveOrFail();
 
@@ -101,9 +97,7 @@ class LocaleController extends Controller
      */
     public function update(Request $request, Locale $locale)
     {
-        $requestInput = $request->all();
-
-        $locale->updateOrFail($requestInput['locale'] ?? []);
+        $locale->updateOrFail($request->all()['locale'] ?? []);
 
         return redirect()->route('backend.configuration.locale.index');
     }

@@ -47,9 +47,7 @@ class MediumController extends Controller
      */
     public function create(Request $request)
     {
-        $requestInput = $request->all();
-
-        $medium = new Medium($requestInput['medium'] ?? []);
+        $medium = new Medium($request->all()['medium'] ?? []);
 
         return response()->view('backend.media.create', [
             'medium' => $medium,
@@ -65,9 +63,7 @@ class MediumController extends Controller
      */
     public function store(Request $request)
     {
-        $requestInput = $request->all();
-
-        $medium = new Medium($requestInput['medium'] ?? []);
+        $medium = new Medium($request->all()['medium'] ?? []);
 
         $medium->saveOrFail();
 

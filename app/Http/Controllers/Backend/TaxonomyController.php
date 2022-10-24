@@ -98,9 +98,7 @@ class TaxonomyController extends Controller
      */
     public function update(Request $request, TaxonomyType $taxonomyType, Taxonomy $taxonomy)
     {
-        $requestInput = $request->all();
-
-        $taxonomy->updateOrFail($requestInput['taxonomy'] ?? []);
+        $taxonomy->updateOrFail($request->all()['taxonomy'] ?? []);
 
         if ($request->has('publish')) {
             $taxonomy->publish();

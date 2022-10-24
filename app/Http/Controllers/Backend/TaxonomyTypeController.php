@@ -43,9 +43,7 @@ class TaxonomyTypeController extends Controller
      */
     public function create(Request $request)
     {
-        $requestInput = $request->all();
-
-        $taxonomyType = new TaxonomyType($requestInput['taxonomy_type'] ?? []);
+        $taxonomyType = new TaxonomyType($request->all()['taxonomy_type'] ?? []);
 
         return response()->view('backend.configuration.taxonomy-types.create', compact('taxonomyType'));
     }
@@ -59,9 +57,7 @@ class TaxonomyTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $requestInput = $request->all();
-
-        $taxonomyType = new TaxonomyType($requestInput['taxonomy_type'] ?? []);
+        $taxonomyType = new TaxonomyType($request->all()['taxonomy_type'] ?? []);
 
         $taxonomyType->saveOrFail();
 
@@ -101,9 +97,7 @@ class TaxonomyTypeController extends Controller
      */
     public function update(Request $request, TaxonomyType $taxonomyType)
     {
-        $requestInput = $request->all();
-
-        $taxonomyType->updateOrFail($requestInput['taxonomy_type'] ?? []);
+        $taxonomyType->updateOrFail($request->all()['taxonomy_type'] ?? []);
 
         return redirect()->route('backend.configuration.taxonomy-type.index');
     }

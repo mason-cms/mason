@@ -97,9 +97,7 @@ class EntryController extends Controller
      */
     public function update(Request $request, EntryType $entryType, Entry $entry)
     {
-        $requestInput = $request->all();
-
-        $entry->updateOrFail($requestInput['entry'] ?? []);
+        $entry->updateOrFail($request->all()['entry'] ?? []);
 
         if ($request->has('publish')) {
             $entry->publish();

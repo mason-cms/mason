@@ -61,9 +61,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $requestInput = $request->input();
-
-        $user = new User($requestInput['user'] ?? []);
+        $user = new User($request->all()['user'] ?? []);
 
         $user->saveOrFail();
 
@@ -104,9 +102,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $requestInput = $request->all();
-
-        $user->updateOrFail($requestInput['user'] ?? []);
+        $user->updateOrFail($request->all()['user'] ?? []);
 
         return redirect()->back();
     }

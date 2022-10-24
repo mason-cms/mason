@@ -31,8 +31,7 @@ class ConfigurationController extends Controller
      */
     public function update(Request $request)
     {
-        $requestInput = $request->all();
-        $configuration = $requestInput['configuration'] ?? [];
+        $configuration = $request->all()['configuration'] ?? [];
 
         $oldTheme = env('SITE_THEME');
 
