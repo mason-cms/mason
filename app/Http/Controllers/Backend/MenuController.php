@@ -35,6 +35,13 @@ class MenuController extends Controller
         ]);
     }
 
+    /**
+     * Update Menu
+     *
+     * @param Request $request
+     * @param Menu $menu
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, Menu $menu)
     {
         $requestInput = $request->all();
