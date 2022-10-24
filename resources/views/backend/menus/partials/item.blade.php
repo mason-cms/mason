@@ -7,14 +7,6 @@
 
     <div class="level">
         <div class="level-left">
-            @if (isset($item->target) && $item->differs_from_target)
-                <div class="level-item">
-                    <span title="@lang('menus.items.alerts.differs_from_target')">
-                        @icon('fa-triangle-exclamation fa-lg', 'is-large has-text-danger')
-                    </span>
-                </div>
-            @endif
-
             <div class="level-item">
                 <div>
                     <h4 class="title is-4">

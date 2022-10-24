@@ -48,11 +48,11 @@ class MenuItem extends Model
                 ->orderBy('created_at');
         });
 
-        /**
-         * When creating a new menu item, if the target is specified, set the href and title based on the target
-         * unless they have already been set.
-         */
         static::creating(function ($item) {
+            /**
+             * When creating a new menu item, if the target is specified, set the href and title based on the target
+             * unless they have already been set.
+             */
             if (isset($item->target)) {
                 $item->href ??= $item->target->url;
                 $item->title ??= $item->target->title;
@@ -67,10 +67,10 @@ class MenuItem extends Model
             }
         });
 
-        /**
-         * When a menu item has been deleted, we need to delete all the children as well.
-         */
         static::deleted(function ($item) {
+            /**
+             * When a menu item has been deleted, we need to delete all the children as well.
+             */
             $item->children()->delete();
         });
     }
@@ -95,11 +95,6 @@ class MenuItem extends Model
     public function __toString()
     {
         return "{$this->title}";
-    }
-
-    public function rankUp()
-    {
-
     }
 
     /**
@@ -148,6 +143,8 @@ class MenuItem extends Model
             $optgroups["{$taxonomyType}"] = $taxonomyType->taxonomies;
         }
 
+        $optgroups[__('media.title')] = Medium::all();
+
         return $optgroups;
     }
 
@@ -164,12 +161,6 @@ class MenuItem extends Model
                 }
             }
         }
-    }
-
-    public function getDiffersFromTargetAttribute()
-    {
-        return isset($this->target)
-            && ( $this->target->url !== $this->href || $this->target->title !== $this->title );
     }
 
     /**

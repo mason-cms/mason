@@ -1,22 +1,20 @@
-$(document).on('ready', function () {
-    var $body = $('body');
-
-    $(document).on('mason:sameHeight:resize', '.same-height-cards', function () {
-        var $group = $(this),
+$(document)
+    .on('mason:sameHeight:resize', '.same-height-cards', function () {
+        let $group = $(this),
             $cards = $group.find('.card'),
             maxHeight = 0;
 
         $cards.each(function () {
-            var $card = $(this),
+            let $card = $(this),
                 $spacer = $card.children('.card-spacer').height(0),
                 height = parseInt($card.height());
 
             if (height > maxHeight) maxHeight = height;
         });
 
-        if (! $body.hasClass('is-mobile')) {
+        if (! $('body').hasClass('is-mobile')) {
             $cards.each(function () {
-                var $card = $(this),
+                let $card = $(this),
                     height = parseInt($card.height()),
                     $spacer = $card.children('.card-spacer').last(),
                     spacing = maxHeight - height;
@@ -25,7 +23,6 @@ $(document).on('ready', function () {
             });
         }
     });
-});
 
 $(window).add(document).on('ready load resize', function () {
     $('.same-height-cards').trigger('mason:sameHeight:resize');

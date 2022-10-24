@@ -2,7 +2,7 @@ $(document)
     .on('click', '[rel="open-modal"]', function (e) {
         e.preventDefault();
 
-        var $this = $(this),
+        let $this = $(this),
             href = $this.attr('href'),
             $modal;
 
@@ -10,7 +10,7 @@ $(document)
             $modal = $(href);
             $modal.trigger('mason:modal:open');
         } else {
-            var $modalContainer = $('<div class="modal-container"></div>');
+            let $modalContainer = $('<div class="modal-container"></div>');
 
             $modalContainer
                 .appendTo($('body'))
@@ -23,7 +23,7 @@ $(document)
     .on('click', '[rel="close-modal"]', function (e) {
         e.preventDefault();
 
-        var $this = $(this),
+        let $this = $(this),
             href = $this.attr('href'),
             $modal;
 
@@ -38,7 +38,7 @@ $(document)
     .on('click', '.modal-background', function (e) {
         e.preventDefault();
 
-        var $modalBackground = $(this),
+        let $modalBackground = $(this),
             $modal = $modalBackground.parents('.modal').first();
 
         $modal.trigger('mason:modal:close');
@@ -49,7 +49,7 @@ $(document)
         }
     })
     .on('mason:modal:open', '.modal', function () {
-        var $modal = $(this);
+        let $modal = $(this);
 
         $modal.addClass('is-active');
         $('html').addClass('is-clipped');
@@ -57,7 +57,7 @@ $(document)
         $modal.trigger('mason:modal:open:done');
     })
     .on('mason:modal:close', '.modal', function () {
-        var $modal = $(this);
+        let $modal = $(this);
 
         $modal.removeClass('is-active');
 

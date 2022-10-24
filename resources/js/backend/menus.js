@@ -1,6 +1,6 @@
 $(document)
     .on('change', '#item-target', function () {
-        var $itemTarget = $(this),
+        let $itemTarget = $(this),
             $itemTargetOptionSelected = $itemTarget.find('option:selected'),
             itemTargetValue = $itemTarget.val(),
             itemTargetText = $itemTargetOptionSelected.length === 1 ? $itemTargetOptionSelected.text() : '',
@@ -9,18 +9,14 @@ $(document)
             $itemHref = $('#item-href');
 
         if ($itemTitle.length === 1) {
-            if (itemTargetValue) {
-                $itemTitle.val(itemTargetText);
-            } else {
-                $itemTitle.val('');
-            }
+            $itemTitle.val(itemTargetText || '');
         }
 
         if ($itemHref.length === 1) {
             $itemHref.val(itemTargetUrl);
         }
     })
-    .on('ready', function () {
+    .ready(function () {
         /**
          * When a new menu item has just been created it will bear the .is-new class and we should trigger the
          * edit action right away, which will open a modal window.

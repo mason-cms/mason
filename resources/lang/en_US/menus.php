@@ -96,11 +96,5 @@ return [
                 'label' => "Cancel",
             ],
         ],
-
-        'alerts' => [
-            'differs_from_target' => "Details for this menu item differs from the target",
-            'href_differs_from_target' => "The URL differs from the target's URL: :target_url",
-            'title_differs_from_target' => "The title differs from the target's title: :target_title",
-        ],
     ],
 ];

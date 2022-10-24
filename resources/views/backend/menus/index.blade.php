@@ -92,9 +92,9 @@
 
                 @include('backend.menus.items.partials.buttons.create')
             @else
-                <div class="section has-text-centered">
+                <section class="section has-text-centered">
                     @include('backend.menus.items.partials.buttons.create')
-                </div>
+                </section>
             @endif
         @endisset
     </section>

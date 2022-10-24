@@ -50,12 +50,6 @@
             placeholder="{{ config('app.url') }}"
         />
     </div>
-
-    @if (isset($item->target, $item->target->url) && $item->target->url !== $item->href)
-        <p class="help is-danger">
-            @lang('menus.items.alerts.href_differs_from_target', ['target_url' => $item->target->url])
-        </p>
-    @endif
 </div>
 
 <div class="field">
@@ -73,12 +67,6 @@
             value="{{ $item->title }}"
         />
     </div>
-
-    @if (isset($item->target, $item->target->title) && $item->target->title !== $item->title)
-        <p class="help is-danger">
-            @lang('menus.items.alerts.title_differs_from_target', ['target_title' => $item->target->title])
-        </p>
-    @endif
 </div>
 
 <div class="field">
