@@ -115,8 +115,8 @@
         href="#item-advanced-options"
         rel="toggle"
     >
-        @icon('fa-sliders-up')
-        <span>@lang('menu.advancedOptions.title')</span>
+        @icon('fa-sliders')
+        <span>@lang('menus.advancedOptions.title')</span>
     </a>
 </div>
 
