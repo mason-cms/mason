@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\SettingsController;
 use App\Http\Controllers\Backend\EntryTypeController;
 use App\Http\Controllers\Backend\TaxonomyTypeController;
 use App\Http\Controllers\Backend\LocaleController;
+use App\Http\Controllers\Backend\MediumController;
 
 Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(function () {
     Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
@@ -34,6 +35,7 @@ Route::middleware(['auth'])->prefix('/backend')->name('backend.')->group(functio
         Route::get('/{taxonomy}/destroy', [TaxonomyController::class, 'destroy'])->name('destroy');
     });
 
+    Route::resource('medium', MediumController::class);
 
     Route::prefix('/menus')->name('menus.')->group(function () {
         Route::get('/', [MenuController::class, 'index'])->name('index');

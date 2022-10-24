@@ -85,6 +85,14 @@
             </div>
 
             <a
+                href="{{ $routeUri = route('backend.medium.index') }}"
+                class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
+            >
+                @icon(\App\Models\Medium::ICON, 'has-text-success')
+                <span>@lang('media.title')</span>
+            </a>
+
+            <a
                 href="{{ $routeUri = route('backend.menus.index') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >

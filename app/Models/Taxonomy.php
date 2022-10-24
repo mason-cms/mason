@@ -83,7 +83,7 @@ class Taxonomy extends Model
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
-    public function scopeFilter(Builder $query, $filters)
+    public function scopeFilter(Builder $query, array $filters)
     {
         if (isset($filters['locale_id'])) {
             $query->byLocale($filters['locale_id']);
@@ -201,7 +201,7 @@ class Taxonomy extends Model
 
     public function setCoverFileAttribute($file)
     {
-        $media = new Media(['file' => $file]);
+        $media = new Medium(['file' => $file]);
         $media->parent()->associate($this);
 
         if ($media->save()) {
@@ -232,7 +232,7 @@ class Taxonomy extends Model
 
     public function cover()
     {
-        return $this->belongsTo(Media::class);
+        return $this->belongsTo(Medium::class);
     }
 
     public function children()

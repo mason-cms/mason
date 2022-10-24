@@ -11,13 +11,14 @@ use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-class Media extends Model
+class Medium extends Model
 {
     use HasFactory,
         SoftDeletes,
         Metable;
 
-    const STORAGE_DISK = 'public';
+    const ICON = 'fa-photo-film';
+
     const STORAGE_PATH = 'media';
     const DEFAULT_VISIBILITY = 'public';
 
@@ -25,6 +26,13 @@ class Media extends Model
         'title',
         'locale_id',
         'file',
+    ];
+
+    protected $casts = [
+        'filesize' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
     /**
@@ -37,13 +45,24 @@ class Media extends Model
     {
         parent::boot();
 
-        static::creating(function (Media $media) {
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder
+                ->orderBy('created_at', 'desc');
+        });
+
+        static::creating(function (Medium $media) {
             if (! isset($media->locale)) {
                 if (isset($media->parent, $media->parent->locale)) {
                     $media->locale()->associate($media->parent->locale);
                 } elseif ($defaultLocale = Locale::getDefault()) {
                     $media->locale()->associate($defaultLocale);
                 }
+            }
+        });
+
+        static::deleted(function (Medium $medium) {
+            if (isset($medium->storage_key) && Storage::exists($medium->storage_key)) {
+                Storage::delete($medium->storage_key);
             }
         });
     }
@@ -57,6 +76,28 @@ class Media extends Model
     public function scopeByLocale(Builder $query, $locale)
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
+    }
+
+    public function scopeFilter(Builder $query, array $filters)
+    {
+        if (isset($filters['status'])) {
+            $query->byStatus($filters['status']);
+        }
+
+        if (isset($filters['locale_id'])) {
+            $query->byLocale($filters['locale_id']);
+        }
+
+        if (isset($filters['author_id'])) {
+            $query->byAuthor($filters['author_id']);
+        }
+
+        return $query;
+    }
+
+    public function scopeSearch(Builder $query, $term)
+    {
+        return $query->where('title', 'LIKE', "%{$term}%");
     }
 
     /**
@@ -78,10 +119,27 @@ class Media extends Model
 
     public function setFileAttribute(File|UploadedFile $file)
     {
-        $this->title ??= $file->getClientOriginalName();
+        $filename = $originalName = $file->getClientOriginalName();
 
-        $this->storage_key = Storage::disk(self::STORAGE_DISK)
-            ->put(static::STORAGE_PATH, $file, static::DEFAULT_VISIBILITY);
+        while (Storage::exists(static::STORAGE_PATH . '/' . $filename)) {
+            $i ??= 2;
+            $pathinfo ??= pathinfo($filename);
+            $filename = $pathinfo['filename'] . "-{$i}." . $pathinfo['extension'];
+            $i++;
+        }
+
+        $this->title ??= $originalName;
+
+        $this->content_type = $file->getMimeType();
+
+        $this->filesize = $file->getSize();
+
+        $this->storage_key = Storage::putFileAs(
+            static::STORAGE_PATH,
+            $file,
+            $filename,
+            static::DEFAULT_VISIBILITY
+        );
     }
 
     public function getUrlAttribute()
@@ -89,6 +147,12 @@ class Media extends Model
         if (isset($this->storage_key)) {
             return Storage::url($this->storage_key);
         }
+    }
+
+    public function getIsImageAttribute()
+    {
+        return isset($this->content_type)
+            && str_starts_with($this->content_type, 'image/');
     }
 
     /**

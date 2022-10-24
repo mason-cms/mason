@@ -138,7 +138,7 @@ class Entry extends Model
         return $query->where('is_home', $isHome);
     }
 
-    public function scopeFilter(Builder $query, $filters)
+    public function scopeFilter(Builder $query, array $filters)
     {
         if (isset($filters['status'])) {
             $query->byStatus($filters['status']);
@@ -257,7 +257,7 @@ class Entry extends Model
 
     public function setCoverFileAttribute($file)
     {
-        $media = new Media(['file' => $file]);
+        $media = new Medium(['file' => $file]);
         $media->parent()->associate($this);
 
         if ($media->save()) {
@@ -293,7 +293,7 @@ class Entry extends Model
 
     public function cover()
     {
-        return $this->belongsTo(Media::class);
+        return $this->belongsTo(Medium::class);
     }
 
     public function taxonomies()
