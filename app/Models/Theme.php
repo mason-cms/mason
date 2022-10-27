@@ -81,9 +81,15 @@ class Theme
             : public_path("themes/{$this->project}");
     }
 
-    public function asset($path, $secure = null)
+    public function asset($path, $secure = null, $version = null)
     {
-        return asset("themes/{$this->project}/{$path}", $secure);
+        $version ??= $this->info('version');
+
+        $path = asset("themes/{$this->project}/{$path}", $secure);
+
+        return isset($version)
+            ? "{$path}?v={$version}"
+            : $path;
     }
 
     public function info($attribute = null)
@@ -94,7 +100,9 @@ class Theme
             $json = file_get_contents($path);
             $info = json_decode($json);
 
-            return isset($attribute) ? ( $info->$attribute ?? null ) : $info;
+            return isset($attribute)
+                ? ( $info->$attribute ?? null )
+                : $info;
         }
     }
 
