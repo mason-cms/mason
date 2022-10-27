@@ -116,6 +116,12 @@
                                 <span>@lang('configuration.general.actions.updateTheme.label')</span>
                             </a>
                         </div>
+
+                        @if (session()->has('updateSuccess') && session()->has('updateMessage'))
+                            <p class="notification {{ session()->get('updateSuccess') ? 'is-success' : 'is-danger' }}">
+                                {!! session()->get('updateMessage') !!}
+                            </p>
+                        @endif
                     </div>
                 </div>
             </div>

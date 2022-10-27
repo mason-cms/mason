@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\Console\Command\Command;
 
 class ConfigurationController extends Controller
 {
@@ -74,9 +75,14 @@ class ConfigurationController extends Controller
      */
     public function updateApp(Request $request)
     {
-        Artisan::call('mason:update --deploy');
+        $result = Artisan::call('mason:update --deploy');
 
-        return redirect()->back();
+        return redirect()->back()->with([
+            'updateSuccess' => $success = ($result === Command::SUCCESS),
+            'updateMessage' => $success
+                ? __('configuration.general.actions.updateApp.success')
+                : __('configuration.general.actions.updateApp.error'),
+        ]);
     }
 
     /**
@@ -87,9 +93,14 @@ class ConfigurationController extends Controller
      */
     public function updateTheme(Request $request)
     {
-        Artisan::call('mason:theme:update');
+        $result = Artisan::call('mason:theme:update');
 
-        return redirect()->back();
+        return redirect()->back()->with([
+            'updateSuccess' => $success = ($result === Command::SUCCESS),
+            'updateMessage' => $success
+                ? __('configuration.general.actions.updateTheme.success')
+                : __('configuration.general.actions.updateTheme.error'),
+        ]);
     }
 
     protected function getFields()
