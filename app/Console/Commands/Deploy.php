@@ -50,8 +50,12 @@ class Deploy extends Command
         $this->info("Running database migrations...");
         Artisan::call('migrate --force', [], $this->getOutput());
 
-        $this->info("Clearing cache...");
+        $this->info("Clearing compiled...");
         Artisan::call('clear-compiled', [], $this->getOutput());
+
+        $this->info("Clearing route cache...");
+        Artisan::call('route:clear', [], $this->getOutput());
+        Artisan::call('route:cache', [], $this->getOutput());
 
         $this->info("Restarting queues...");
         Artisan::call('queue:restart', [], $this->getOutput());

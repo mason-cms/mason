@@ -12,7 +12,7 @@ class Update extends Command
      *
      * @var string
      */
-    protected $signature = 'mason:update {--branch=master} {--deploy}';
+    protected $signature = 'mason:update {--branch=origin/master} {--deploy}';
 
     /**
      * The console command description.
@@ -32,8 +32,16 @@ class Update extends Command
 
         $basePath = base_path();
         $branch = $this->option('branch');
+        $datetime = date('YmdGis');
 
-        $this->exec("cd {$basePath}; git checkout {$branch}; git pull origin {$branch};");
+        $cmd = implode("; ", [
+            "cd {$basePath}",
+            "git fetch --all",
+            "git branch backup-{$datetime}",
+            "git reset --hard {$branch}",
+        ]);
+
+        $this->exec($cmd);
 
         if ($this->option('deploy')) {
             Artisan::call('mason:deploy');
