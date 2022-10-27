@@ -46,10 +46,14 @@ return [
 
             'updateApp' => [
                 'label' => "Update Mason CMS",
+                'success' => "Mason CMS was updated successfully",
+                'error' => "An error occurred and Mason CMS could not be updated",
             ],
 
             'updateTheme' => [
                 'label' => "Update Theme",
+                'success' => "The theme was updated successfully",
+                'error' => "An error occurred and the theme could not be updated",
             ],
         ],
     ],
