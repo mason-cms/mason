@@ -142,6 +142,15 @@ class ConfigurationController extends Controller
                 'required' => false,
                 'value' => env('SITE_ALLOWED_USER_EMAIL_DOMAINS'),
             ],
+
+            [
+                'name' => 'SENTRY_LARAVEL_DSN',
+                'label' => __('configuration.general.fields.sentryDsn.label'),
+                'help' => __('configuration.general.fields.sentryDsn.help'),
+                'type' => 'text',
+                'required' => false,
+                'value' => env('SENTRY_LARAVEL_DSN'),
+            ],
         ];
     }
 }

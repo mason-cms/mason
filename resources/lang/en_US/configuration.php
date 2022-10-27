@@ -30,6 +30,11 @@ return [
             'siteAllowedUserEmailDomains' => [
                 'label' => "Allowed User Email Domains",
             ],
+
+            'sentryDsn' => [
+                'label' => "Sentry DSN",
+                'help' => "Enter your Sentry DSN if you wish to use Sentry for error monitoring"
+            ],
         ],
 
         'actions' => [

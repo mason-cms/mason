@@ -75,6 +75,12 @@
                                                     /> @lang('general.no')
                                                 </label>
                                             @endif
+
+                                            @isset($field['help'])
+                                                <p class="help">
+                                                    {{ $field['help'] }}
+                                                </p>
+                                            @endisset
                                         </div>
                                     </div>
                                 </div>

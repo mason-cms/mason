@@ -183,6 +183,7 @@ class Setup extends Command
     {
         setEnv([
             'FONTAWESOME_KIT' => $this->ask("Please enter your FontAwesome kit ID", env('FONTAWESOME_KIT')),
+            'SENTRY_LARAVEL_DSN' => $this->ask("If you wish to use Sentry for error monitoring, please enter your Sentry DSN", env('SENTRY_LARAVEL_DSN'))
         ]);
     }
 
