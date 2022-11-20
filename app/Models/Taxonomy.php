@@ -6,9 +6,16 @@ use App\Traits\Cancellable;
 use App\Traits\MenuItemable;
 use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Taxonomy extends Model
@@ -42,7 +49,7 @@ class Taxonomy extends Model
      * ==================================================
      */
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -61,29 +68,29 @@ class Taxonomy extends Model
      * ==================================================
      */
 
-    public function scopeByName(Builder $query, $name)
+    public function scopeByName(Builder $query, string $name): Builder
     {
         return is_iterable($name)
             ? $query->whereIn('name', $name)
             : $query->where('name', $name);
     }
 
-    public function scopeByType(Builder $query, $taxonomyType)
+    public function scopeByType(Builder $query, mixed $taxonomyType): Builder
     {
         return $query->whereIn('type_id', prepareValueForScope($taxonomyType, TaxonomyType::class));
     }
 
-    public function scopeTopLevel(Builder $query)
+    public function scopeTopLevel(Builder $query): Builder
     {
         return $query->whereNull('parent_id');
     }
 
-    public function scopeByLocale(Builder $query, $locale)
+    public function scopeByLocale(Builder $query, mixed $locale): Builder
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
-    public function scopeFilter(Builder $query, array $filters)
+    public function scopeFilter(Builder $query, array $filters): Builder
     {
         if (isset($filters['locale_id'])) {
             $query->byLocale($filters['locale_id']);
@@ -92,7 +99,7 @@ class Taxonomy extends Model
         return $query;
     }
 
-    public function scopeSearch(Builder $query, $term)
+    public function scopeSearch(Builder $query, string $term): Builder
     {
         return $query
             ->where('title', 'LIKE', "%{$term}%")
@@ -105,12 +112,12 @@ class Taxonomy extends Model
      * ==================================================
      */
 
-    public function __toString()
+    public function __toString(): string
     {
         return "{$this->title}";
     }
 
-    public function getUrl($entryType = null, $absolute = true)
+    public function getUrl(mixed $entryType = null, bool $absolute = true): ?string
     {
         if ($this->exists()) {
             if ($entryType instanceof EntryType) {
@@ -132,9 +139,11 @@ class Taxonomy extends Model
                 ], $absolute);
             }
         }
+
+        return null;
     }
 
-    public function getAllChildren()
+    public function getAllChildren(): Collection
     {
         $children = collect();
 
@@ -146,7 +155,7 @@ class Taxonomy extends Model
         return $children;
     }
 
-    public function getParentOptions()
+    public function getParentOptions(): EloquentCollection
     {
         $allChildren = $this->getAllChildren();
         $allChildrenIds = $allChildren->pluck('id');
@@ -157,7 +166,7 @@ class Taxonomy extends Model
             ->get();
     }
 
-    public function view()
+    public function view(): ?string
     {
         $views = [
             "{$this->locale->name}.{$this->type->name}.{$this->name}",
@@ -176,6 +185,8 @@ class Taxonomy extends Model
                 return $view;
             }
         }
+
+        return null;
     }
 
     /**
@@ -184,22 +195,22 @@ class Taxonomy extends Model
      * ==================================================
      */
 
-    public function getUrlAttribute()
+    public function getUrlAttribute(): ?string
     {
         return $this->getUrl(null, true);
     }
 
-    public function getAbsoluteUrlAttribute()
+    public function getAbsoluteUrlAttribute(): ?string
     {
         return $this->getUrl(null, true);
     }
 
-    public function getRelativeUrlAttribute()
+    public function getRelativeUrlAttribute(): ?string
     {
         return $this->getUrl(null, false);
     }
 
-    public function setCoverFileAttribute($file)
+    public function setCoverFileAttribute(File|UploadedFile $file): void
     {
         $media = new Medium(['file' => $file]);
         $media->parent()->associate($this);
@@ -215,32 +226,32 @@ class Taxonomy extends Model
      * ==================================================
      */
 
-    public function type()
+    public function type(): BelongsTo
     {
         return $this->belongsTo(TaxonomyType::class);
     }
 
-    public function locale()
+    public function locale(): BelongsTo
     {
         return $this->belongsTo(Locale::class);
     }
 
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(Taxonomy::class);
     }
 
-    public function cover()
+    public function cover(): BelongsTo
     {
         return $this->belongsTo(Medium::class);
     }
 
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany(Taxonomy::class, 'parent_id');
     }
 
-    public function entries()
+    public function entries(): BelongsToMany
     {
         return $this->belongsToMany(Entry::class);
     }

@@ -21,26 +21,33 @@ class Setting extends Model
         'updated_at' => 'datetime',
     ];
 
-    public static function get($name)
+    public static function get(string $name): ?string
     {
         if ($setting = static::where('name', $name)->first()) {
             return $setting->value;
         }
+
+        return null;
     }
 
-    public static function set($name, $value)
+    public static function set(string $name, mixed $value): bool
     {
         $setting = static::firstOrCreate(['name' => $name]);
+
         return $setting->update(['value' => $value]);
     }
 
-    public function getValueAttribute()
+    public function getValueAttribute(): ?string
     {
-        return isset($this->attributes['value']) ? unserialize($this->attributes['value']) : null;
+        return isset($this->attributes['value'])
+            ? unserialize($this->attributes['value'])
+            : null;
     }
 
-    public function setValueAttribute($value)
+    public function setValueAttribute($value): void
     {
-        $this->attributes['value'] = isset($value) ? serialize($value) : null;
+        $this->attributes['value'] = isset($value)
+            ? serialize($value)
+            : null;
     }
 }

@@ -6,6 +6,8 @@ use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
@@ -41,7 +43,7 @@ class Medium extends Model
      * ==================================================
      */
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -73,12 +75,12 @@ class Medium extends Model
      * ==================================================
      */
 
-    public function scopeByLocale(Builder $query, $locale)
+    public function scopeByLocale(Builder $query, mixed $locale): Builder
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
-    public function scopeFilter(Builder $query, array $filters)
+    public function scopeFilter(Builder $query, array $filters): Builder
     {
         if (isset($filters['status'])) {
             $query->byStatus($filters['status']);
@@ -95,7 +97,7 @@ class Medium extends Model
         return $query;
     }
 
-    public function scopeSearch(Builder $query, $term)
+    public function scopeSearch(Builder $query, string $term): Builder
     {
         return $query->where('title', 'LIKE', "%{$term}%");
     }
@@ -106,7 +108,7 @@ class Medium extends Model
      * ==================================================
      */
 
-    public function __toString()
+    public function __toString(): string
     {
         return "{$this->title}";
     }
@@ -117,7 +119,7 @@ class Medium extends Model
      * ==================================================
      */
 
-    public function setFileAttribute(File|UploadedFile $file)
+    public function setFileAttribute(File|UploadedFile $file): void
     {
         $filename = $originalName = $file->getClientOriginalName();
 
@@ -142,14 +144,14 @@ class Medium extends Model
         );
     }
 
-    public function getUrlAttribute()
+    public function getUrlAttribute(): ?string
     {
-        if (isset($this->storage_key)) {
-            return Storage::url($this->storage_key);
-        }
+        return isset($this->storage_key)
+            ? Storage::url($this->storage_key)
+            : null;
     }
 
-    public function getIsImageAttribute()
+    public function getIsImageAttribute(): bool
     {
         return isset($this->content_type)
             && str_starts_with($this->content_type, 'image/');
@@ -161,12 +163,12 @@ class Medium extends Model
      * ==================================================
      */
 
-    public function parent()
+    public function parent(): MorphTo
     {
         return $this->morphTo();
     }
 
-    public function locale()
+    public function locale(): BelongsTo
     {
         return $this->belongsTo(Locale::class);
     }

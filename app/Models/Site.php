@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 
@@ -17,12 +18,12 @@ class Site
     public $locale;
     public $lang;
 
-    public static function getInstance($boot = true)
+    public static function getInstance(bool $boot = true): self
     {
-        return static::$instance ??= new static($boot);
+        return self::$instance ??= new self($boot);
     }
 
-    public function __construct($boot = true)
+    public function __construct(bool $boot = true)
     {
         $this->name = config('site.name');
         $this->description = config('site.description');
@@ -33,7 +34,7 @@ class Site
         }
     }
 
-    public function boot()
+    public function boot(): void
     {
         $this->setLocale(Locale::getDefault());
 
@@ -44,27 +45,27 @@ class Site
         }
     }
 
-    public function name()
+    public function name(): ?string
     {
         return $this->name;
     }
 
-    public function description()
+    public function description(): ?string
     {
         return $this->description;
     }
 
-    public function theme()
+    public function theme(): ?string
     {
         return $this->theme;
     }
 
-    public function locale()
+    public function locale(): ?string
     {
         return $this->locale;
     }
 
-    public function setLocale($locale)
+    public function setLocale(Locale|string $locale): void
     {
         if (is_string($locale)) {
             $locale = Locale::findByName($locale);
@@ -86,25 +87,25 @@ class Site
         }
     }
 
-    public function locales()
+    public function locales(): Builder
     {
         return Locale::query();
     }
 
-    public function home($locale = null)
+    public function home(Locale $locale = null)
     {
         $locale ??= $this->locale;
         return $locale->home();
     }
 
-    public function langPath()
+    public function langPath(): ?string
     {
         return isset($this->theme)
             ? $this->theme->path("resources/lang/{$this->locale->system_name}")
             : null;
     }
 
-    public function loadLang()
+    public function loadLang(): void
     {
         $lang = [];
 
@@ -118,17 +119,17 @@ class Site
         $this->lang = Arr::dot($lang);
     }
 
-    public function lang()
+    public function lang(): ?string
     {
         return $this->lang;
     }
 
-    public function trans($key)
+    public function trans($key): ?string
     {
         return $this->lang[$key] ?? $key;
     }
 
-    public function entries($type = null, $locale = null)
+    public function entries(mixed $type = null, mixed $locale = null): Builder
     {
         $query = Entry::byLocale($locale ?? $this->locale);
 
@@ -139,14 +140,14 @@ class Site
         return $query;
     }
 
-    public function entry($name, $locale = null, $type = null)
+    public function entry(string $name, mixed $locale = null, mixed $type = null): ?Entry
     {
         return $this->entries($type, $locale ?? $this->locale)
             ->byName($name)
             ->first();
     }
 
-    public function taxonomies($type = null, $locale = null)
+    public function taxonomies(mixed $type = null, mixed $locale = null): Builder
     {
         $query = Taxonomy::byLocale($locale ?? $this->locale);
 
@@ -157,36 +158,36 @@ class Site
         return $query;
     }
 
-    public function taxonomy($name, $locale = null, $type = null)
+    public function taxonomy(string $name, mixed $locale = null, mixed $type = null): ?Taxonomy
     {
         return $this->taxonomies($type, $locale ?? $this->locale)
             ->byName($name)
             ->first();
     }
 
-    public function defaultLocale()
+    public function defaultLocale(): ?Locale
     {
         return Locale::getDefault();
     }
 
-    public function menus($locale = null)
+    public function menus(mixed $locale = null): Builder
     {
         return Menu::byLocale($locale ?? $this->locale);
     }
 
-    public function menu($location, $locale = null)
+    public function menu(string $location, mixed $locale = null): ?Menu
     {
         return Menu::byLocation($location)
             ->byLocale($locale ?? $this->locale)
             ->first();
     }
 
-    public function settings()
+    public function settings(): Builder
     {
         return Setting::query();
     }
 
-    public function users()
+    public function users(): Builder
     {
         return User::query();
     }

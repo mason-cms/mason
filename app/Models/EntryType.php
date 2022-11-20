@@ -6,6 +6,7 @@ use App\Enums\EditorMode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EntryType extends Model
@@ -31,7 +32,7 @@ class EntryType extends Model
      * ==================================================
      */
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -46,7 +47,7 @@ class EntryType extends Model
         });
     }
 
-    public static function findByName($name)
+    public static function findByName(string $name): ?self
     {
         return static::where('name', $name)->first();
     }
@@ -57,7 +58,7 @@ class EntryType extends Model
      * ==================================================
      */
 
-    public function scopeByName(Builder $query, $name)
+    public function scopeByName(Builder $query, string $name): Builder
     {
         return is_iterable($name)
             ? $query->whereIn('name', $name)
@@ -70,7 +71,7 @@ class EntryType extends Model
      * ==================================================
      */
 
-    public function __toString()
+    public function __toString(): string
     {
         return "{$this->plural_title}";
     }
@@ -81,7 +82,7 @@ class EntryType extends Model
      * ==================================================
      */
 
-    public function entries()
+    public function entries(): HasMany
     {
         return $this->hasMany(Entry::class, 'type_id');
     }

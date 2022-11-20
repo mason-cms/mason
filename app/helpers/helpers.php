@@ -1,27 +1,27 @@
 <?php
 
-function site($boot = true)
+function site(bool $boot = true): \App\Models\Site
 {
     return \App\Models\Site::getInstance($boot);
 }
 
-function theme($name = null)
+function theme(string $name = null): \App\Models\Theme
 {
     return \App\Models\Theme::getInstance($name);
 }
 
-function i($class, $style = 'fa-solid')
+function i(string $class, string $style = 'fa-solid'): string
 {
     return "<i class=\"{$style} {$class}\"></i>";
 }
 
-function icon($iClass, $sClass = '', $iStyle = 'fa-solid')
+function icon(string $iClass, string $sClass = '', string $iStyle = 'fa-solid'): string
 {
     $i = i($iClass, $iStyle);
     return "<span class=\"icon {$sClass}\">{$i}</span>";
 }
 
-function setEnv(array $data = [], bool $forceQuote = false)
+function setEnv(array $data = [], bool $forceQuote = false): array
 {
     $updated = [];
 
@@ -68,7 +68,7 @@ function setEnv(array $data = [], bool $forceQuote = false)
     return $updated;
 }
 
-function quote($string)
+function quote(string $string): string
 {
     return strlen($string) > 0 ? "\"{$string}\"" : "";
 }

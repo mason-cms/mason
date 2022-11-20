@@ -1,6 +1,6 @@
 <?php
 
-function prepareValueForScope($value, $class)
+function prepareValueForScope(mixed $value, string $class): array
 {
     $values = [];
 
