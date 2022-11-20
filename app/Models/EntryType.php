@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EditorMode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,11 @@ class EntryType extends Model
         'singular_title',
         'plural_title',
         'icon_class',
+        'default_editor_mode',
+    ];
+
+    protected $casts = [
+        'default_editor_mode' => EditorMode::class,
     ];
 
     /**
@@ -24,6 +30,21 @@ class EntryType extends Model
      * Static Methods
      * ==================================================
      */
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder
+                ->orderBy('plural_title')
+                ->orderBy('name');
+        });
+
+        static::creating(function (EntryType $entryType) {
+            $entryType->default_editor_mode ??= EditorMode::WYSIWYG;
+        });
+    }
 
     public static function findByName($name)
     {

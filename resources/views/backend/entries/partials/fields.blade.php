@@ -49,10 +49,25 @@
                     <div class="control">
                         <textarea
                             id="entry-content"
-                            class="textarea is-code"
+                            class="textarea is-{{ $entry->editor_mode }}"
                             name="entry[content]"
-                            rows="30"
+                            rows="20"
                         >{!! $entry->content !!}</textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        @foreach (\App\Enums\EditorMode::cases() as $editorMode)
+                            <label class="radio">
+                                <input
+                                    name="entry[editor_mode]"
+                                    type="radio"
+                                    value="{{ $editorMode }}"
+                                    {{ $entry->editor_mode === $editorMode ? 'checked' : '' }}
+                                /> {{ $editorMode }}
+                            </label>
+                        @endforeach
                     </div>
                 </div>
             </div>

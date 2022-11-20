@@ -49,5 +49,11 @@
 ></script>
 
 <script
+    src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/ckeditor.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+></script>
+
+<script
     src="{{ mix('js/app.js') }}"
 ></script>

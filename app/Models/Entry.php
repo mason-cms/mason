@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EditorMode;
 use App\Traits\MenuItemable;
 use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,6 +29,7 @@ class Entry extends Model
         'locale_id',
         'title',
         'content',
+        'editor_mode',
         'summary',
         'author_id',
         'is_home',
@@ -38,6 +40,7 @@ class Entry extends Model
     ];
 
     protected $casts = [
+        'editor_mode' => EditorMode::class,
         'is_home' => 'boolean',
         'published_at' => 'datetime',
         'created_at' => 'datetime',
@@ -64,6 +67,12 @@ class Entry extends Model
                 ->orderBy('is_home', 'desc')
                 ->orderBy('published_at', 'desc')
                 ->orderBy('created_at', 'desc');
+        });
+
+        static::creating(function (Entry $entry) {
+            $entry->editor_mode ??= isset($entry->type)
+                ? $entry->type->default_editor_mode
+                : EditorMode::MARKDOWN;
         });
 
         static::saving(function (Entry $entry) {

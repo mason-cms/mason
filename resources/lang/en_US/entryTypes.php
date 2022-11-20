@@ -9,6 +9,7 @@ return [
         'pluralTitle' => "Plural Title",
         'iconClass' => "Icon Class",
         'icon' => "Icon",
+        'defaultEditorMode' => "Default Editor Mode",
     ],
 
     'actions' => [

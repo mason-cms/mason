@@ -19,6 +19,7 @@ $(document).ready(function () {
 
     /**
      * Init Ace Code Editor
+     * @see https://ace.c9.io/
      */
     $('textarea.is-code').each(function () {
         let $textarea = $(this).hide(),
@@ -41,6 +42,41 @@ $(document).ready(function () {
         editor.session.on('change', function() {
             $textarea.val(editor.session.getValue());
         });
+    });
+
+    $('textarea.is-markdown').each(function () {
+        let $textarea = $(this).hide(),
+            editorMode = $textarea.data('editor-mode') || "ace/mode/markdown",
+            editorMaxLines = $textarea.data('editor-max-lines') || $textarea.attr('rows') || 30;
+
+        let $editor = $('<div />')
+            .addClass('code-editor', 'markdown-editor')
+            .css('min-height', editorMaxLines + 'em')
+            .insertAfter($textarea);
+
+        let editor = ace.edit($editor.get(0), {
+            mode: editorMode,
+            maxLines: parseInt(editorMaxLines),
+            useWorker: false
+        });
+
+        editor.setValue($textarea.val(), -1);
+
+        editor.session.on('change', function() {
+            $textarea.val(editor.session.getValue());
+        });
+    });
+
+    /**
+     * CKEditor
+     * @see https://ckeditor.com/docs/ckeditor5/latest/
+     */
+    $('textarea.is-wysiwyg').each(function () {
+        ClassicEditor
+            .create(this)
+            .catch(error => {
+                console.error(error);
+            });
     });
 });
 

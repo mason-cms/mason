@@ -75,6 +75,27 @@
                     </div>
                 </div>
             </div>
+
+            <div class="column is-6">
+                <div class="field">
+                    <label class="label">
+                        @lang('entryTypes.attributes.defaultEditorMode')
+                    </label>
+
+                    <div class="control">
+                        @foreach (\App\Enums\EditorMode::cases() as $editorMode)
+                            <label class="radio">
+                                <input
+                                    name="entry_type[default_editor_mode]"
+                                    type="radio"
+                                    value="{{ $editorMode }}"
+                                    {{ $entryType->default_editor_mode === $editorMode ? 'checked' : '' }}
+                                /> {{ $editorMode }}
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
