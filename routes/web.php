@@ -11,6 +11,19 @@
 |
 */
 
-require __DIR__.'/backend.php';
-require __DIR__.'/auth.php';
-require __DIR__.'/frontend.php';
+use Illuminate\Support\Facades\Route;
+
+Route::middleware(['auth'])
+    ->prefix('/backend')
+    ->name('backend.')
+    ->group(base_path('routes/web/backend.php'));
+
+Route::middleware('guest')
+    ->group(base_path('routes/web/guest.php'));
+
+Route::middleware('auth')
+    ->group(base_path('routes/web/auth.php'));
+
+Route::prefix('/')
+    ->group(base_path('routes/web/frontend.php'));
+g
