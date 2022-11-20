@@ -26,4 +26,3 @@ Route::middleware('auth')
 
 Route::prefix('/')
     ->group(base_path('routes/web/frontend.php'));
-g
