@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Locale extends Model
@@ -31,7 +32,7 @@ class Locale extends Model
      * Static Methods
      */
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -44,18 +45,18 @@ class Locale extends Model
         });
     }
 
-    public static function findByName($name)
+    public static function findByName(string $name): ?self
     {
         return static::where('name', $name)->first();
     }
 
-    public static function getDefault()
+    public static function getDefault(): ?self
     {
         return static::default()->first()
             ?? static::findByName(config('app.locale'));
     }
 
-    public static function isDefault($locale)
+    public static function isDefault($locale): bool
     {
         if (is_string($locale)) {
             $locale = static::findByName($locale);
@@ -64,7 +65,7 @@ class Locale extends Model
         return $locale instanceof static && $locale->is_default;
     }
 
-    public static function exists($locale)
+    public static function exists($locale): bool
     {
         if (is_string($locale)) {
             $locale = static::findByName($locale);
@@ -77,12 +78,12 @@ class Locale extends Model
      * Scopes
      */
 
-    public function scopeDefault(Builder $query, bool $isDefault = true)
+    public function scopeDefault(Builder $query, bool $isDefault = true): Builder
     {
         return $query->where('is_default', $isDefault);
     }
 
-    public function scopeNot(Builder $query, Locale $locale)
+    public function scopeNot(Builder $query, Locale $locale): Builder
     {
         return $query->where($locale->getKeyName(), '!=', $locale->getKey());
     }
@@ -91,12 +92,12 @@ class Locale extends Model
      * Helpers
      */
 
-    public function __toString()
+    public function __toString(): string
     {
         return "{$this->title}";
     }
 
-    public function home()
+    public function home(): string
     {
         return $this->is_default
             ? route('home')
@@ -107,17 +108,17 @@ class Locale extends Model
      * Accessors & Mutators
      */
 
-    public function getLanguageAttribute()
+    public function getLanguageAttribute(): ?string
     {
         return explode('-', $this->name)[0] ?? null;
     }
 
-    public function getRegionAttribute()
+    public function getRegionAttribute(): ?string
     {
         return explode('-', $this->name)[1] ?? null;
     }
 
-    public function getSystemNameAttribute()
+    public function getSystemNameAttribute(): string
     {
         return str_replace('-', '_', $this->name);
     }
@@ -126,17 +127,17 @@ class Locale extends Model
      * Relationships
      */
 
-    public function entries()
+    public function entries(): HasMany
     {
         return $this->hasMany(Entry::class);
     }
 
-    public function taxonomies()
+    public function taxonomies(): HasMany
     {
         return $this->hasMany(Taxonomy::class);
     }
 
-    public function menus()
+    public function menus(): HasMany
     {
         return $this->hasMany(Menu::class);
     }

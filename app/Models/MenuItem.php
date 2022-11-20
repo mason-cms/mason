@@ -4,9 +4,14 @@ namespace App\Models;
 
 use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 class MenuItem extends Model
 {
@@ -38,7 +43,7 @@ class MenuItem extends Model
      * ==================================================
      */
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -48,7 +53,7 @@ class MenuItem extends Model
                 ->orderBy('created_at');
         });
 
-        static::creating(function ($item) {
+        static::creating(function (self $item) {
             /**
              * When creating a new menu item, if the target is specified, set the href and title based on the target
              * unless they have already been set.
@@ -67,7 +72,7 @@ class MenuItem extends Model
             }
         });
 
-        static::deleted(function ($item) {
+        static::deleted(function (self $item) {
             /**
              * When a menu item has been deleted, we need to delete all the children as well.
              */
@@ -81,7 +86,7 @@ class MenuItem extends Model
      * ==================================================
      */
 
-    public function scopeRoot(Builder $query)
+    public function scopeRoot(Builder $query): Builder
     {
         return $query->whereNull('parent_id');
     }
@@ -92,7 +97,7 @@ class MenuItem extends Model
      * ==================================================
      */
 
-    public function __toString()
+    public function __toString(): string
     {
         return "{$this->title}";
     }
@@ -103,35 +108,39 @@ class MenuItem extends Model
      * ==================================================
      */
 
-    public function getSiblingsAttribute()
+    public function getSiblingsAttribute(): ?EloquentCollection
     {
-        if (isset($this->menu)) {
-            return $this->menu->items;
-        }
+        return isset($this->menu)
+            ? $this->menu->items
+            : null;
     }
 
-    public function getNextItemAttribute()
+    public function getNextItemAttribute(): ?self
     {
         if (isset($this->siblings, $this->rank)) {
             return $this->siblings->where('rank', '>', $this->rank)->first();
         }
+
+        return null;
     }
 
-    public function getPreviousItemAttribute()
+    public function getPreviousItemAttribute(): ?self
     {
         if (isset($this->siblings, $this->rank)) {
             return $this->siblings->where('rank', '<', $this->rank)->last();
         }
+
+        return null;
     }
 
-    public function getParentOptionsAttribute()
+    public function getParentOptionsAttribute(): EloquentCollection|Collection
     {
         return $this->exists() && isset($this->menu)
             ? $this->menu->items()->whereNotIn('id', $this->children->pluck('id')->push($this->id))->get()
             : collect();
     }
 
-    public function getTargetOptionsAttribute()
+    public function getTargetOptionsAttribute(): array
     {
         $optgroups = [];
 
@@ -148,7 +157,7 @@ class MenuItem extends Model
         return $optgroups;
     }
 
-    public function setTargetAttribute($value)
+    public function setTargetAttribute(?string $value): void
     {
         $this->target()->dissociate();
 
@@ -169,22 +178,22 @@ class MenuItem extends Model
      * ==================================================
      */
 
-    public function menu()
+    public function menu(): BelongsTo
     {
         return $this->belongsTo(Menu::class);
     }
 
-    public function parent()
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(MenuItem::class);
     }
 
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany(MenuItem::class, 'parent_id');
     }
 
-    public function target()
+    public function target(): MorphTo
     {
         return $this->morphTo();
     }

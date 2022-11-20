@@ -4,8 +4,11 @@ namespace App\Models;
 
 use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Menu extends Model
@@ -33,7 +36,7 @@ class Menu extends Model
      * ==================================================
      */
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -48,12 +51,12 @@ class Menu extends Model
      * ==================================================
      */
 
-    public static function scopeByLocation(Builder $query, string $location)
+    public static function scopeByLocation(Builder $query, string $location): Builder
     {
         return $query->where('location', $location);
     }
 
-    public static function scopeByLocale(Builder $query, $locale)
+    public static function scopeByLocale(Builder $query, mixed $locale): Builder
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
@@ -64,12 +67,12 @@ class Menu extends Model
      * ==================================================
      */
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
     }
 
-    public function view()
+    public function view(): ?string
     {
         $views = [
             "{$this->locale->name}.menu.{$this->location}.{$this->name}",
@@ -88,9 +91,11 @@ class Menu extends Model
                 return $view;
             }
         }
+
+        return null;
     }
 
-    public function render(array $data = [])
+    public function render(array $data = []): ?string
     {
         return view($this->view(), array_merge($data, ['menu' => $this]))->render();
     }
@@ -101,7 +106,7 @@ class Menu extends Model
      * ==================================================
      */
 
-    public function getLocationTitleAttribute()
+    public function getLocationTitleAttribute(): ?string
     {
         if (isset($this->location)) {
             foreach (site()->theme()->menuLocations() as $menuLocation) {
@@ -110,9 +115,11 @@ class Menu extends Model
                 }
             }
         }
+
+        return null;
     }
 
-    public function getRootItemsAttribute()
+    public function getRootItemsAttribute(): EloquentCollection
     {
         return $this->items()->root()->get();
     }
@@ -123,12 +130,12 @@ class Menu extends Model
      * ==================================================
      */
 
-    public function locale()
+    public function locale(): BelongsTo
     {
         return $this->belongsTo(Locale::class);
     }
 
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(MenuItem::class);
     }

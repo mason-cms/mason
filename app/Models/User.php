@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Cancellable;
 use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -58,7 +59,7 @@ class User extends Authenticatable
      * ==================================================
      */
 
-    public function __toString()
+    public function __toString(): string
     {
         return "{$this->name}";
     }
@@ -69,17 +70,19 @@ class User extends Authenticatable
      * ==================================================
      */
 
-    public function setPasswordAttribute($value)
+    public function setPasswordAttribute(string $value): void
     {
         $this->attributes['password'] = Hash::make($value);
     }
 
-    public function getGravatarUrlAttribute()
+    public function getGravatarUrlAttribute(): ?string
     {
         if (isset($this->email)) {
             $hash = md5(strtolower($this->email));
             return "https://www.gravatar.com/avatar/{$hash}";
         }
+
+        return null;
     }
 
     /**
@@ -88,7 +91,7 @@ class User extends Authenticatable
      * ==================================================
      */
 
-    public function entries()
+    public function entries(): HasMany
     {
         return $this->hasMany(Entry::class, 'author_id');
     }

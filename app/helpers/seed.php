@@ -1,6 +1,6 @@
 <?php
 
-function seed(array $data, string $class, $keyColumn = 'name')
+function seed(array $data, string $class, string $keyColumn = 'name'): array
 {
     $created = 0;
     $updated = 0;

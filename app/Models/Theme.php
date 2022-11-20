@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Menu;
 use App\Models\Locale;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class Theme
@@ -17,12 +18,12 @@ class Theme
     public $version;
     public $settings;
 
-    public static function getInstance($name = null)
+    public static function getInstance(string $name = null): self
     {
         return static::$instance ??= new static($name);
     }
 
-    public function __construct($name = null)
+    public function __construct(string $name = null)
     {
         $this->name = $name ?? config('site.theme');
 
@@ -35,53 +36,53 @@ class Theme
         $this->project = $packageParts[1] ?? null;
     }
 
-    public function boot()
+    public function boot(): void
     {
         $viewPaths = config('view.paths');
         $viewPaths[] = $this->path("resources/views");
         config(['view.paths' => array_unique($viewPaths)]);
     }
 
-    public function name()
+    public function name(): ?string
     {
         return $this->name;
     }
 
-    public function vendor()
+    public function vendor(): ?string
     {
         return $this->vendor;
     }
 
-    public function project()
+    public function project(): ?string
     {
         return $this->project;
     }
 
-    public function package()
+    public function package(): ?string
     {
         return $this->package;
     }
 
-    public function version()
+    public function version(): ?string
     {
         return $this->version;
     }
 
-    public function path($path = '')
+    public function path(string $path = ''): string
     {
         return !empty($path)
             ? base_path("vendor/{$this->package}/{$path}")
             : base_path("vendor/{$this->package}");
     }
 
-    public function public_path($path = '')
+    public function public_path(string $path = ''): string
     {
         return !empty($path)
             ? public_path("themes/{$this->project}/{$path}")
             : public_path("themes/{$this->project}");
     }
 
-    public function asset($path, $secure = null, $version = null)
+    public function asset(string $path, bool $secure = null, string|int $version = null): string
     {
         $version ??= $this->info('version');
 
@@ -92,7 +93,7 @@ class Theme
             : $path;
     }
 
-    public function info($attribute = null)
+    public function info(string $attribute = null): mixed
     {
         $path = $this->path('theme.json');
 
@@ -106,19 +107,21 @@ class Theme
         }
     }
 
-    public function config($attribute = null)
+    public function config(string $attribute = null): mixed
     {
         if ($config = $this->info('config')) {
-            return isset($attribute) ? ( $config->$attribute ?? null ) : $config;
+            return isset($attribute)
+                ? ( $config->$attribute ?? null )
+                : $config;
         }
     }
 
-    public function menuLocations()
+    public function menuLocations(): array
     {
         return $this->info('menuLocations') ?? [];
     }
 
-    public function install()
+    public function install(): array|false
     {
         if (isset($this->name)) {
             return [
@@ -131,7 +134,7 @@ class Theme
         return false;
     }
 
-    public function update()
+    public function update(): array|false
     {
         if (isset($this->name)) {
             return [
@@ -144,7 +147,7 @@ class Theme
         return false;
     }
 
-    public function createSymlink()
+    public function createSymlink(): bool
     {
         $target = $this->path('public');
         $link = $this->public_path();
@@ -154,7 +157,7 @@ class Theme
         return symlink($target, $link);
     }
 
-    public function createMenus()
+    public function createMenus(): bool
     {
         foreach ($this->menuLocations() as $menuLocation) {
             foreach (Locale::all() as $locale) {
@@ -168,7 +171,7 @@ class Theme
         return true;
     }
 
-    public function loadSettings()
+    public function loadSettings(): void
     {
         $settings = $this->info('settings') ?? [];
 
@@ -189,7 +192,7 @@ class Theme
         $this->settings = collect($settings);
     }
 
-    public function settings()
+    public function settings(): Collection
     {
         if (! isset($this->settings)) {
             $this->loadSettings();
@@ -198,10 +201,12 @@ class Theme
         return $this->settings;
     }
 
-    public function setting($name)
+    public function setting($name): mixed
     {
         if ($setting = $this->settings()->where('name', $name)->first()) {
             return $setting->value;
         }
+
+        return null;
     }
 }

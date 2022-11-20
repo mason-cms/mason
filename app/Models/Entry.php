@@ -8,6 +8,8 @@ use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -58,7 +60,7 @@ class Entry extends Model
      * ==================================================
      */
 
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
@@ -101,34 +103,34 @@ class Entry extends Model
      * ==================================================
      */
 
-    public function scopeByName(Builder $query, $name)
+    public function scopeByName(Builder $query, $name): Builder
     {
         return is_iterable($name)
             ? $query->whereIn('name', $name)
             : $query->where('name', $name);
     }
 
-    public function scopeByType(Builder $query, $entryType)
+    public function scopeByType(Builder $query, mixed $entryType): Builder
     {
         return $query->whereIn('type_id', prepareValueForScope($entryType, EntryType::class));
     }
 
-    public function scopeByLocale(Builder $query, $locale)
+    public function scopeByLocale(Builder $query, mixed $locale): Builder
     {
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
-    public function scopeByAuthor(Builder $query, $author)
+    public function scopeByAuthor(Builder $query, mixed $author): Builder
     {
         return $query->whereIn('author_id', prepareValueForScope($author, User::class));
     }
 
-    public function scopeNot(Builder $query, Entry $entry)
+    public function scopeNot(Builder $query, Entry $entry): Builder
     {
         return $query->where($entry->getKeyName(), '!=', $entry->getKey());
     }
 
-    public function scopeByStatus(Builder $query, string $status)
+    public function scopeByStatus(Builder $query, string $status): Builder
     {
         switch ($status) {
             case static::STATUS_DRAFT:
@@ -140,14 +142,16 @@ class Entry extends Model
             case static::STATUS_SCHEDULED:
                 return $query->where('published_at', '>', now());
         }
+
+        throw new \Exception("Invalid status: {$status}");
     }
 
-    public function scopeHome(Builder $query, bool $isHome = true)
+    public function scopeHome(Builder $query, bool $isHome = true): Builder
     {
         return $query->where('is_home', $isHome);
     }
 
-    public function scopeFilter(Builder $query, array $filters)
+    public function scopeFilter(Builder $query, array $filters): Builder
     {
         if (isset($filters['status'])) {
             $query->byStatus($filters['status']);
@@ -164,7 +168,7 @@ class Entry extends Model
         return $query;
     }
 
-    public function scopeSearch(Builder $query, $term)
+    public function scopeSearch(Builder $query, string $term): Builder
     {
         return $query
             ->where('title', 'LIKE', "%{$term}%")
@@ -178,28 +182,30 @@ class Entry extends Model
      * ==================================================
      */
 
-    public function __toString()
+    public function __toString(): string
     {
         return "{$this->title}";
     }
 
-    public function getUrl($absolute = true)
+    public function getUrl(bool $absolute = true): ?string
     {
-        if ($this->exists() && $entry = $this) {
+        if ($this->exists && $entry = $this) {
             if (isset($this->locale) && ! $this->locale->is_default) {
                 return route('locale.entry', ['locale' => $this->locale->name, $entry], $absolute);
             } else {
                 return route('entry', [$entry], $absolute);
             }
         }
+
+        return null;
     }
 
-    public function publish()
+    public function publish(): bool
     {
-        $this->update(['published_at' => now()]);
+        return $this->update(['published_at' => now()]);
     }
 
-    public function view()
+    public function view(): ?string
     {
         $views = [
             "{$this->locale->name}.{$this->type->name}.{$this->name}",
@@ -218,6 +224,8 @@ class Entry extends Model
                 return $view;
             }
         }
+
+        return null;
     }
 
     /**
@@ -226,17 +234,17 @@ class Entry extends Model
      * ==================================================
      */
 
-    public function getTextAttribute()
+    public function getTextAttribute(): ?string
     {
         return strip_tags($this->attributes['content']);
     }
 
-    public function getSummaryAttribute()
+    public function getSummaryAttribute(): ?string
     {
         return $this->attributes['summary'] ?? Str::limit($this->text, 150);
     }
 
-    public function getStatusAttribute()
+    public function getStatusAttribute(): string
     {
         if (isset($this->published_at)) {
             if ($this->published_at <= now()) {
@@ -249,32 +257,32 @@ class Entry extends Model
         }
     }
 
-    public function getUrlAttribute()
+    public function getUrlAttribute(): ?string
     {
         return $this->getUrl(true);
     }
 
-    public function getAbsoluteUrlAttribute()
+    public function getAbsoluteUrlAttribute(): ?string
     {
         return $this->getUrl(true);
     }
 
-    public function getRelativeUrlAttribute()
+    public function getRelativeUrlAttribute(): ?string
     {
         return $this->getUrl(false);
     }
 
-    public function setCoverFileAttribute($file)
+    public function setCoverFileAttribute($file): void
     {
-        $media = new Medium(['file' => $file]);
-        $media->parent()->associate($this);
+        $medium = new Medium(['file' => $file]);
+        $medium->parent()->associate($this);
 
-        if ($media->save()) {
-            $this->cover()->associate($media);
+        if ($medium->save()) {
+            $this->cover()->associate($medium);
         }
     }
 
-    public function setTaxonomiesAttribute($taxonomies)
+    public function setTaxonomiesAttribute($taxonomies): void
     {
         $this->taxonomies()->sync($taxonomies);
     }
@@ -285,27 +293,27 @@ class Entry extends Model
      * ==================================================
      */
 
-    public function type()
+    public function type(): BelongsTo
     {
         return $this->belongsTo(EntryType::class);
     }
 
-    public function locale()
+    public function locale(): BelongsTo
     {
         return $this->belongsTo(Locale::class);
     }
 
-    public function author()
+    public function author(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function cover()
+    public function cover(): BelongsTo
     {
         return $this->belongsTo(Medium::class);
     }
 
-    public function taxonomies()
+    public function taxonomies(): BelongsToMany
     {
         return $this->belongsToMany(Taxonomy::class);
     }

@@ -1,8 +1,10 @@
 <?php
 
-function htmlInputDatetime($datetime)
+function htmlInputDatetime(?\Illuminate\Support\Carbon $datetime)
 {
-    if (isset($datetime) && $datetime instanceof \Carbon\Carbon) {
+    if (isset($datetime)) {
         return $datetime->format('Y-m-d\TH:i:s');
     }
+
+    return null;
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TaxonomyType extends Model
@@ -22,7 +23,7 @@ class TaxonomyType extends Model
      * Helpers
      */
 
-    public function __toString()
+    public function __toString(): string
     {
         return "{$this->plural_title}";
     }
@@ -31,7 +32,7 @@ class TaxonomyType extends Model
      * Relationships
      */
 
-    public function taxonomies()
+    public function taxonomies(): HasMany
     {
         return $this->hasMany(Taxonomy::class, 'type_id');
     }
