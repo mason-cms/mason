@@ -68,7 +68,9 @@ function setEnv(array $data = [], bool $forceQuote = false): array
     return $updated;
 }
 
-function quote(string $string): string
+function quote(?string $string): string
 {
-    return strlen($string) > 0 ? "\"{$string}\"" : "";
+    return isset($string) && strlen($string) > 0
+        ? "\"{$string}\""
+        : "";
 }
