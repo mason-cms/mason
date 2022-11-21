@@ -55,12 +55,12 @@ class Site
         return $this->description;
     }
 
-    public function theme(): ?string
+    public function theme(): ?Theme
     {
         return $this->theme;
     }
 
-    public function locale(): ?string
+    public function locale(): ?Locale
     {
         return $this->locale;
     }
