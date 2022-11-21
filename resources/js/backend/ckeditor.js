@@ -7,7 +7,7 @@ $(document).ready(function () {
     $('.ck-editor').each(function () {
         ClassicEditor
             .create(this, {
-                extraPlugins: [MyCustomUploadAdapterPlugin],
+                extraPlugins: [MasonUploadAdapterPlugin],
                 htmlSupport: {
                     allow: [
                         {
