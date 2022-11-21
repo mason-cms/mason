@@ -49,9 +49,7 @@
 ></script>
 
 <script
-    src="https://cdn.ckeditor.com/ckeditor5/35.3.1/classic/ckeditor.js"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
+    src="{{ asset('vendor/ckeditor5-35.3.1/build/ckeditor.js') }}"
 ></script>
 
 <script
