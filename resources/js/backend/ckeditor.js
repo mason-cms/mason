@@ -6,7 +6,18 @@
 $(document).ready(function () {
     $('.ck-editor').each(function () {
         ClassicEditor
-            .create(this)
+            .create(this, {
+                htmlSupport: {
+                    allow: [
+                        {
+                            name: /.*/,
+                            attributes: true,
+                            classes: true,
+                            styles: true
+                        }
+                    ]
+                }
+            })
             .catch(error => {
                 console.error(error);
             });

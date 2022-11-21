@@ -49,7 +49,7 @@
 ></script>
 
 <script
-    src="{{ asset('vendor/ckeditor5-35.3.1/build/ckeditor.js') }}"
+    src="{{ asset('vendor/ckeditor5/35.3.1/build/ckeditor.js') }}"
 ></script>
 
 <script
