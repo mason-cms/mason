@@ -49,7 +49,7 @@
                     <div class="control">
                         <textarea
                             id="entry-content"
-                            class="textarea is-{{ $entry->editor_mode }}"
+                            class="textarea {{ isset($entry->editor_mode) ? $entry->editor_mode->cssClass() : '' }}"
                             name="entry[content]"
                             rows="20"
                         >{!! $entry->content !!}</textarea>
