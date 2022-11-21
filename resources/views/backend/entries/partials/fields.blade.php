@@ -52,6 +52,7 @@
                             class="textarea {{ isset($entry->editor_mode) ? $entry->editor_mode->cssClass() : '' }}"
                             name="entry[content]"
                             rows="20"
+                            data-media-upload="{{ route('backend.medium.store', ['medium' => ['parent_id' => $entry->getKey(), 'parent_type' => get_class($entry)]]) }}"
                         >{!! $entry->content !!}</textarea>
                     </div>
                 </div>

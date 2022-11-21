@@ -27,6 +27,8 @@ class Medium extends Model
     protected $fillable = [
         'title',
         'locale_id',
+        'parent_id',
+        'parent_type',
         'file',
     ];
 
@@ -35,6 +37,10 @@ class Medium extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
+    ];
+
+    protected $appends = [
+        'url',
     ];
 
     /**

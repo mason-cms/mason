@@ -58,7 +58,7 @@ class MediumController extends Controller
      * Store Medium
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
     public function store(Request $request)
@@ -66,6 +66,10 @@ class MediumController extends Controller
         $medium = new Medium($request->all()['medium'] ?? []);
 
         $medium->saveOrFail();
+
+        if ($request->expectsJson()) {
+            return response()->json($medium);
+        }
 
         return redirect()->route('backend.medium.index');
     }
@@ -75,10 +79,14 @@ class MediumController extends Controller
      *
      * @param Request $request
      * @param Medium $media
-     * @return \Illuminate\Http\RedirectResponse|void
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse|void
      */
     public function show(Request $request, Medium $medium)
     {
+        if ($request->expectsJson()) {
+            return response()->json($medium);
+        }
+
         if (isset($medium->url)) {
             return redirect()->to($medium->url);
         }
