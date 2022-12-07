@@ -36,7 +36,9 @@ class Site
 
     public function boot(): void
     {
-        $this->setLocale(Locale::getDefault());
+        if ($defaultLocale = Locale::getDefault()) {
+            $this->setLocale($defaultLocale);
+        }
 
         $this->loadLang();
 
