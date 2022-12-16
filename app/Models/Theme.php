@@ -105,6 +105,8 @@ class Theme
                 ? ( $info->$attribute ?? null )
                 : $info;
         }
+
+        return null;
     }
 
     public function config(string $attribute = null): mixed
@@ -114,6 +116,8 @@ class Theme
                 ? ( $config->$attribute ?? null )
                 : $config;
         }
+
+        return null;
     }
 
     public function menuLocations(): array
