@@ -75,16 +75,16 @@ function quote(?string $string): string
         : "";
 }
 
-function run(string $cmd): string|false|null
+function run(string $command): string|false|null
 {
-    if (! function_exists('shell_exec')) {
+    if (! function_exists('exec')) {
         throw new \Exception("Function 'shell_exec' is not available. Please enable it in your php.ini.");
     }
+    
+    exec($command, $output, $resultCode);
 
-    $output = shell_exec($cmd);
-
-    if (! is_string($output)) {
-        throw new \Exception("Could not run command: {$cmd}. Output: " . var_export($output, true));
+    if ($resultCode !== 0) {
+        throw new \Exception(sprintf("Could not run command: %s. Error code: %s. Output: %s.", $command, $resultCode, $output));
     }
 
     return $output;
