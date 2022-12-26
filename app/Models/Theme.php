@@ -131,8 +131,10 @@ class Theme
             throw new \Exception("No theme name");
         }
 
+        $composer = env('COMPOSER_PATH', 'composer');
+
         return [
-            run("composer require {$this->name} --no-interaction --update-no-dev --prefer-dist --optimize-autoloader"),
+            run("{$composer} require {$this->name} --no-interaction --update-no-dev --prefer-dist --optimize-autoloader"),
             $this->createSymlink(),
             $this->createMenus(),
         ];
@@ -144,8 +146,10 @@ class Theme
             throw new \Exception("No theme name");
         }
 
+        $composer = env('COMPOSER_PATH', 'composer');
+
         return [
-            run("composer update {$this->name} --no-interaction --no-dev --prefer-dist --optimize-autoloader"),
+            run("{$composer} update {$this->name} --no-interaction --no-dev --prefer-dist --optimize-autoloader"),
             $this->createSymlink(),
             $this->createMenus(),
         ];
