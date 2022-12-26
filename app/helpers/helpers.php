@@ -84,7 +84,7 @@ function run(string $cmd): string|false|null
     $output = shell_exec($cmd);
 
     if (! is_string($output)) {
-        throw new \Exception("Could not run command: {$cmd}");
+        throw new \Exception("Could not run command: {$cmd}. Output: " . var_export($output, true));
     }
 
     return $output;
