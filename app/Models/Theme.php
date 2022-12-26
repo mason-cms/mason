@@ -125,30 +125,30 @@ class Theme
         return $this->info('menuLocations') ?? [];
     }
 
-    public function install(): array|false
+    public function install(): array
     {
-        if (isset($this->name)) {
-            return [
-                run("composer require {$this->name} --no-interaction --update-no-dev --prefer-dist --optimize-autoloader"),
-                $this->createSymlink(),
-                $this->createMenus(),
-            ];
+        if (! isset($this->name)) {
+            throw new \Exception("No theme name");
         }
 
-        return false;
+        return [
+            run("composer require {$this->name} --no-interaction --update-no-dev --prefer-dist --optimize-autoloader"),
+            $this->createSymlink(),
+            $this->createMenus(),
+        ];
     }
 
-    public function update(): array|false
+    public function update(): array
     {
-        if (isset($this->name)) {
-            return [
-                run("composer update {$this->name} --no-interaction --no-dev --prefer-dist --optimize-autoloader"),
-                $this->createSymlink(),
-                $this->createMenus(),
-            ];
+        if (! isset($this->name)) {
+            throw new \Exception("No theme name");
         }
 
-        return false;
+        return [
+            run("composer update {$this->name} --no-interaction --no-dev --prefer-dist --optimize-autoloader"),
+            $this->createSymlink(),
+            $this->createMenus(),
+        ];
     }
 
     public function createSymlink(): bool

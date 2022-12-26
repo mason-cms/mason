@@ -50,11 +50,12 @@ class UpdateTheme extends Command
         if (isset($this->theme) && $this->theme instanceof Theme && isset($this->theme->name)) {
             $this->info("Updating theme: {$this->theme->name}");
 
-            if ($this->theme->update()) {
+            try {
+                $this->theme->update();
                 $this->info("Theme updated");
                 return Command::SUCCESS;
-            } else {
-                $this->error("Theme could not be updated");
+            } catch (\Exception $e) {
+                $this->error($e);
                 return Command::FAILURE;
             }
         } else {
