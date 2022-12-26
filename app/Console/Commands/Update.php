@@ -41,7 +41,12 @@ class Update extends Command
             "git reset --hard {$branch}",
         ]);
 
-        $this->exec($cmd);
+        try {
+            $this->line(run($cmd));
+        } catch (\Exception $e) {
+            $this->error($e);
+            return Command::FAILURE;
+        }
 
         // Reinstall theme in case composer file was updated
         Artisan::call('mason:theme:install', [], $this->getOutput());
@@ -53,21 +58,5 @@ class Update extends Command
         $this->info("Mason update completed.");
 
         return Command::SUCCESS;
-    }
-
-    protected function exec(string $cmd, bool $print = true): string|false|null
-    {
-        if (! function_exists('shell_exec')) {
-            $this->error("Function 'shell_exec' is not available. Please enable it in your php.ini.");
-            return false;
-        }
-
-        $output = shell_exec($cmd);
-
-        if ($print) {
-            $this->line("{$output}");
-        }
-
-        return $output;
     }
 }

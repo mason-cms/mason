@@ -74,3 +74,18 @@ function quote(?string $string): string
         ? "\"{$string}\""
         : "";
 }
+
+function run(string $cmd): string|false|null
+{
+    if (! function_exists('shell_exec')) {
+        throw new \Exception("Function 'shell_exec' is not available. Please enable it in your php.ini.");
+    }
+
+    $output = shell_exec($cmd);
+
+    if (! is_string($output)) {
+        throw new \Exception("Could not run command: {$cmd}");
+    }
+
+    return $output;
+}

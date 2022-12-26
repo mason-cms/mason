@@ -40,11 +40,15 @@ class Deploy extends Command
     {
         if (! $this->option('quick')) {
             $this->info("Installing composer dependencies...");
-            $this->exec("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev");
 
-            $this->info("Installing npm dependencies...");
-            $this->exec("npm install");
-            $this->exec("npm run production");
+            try {
+                $this->line(run("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev"));
+                $this->line(run("npm install"));
+                $this->line(run("npm run production"));
+            } catch (\Exception $e) {
+                $this->error($e);
+                return Command::FAILURE;
+            }
         }
 
         $this->info("Running database migrations...");
@@ -63,14 +67,5 @@ class Deploy extends Command
         $this->info("Mason deployment completed.");
 
         return Command::SUCCESS;
-    }
-
-    protected function exec($cmd, $print = true)
-    {
-        $output = shell_exec($cmd);
-
-        if ($print) {
-            $this->line("{$output}");
-        }
     }
 }
