@@ -75,12 +75,12 @@ function quote(?string $string): string
         : "";
 }
 
-function run(string $command): string|false|null
+function run(string $command): ?string
 {
     if (! function_exists('exec')) {
         throw new \Exception("Function 'shell_exec' is not available. Please enable it in your php.ini.");
     }
-    
+
     exec($command, $output, $resultCode);
 
     if ($resultCode !== 0) {
