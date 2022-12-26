@@ -84,7 +84,7 @@ function run(string $command): ?string
     exec($command, $output, $resultCode);
 
     if ($resultCode !== 0) {
-        throw new \Exception(sprintf("Could not run command: %s. Error code: %s. Output: %s.", $command, $resultCode, $output));
+        throw new \Exception(sprintf("Could not run command: %s. Error code: %s. Output: %s.", $command, $resultCode, var_export($output, true)));
     }
 
     return is_array($output)
