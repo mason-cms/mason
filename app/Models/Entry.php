@@ -74,7 +74,7 @@ class Entry extends Model
         static::creating(function (Entry $entry) {
             $entry->editor_mode ??= isset($entry->type)
                 ? $entry->type->default_editor_mode
-                : EditorMode::MARKDOWN;
+                : EditorMode::WYSIWYG;
         });
 
         static::saving(function (Entry $entry) {
