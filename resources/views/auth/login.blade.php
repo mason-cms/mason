@@ -22,6 +22,12 @@
                         autofocus
                     />
                 </div>
+
+                @error('email')
+                    <p class="help is-danger" role="alert">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
 
             <div class="field">
@@ -35,6 +41,12 @@
                         autocomplete="current-password"
                     />
                 </div>
+
+                @error('password')
+                    <p class="help is-danger" role="alert">
+                        {{ $message }}
+                    </p>
+                @enderror
             </div>
 
             <div class="field">
