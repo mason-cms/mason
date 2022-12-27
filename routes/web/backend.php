@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Backend\BlockController;
 use App\Http\Controllers\Backend\ConfigurationController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\EntryController;
@@ -47,6 +48,16 @@ Route::prefix('/menus')->name('menus.')->group(function () {
         Route::patch('/{item}', [MenuItemController::class, 'update'])->name('update');
         Route::get('/{item}/destroy', [MenuItemController::class, 'destroy'])->name('destroy');
     });
+});
+
+Route::prefix('/blocks')->name('blocks.')->group(function () {
+    Route::get('/', [BlockController::class, 'index'])->name('index');
+    Route::get('/create', [BlockController::class, 'create'])->name('create');
+    Route::post('/', [BlockController::class, 'store'])->name('store');
+    Route::get('/{block}', [BlockController::class, 'show'])->name('show');
+    Route::get('/{block}/edit', [BlockController::class, 'edit'])->name('edit');
+    Route::patch('/{block}', [BlockController::class, 'update'])->name('update');
+    Route::get('/{block}/destroy', [BlockController::class, 'destroy'])->name('destroy');
 });
 
 Route::prefix('/users')->name('users.')->group(function () {

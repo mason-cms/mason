@@ -101,6 +101,14 @@
             </a>
 
             <a
+                href="{{ $routeUri = route('backend.blocks.index') }}"
+                class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
+            >
+                @icon(\App\Models\Block::ICON, 'has-text-success')
+                <span>@lang('blocks.title')</span>
+            </a>
+
+            <a
                 href="{{ $routeUri = route('backend.users.index') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >

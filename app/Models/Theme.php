@@ -125,6 +125,11 @@ class Theme
         return $this->info('menuLocations') ?? [];
     }
 
+    public function blockLocations(): array
+    {
+        return $this->info('blockLocations') ?? [];
+    }
+
     public function install(): array
     {
         if (! isset($this->name)) {
