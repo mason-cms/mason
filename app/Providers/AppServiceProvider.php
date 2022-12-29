@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +26,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Collection::macro('render', function () {
+            return $this->map(function ($value) {
+                return $value->render();
+            });
+        });
+
         Blade::directive('i', function ($expression) {
             return "<?= i($expression); ?>";
         });
