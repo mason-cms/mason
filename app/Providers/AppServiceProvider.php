@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Collection::macro('render', function () {
             return $this->map(function ($value) {
                 return $value->render();
-            });
+            })->join(PHP_EOL);
         });
 
         Blade::directive('i', function ($expression) {
