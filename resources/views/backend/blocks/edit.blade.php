@@ -37,18 +37,20 @@
                         <span>@lang('blocks.actions.save.label')</span>
                     </button>
                 </div>
+
+                <div class="level-item">
+                    <a
+                        class="button is-danger"
+                        href="{{ route('backend.blocks.destroy', [$block]) }}"
+                        data-confirm="@lang('general.confirm')"
+                    >
+                        @icon('fa-trash-can')
+                        <span>@lang('blocks.actions.destroy.label')</span>
+                    </a>
+                </div>
             </div>
         </div>
 
         @include('backend.blocks.partials.fields')
-
-        <a
-            class="button is-danger"
-            href="{{ route('backend.blocks.destroy', [$block]) }}"
-            data-confirm="@lang('general.confirm')"
-        >
-            @icon('fa-trash-can')
-            <span>@lang('blocks.actions.destroy.label')</span>
-        </a>
     </form>
 @endsection
