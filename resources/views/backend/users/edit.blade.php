@@ -33,29 +33,19 @@
                     </button>
                 </div>
 
-                @if ($user->is_cancellable)
-                    <div class="level-item">
-                        <a
-                            class="button"
-                            href="{{ route('backend.users.destroy', [$user]) }}"
-                        >
-                            @icon('fa-ban')
-                            <span>@lang('users.actions.cancel.label')</span>
-                        </a>
-                    </div>
-                @endif
+                <div class="level-item">
+                    <a
+                        class="button is-danger"
+                        href="{{ route('backend.users.destroy', [$user]) }}"
+                        data-confirm="@lang('general.confirm')"
+                    >
+                        @icon('fa-trash-can')
+                        <span>@lang('users.actions.destroy.label')</span>
+                    </a>
+                </div>
             </div>
         </div>
 
         @include('backend.users.partials.fields')
-
-        <a
-            class="button is-danger"
-            href="{{ route('backend.users.destroy', [$user]) }}"
-            data-confirm="@lang('general.confirm')"
-        >
-            @icon('fa-trash-can')
-            <span>@lang('users.actions.destroy.label')</span>
-        </a>
     </form>
 @endsection

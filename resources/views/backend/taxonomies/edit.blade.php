@@ -44,18 +44,20 @@
                         </a>
                     </div>
                 @endif
+
+                <div class="level-item">
+                    <a
+                        class="button is-danger"
+                        href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
+                        data-confirm="@lang('general.confirm')"
+                    >
+                        @icon('fa-trash-can')
+                        <span>@lang('taxonomies.actions.destroy.label')</span>
+                    </a>
+                </div>
             </div>
         </div>
 
         @include('backend.taxonomies.partials.fields')
-
-        <a
-            class="button is-danger"
-            href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
-            data-confirm="@lang('general.confirm')"
-        >
-            @icon('fa-trash-can')
-            <span>@lang('taxonomies.actions.destroy.label')</span>
-        </a>
     </form>
 @endsection

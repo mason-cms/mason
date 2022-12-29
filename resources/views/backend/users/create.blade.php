@@ -31,18 +31,6 @@
                         <span>@lang('users.actions.save.label')</span>
                     </button>
                 </div>
-
-                @if ($user->is_cancellable)
-                    <div class="level-item">
-                        <a
-                            class="button"
-                            href="{{ route('backend.users.destroy', [$user]) }}"
-                        >
-                            @icon('fa-ban')
-                            <span>@lang('users.actions.cancel.label')</span>
-                        </a>
-                    </div>
-                @endif
             </div>
         </div>
 

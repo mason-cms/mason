@@ -57,18 +57,20 @@
                         </button>
                     </div>
                 @endif
+
+                <div class="level-item">
+                    <a
+                        class="button is-danger"
+                        href="{{ route('backend.entries.destroy', [$entry->type, $entry]) }}"
+                        data-confirm="@lang('general.confirm')"
+                    >
+                        @icon('fa-trash-can')
+                        <span>@lang('entries.actions.destroy.label')</span>
+                    </a>
+                </div>
             </div>
         </div>
 
         @include('backend.entries.partials.fields')
-
-        <a
-            class="button is-danger"
-            href="{{ route('backend.entries.destroy', [$entry->type, $entry]) }}"
-            data-confirm="@lang('general.confirm')"
-        >
-            @icon('fa-trash-can')
-            <span>@lang('entries.actions.destroy.label')</span>
-        </a>
     </form>
 @endsection
