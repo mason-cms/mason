@@ -184,6 +184,12 @@ class Site
             ->first();
     }
 
+    public function blocks(string $location, mixed $locale = null): Builder
+    {
+        return Block::byLocation($location)
+            ->byLocale($locale ?? $this->locale);
+    }
+
     public function settings(): Builder
     {
         return Setting::query();

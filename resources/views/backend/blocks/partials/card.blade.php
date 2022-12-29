@@ -3,7 +3,7 @@
         <div class="block">
             <h3 class="title is-3">
                 <a href="{{ route('backend.blocks.edit', [$block]) }}">
-                    {{ $block }}
+                    {{ $block->title ?? __('blocks.untitled') }}
                 </a>
             </h3>
         </div>

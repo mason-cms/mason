@@ -91,9 +91,34 @@ class Block extends Model
 
     public function __toString()
     {
-        return isset($this->title)
-            ? "{$this->title}"
-            : __('blocks.untitled');
+        return $this->render();
+    }
+
+    public function view(): ?string
+    {
+        $views = [
+            "{$this->locale->name}.blocks.{$this->location}.default",
+            "{$this->locale->name}.blocks.{$this->location}",
+            "{$this->locale->name}.blocks.default",
+            "{$this->locale->name}.blocks",
+            "blocks.{$this->location}.default",
+            "blocks.{$this->location}",
+            "blocks.default",
+            "blocks",
+        ];
+
+        foreach ($views as $view) {
+            if (view()->exists($view)) {
+                return $view;
+            }
+        }
+
+        return null;
+    }
+
+    public function render(array $data = []): ?string
+    {
+        return view($this->view(), array_merge($data, ['block' => $this]))->render();
     }
 
     /**
