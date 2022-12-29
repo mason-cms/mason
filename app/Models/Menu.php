@@ -100,7 +100,11 @@ class Menu extends Model
 
     public function render(array $data = []): ?string
     {
-        return view($this->view(), array_merge($data, ['menu' => $this]))->render();
+        if ($view = $this->view()) {
+            return view($view, array_merge($data, ['menu' => $this]))->render();
+        }
+
+        return null;
     }
 
     /**
