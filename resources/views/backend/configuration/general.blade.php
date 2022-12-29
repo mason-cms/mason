@@ -20,7 +20,7 @@
             <div class="level-right">
                 <div class="level-item">
                     <button
-                        class="button is-dark"
+                        class="button is-success"
                         type="submit"
                     >
                         @icon('fa-floppy-disk')

@@ -3,7 +3,7 @@
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.users.update', [$user]) }}"
+        action="{{ route('backend.blocks.update', [$block]) }}"
         method="POST"
         enctype="multipart/form-data"
     >
@@ -14,9 +14,14 @@
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-1">
-                        <a href="{{ route('backend.users.index') }}">
+                        <a
+                            href="{{ route('backend.blocks.index', [
+                                'location' => $block->location,
+                                'locale_id' => $block->locale_id,
+                            ]) }}"
+                        >
                             @icon('fa-arrow-left-long')
-                            <span>@lang('users.title')</span>
+                            <span>@lang('blocks.plural')</span>
                         </a>
                     </h1>
                 </div>
@@ -29,33 +34,21 @@
                         type="submit"
                     >
                         @icon('fa-floppy-disk')
-                        <span>@lang('users.actions.save.label')</span>
+                        <span>@lang('blocks.actions.save.label')</span>
                     </button>
                 </div>
-
-                @if ($user->is_cancellable)
-                    <div class="level-item">
-                        <a
-                            class="button"
-                            href="{{ route('backend.users.destroy', [$user]) }}"
-                        >
-                            @icon('fa-ban')
-                            <span>@lang('users.actions.cancel.label')</span>
-                        </a>
-                    </div>
-                @endif
             </div>
         </div>
 
-        @include('backend.users.partials.fields')
+        @include('backend.blocks.partials.fields')
 
         <a
             class="button is-danger"
-            href="{{ route('backend.users.destroy', [$user]) }}"
+            href="{{ route('backend.blocks.destroy', [$block]) }}"
             data-confirm="@lang('general.confirm')"
         >
             @icon('fa-trash-can')
-            <span>@lang('users.actions.destroy.label')</span>
+            <span>@lang('blocks.actions.destroy.label')</span>
         </a>
     </form>
 @endsection

@@ -25,7 +25,7 @@
             <div class="level-right">
                 <div class="level-item">
                     <button
-                        class="button is-dark"
+                        class="button is-success"
                         type="submit"
                     >
                         @icon('fa-floppy-disk')
@@ -61,5 +61,14 @@
         </div>
 
         @include('backend.entries.partials.fields')
+
+        <a
+            class="button is-danger"
+            href="{{ route('backend.entries.destroy', [$entry->type, $entry]) }}"
+            data-confirm="@lang('general.confirm')"
+        >
+            @icon('fa-trash-can')
+            <span>@lang('entries.actions.destroy.label')</span>
+        </a>
     </form>
 @endsection

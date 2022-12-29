@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EditorMode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,11 +19,14 @@ class Block extends Model
     protected $fillable = [
         'location',
         'locale_id',
+        'title',
         'content',
+        'editor_mode',
         'rank',
     ];
 
     protected $casts = [
+        'editor_mode' => EditorMode::class,
         'rank' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -44,6 +48,10 @@ class Block extends Model
                 ->orderBy('rank')
                 ->orderBy('created_at');
         });
+
+        static::creating(function (self $block) {
+            $block->editor_mode ??= $block->default_editor_mode;
+        });
     }
 
     /**
@@ -62,6 +70,19 @@ class Block extends Model
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        if (isset($filters['location'])) {
+            $query->byLocation($filters['status']);
+        }
+
+        if (isset($filters['locale_id'])) {
+            $query->byLocale($filters['locale_id']);
+        }
+
+        return $query;
+    }
+
     /**
      * ==================================================
      * Helpers
@@ -70,7 +91,29 @@ class Block extends Model
 
     public function __toString()
     {
-        return "{$this->content}";
+        return isset($this->title)
+            ? "{$this->title}"
+            : __('blocks.untitled');
+    }
+
+    /**
+     * ==================================================
+     * Accessors & Mutators
+     * ==================================================
+     */
+
+    public function getlocationInfoAttribute(): ?object
+    {
+        return isset($this->location)
+            ? site(false)->theme()->blockLocation($this->location)
+            : null;
+    }
+
+    public function getDefaultEditorModeAttribute(): EditorMode
+    {
+        return isset($this->location_info, $this->location_info->defaultEditorMode)
+            ? $this->location_info->defaultEditorMode
+            : EditorMode::WYSIWYG;
     }
 
     /**

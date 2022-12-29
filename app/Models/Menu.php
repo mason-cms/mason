@@ -109,7 +109,7 @@ class Menu extends Model
     public function getLocationTitleAttribute(): ?string
     {
         if (isset($this->location)) {
-            foreach (site()->theme()->menuLocations() as $menuLocation) {
+            foreach (site(false)->theme()->menuLocations() as $menuLocation) {
                 if ($menuLocation->name === $this->location) {
                     return $menuLocation->title;
                 }

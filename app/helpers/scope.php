@@ -4,7 +4,7 @@ function prepareValueForScope(mixed $value, string $class): array
 {
     $values = [];
 
-    if (is_integer($value)) {
+    if (is_numeric($value)) {
         $values[] = $value;
     } elseif (is_string($value)) {
         if ($value = $class::where('name', $value)->first()) {
@@ -12,7 +12,7 @@ function prepareValueForScope(mixed $value, string $class): array
         }
     } elseif (is_array($value)) {
         foreach ($value as $v) {
-            if (is_integer($v)) {
+            if (is_numeric($v)) {
                 $values[] = $v;
             } elseif (is_string($v)) {
                 if ($v = $class::where('name', $v)->first()) {

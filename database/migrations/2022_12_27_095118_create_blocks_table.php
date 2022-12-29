@@ -17,7 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('location', 255)->nullable()->index();
             $table->integer('locale_id')->unsigned()->nullable()->index();
+            $table->string('title', 255)->nullable();
             $table->text('content')->nullable();
+            $table->string('editor_mode', 50)->nullable();
             $table->integer('rank')->unsigned()->default(0);
             $table->timestamps();
             $table->softDeletes();

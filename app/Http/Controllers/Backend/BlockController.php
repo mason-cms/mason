@@ -4,38 +4,73 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Block;
+use App\Models\Locale;
 use Illuminate\Http\Request;
 
 class BlockController extends Controller
 {
     public function index(Request $request)
     {
-        $site = site(false);
-        $theme = $site->theme();
-        $blockLocations = $theme->blockLocations();
-
-        dd($blockLocations);
-
         $query = Block::query();
 
-        if ($search = $request->input('search')) {
-            $query->search($search);
+        if ($request->get('location')) {
+            $query->byLocation($request->get('location'));
         }
 
-        if ($filters = $request->input('filters')) {
-            $query->filter($filters);
+        if ($request->get('locale_id')) {
+            $query->byLocale($request->get('locale_id'));
         }
-
-        $total = $query->count();
 
         $blocks = $query->paginate($perPage = $request->input('per_page') ?? 25);
 
         return response()->view('backend.blocks.index', [
+            'request' => $request,
+            'blockLocations' => site(false)->theme()->blockLocations(),
+            'locales' => Locale::all(),
             'blocks' => $blocks,
-            'total' => $total,
+            'total' => $query->count(),
             'perPage' => $perPage,
-            'filters' => $filters ?? null,
-            'search' => $search ?? null,
         ]);
+    }
+
+    public function create(Request $request)
+    {
+        $block = new Block($request->all());
+
+        $block->saveOrFail();
+
+        return redirect()->route('backend.blocks.edit', [$block]);
+    }
+
+    public function store(Request $request)
+    {
+        $block = new Block($request->all());
+
+        $block->saveOrFail();
+
+        return redirect()->route('backend.blocks.edit', [$block]);
+    }
+
+    public function edit(Request $request, Block $block)
+    {
+        return response()->view('backend.blocks.edit', [
+            'request' => $request,
+            'block' => $block,
+            'blockLocations' => site(false)->theme()->blockLocations(),
+        ]);
+    }
+
+    public function update(Request $request, Block $block)
+    {
+        $block->updateOrFail($request->all()['block'] ?? []);
+
+        return redirect()->back();
+    }
+
+    public function destroy(Request $request, Block $block)
+    {
+        $block->deleteOrFail();
+
+        return redirect()->back();
     }
 }

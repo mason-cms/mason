@@ -25,7 +25,7 @@
             <div class="level-right">
                 <div class="level-item">
                     <button
-                        class="button is-dark"
+                        class="button is-success"
                         type="submit"
                     >
                         @icon('fa-floppy-disk')
@@ -48,5 +48,14 @@
         </div>
 
         @include('backend.taxonomies.partials.fields')
+
+        <a
+            class="button is-danger"
+            href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
+            data-confirm="@lang('general.confirm')"
+        >
+            @icon('fa-trash-can')
+            <span>@lang('taxonomies.actions.destroy.label')</span>
+        </a>
     </form>
 @endsection

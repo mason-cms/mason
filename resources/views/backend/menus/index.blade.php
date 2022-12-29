@@ -22,7 +22,7 @@
                 <div class="level-right">
                     <div class="level-item">
                         <div class="field">
-                            <div class="control">
+                            <div class="control has-icons-left">
                                 <div class="select">
                                     <select
                                         name="location"
@@ -38,13 +38,15 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                @icon('fa-square', 'is-left')
                             </div>
                         </div>
                     </div>
 
                     <div class="level-item">
                         <div class="field">
-                            <div class="control">
+                            <div class="control has-icons-left">
                                 <div class="select">
                                     <select
                                         name="locale_id"
@@ -60,6 +62,8 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                @icon('fa-language', 'is-left')
                             </div>
                         </div>
                     </div>

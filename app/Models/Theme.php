@@ -120,14 +120,19 @@ class Theme
         return null;
     }
 
-    public function menuLocations(): array
+    public function menuLocations(): Collection
     {
-        return $this->info('menuLocations') ?? [];
+        return collect($this->info('menuLocations') ?? []);
     }
 
-    public function blockLocations(): array
+    public function blockLocations(): Collection
     {
-        return $this->info('blockLocations') ?? [];
+        return collect($this->info('blockLocations') ?? []);
+    }
+
+    public function blockLocation(string $name): object
+    {
+        return $this->blockLocations()->where('name', $name)->first();
     }
 
     public function install(): array
