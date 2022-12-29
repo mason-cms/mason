@@ -33,7 +33,7 @@ class FrontEndController extends Controller
         }
 
         $views = [
-            "{$this->site->locale->system_name}/home",
+            "{$this->site->locale->name}/home",
             "home",
         ];
 
