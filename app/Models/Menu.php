@@ -81,7 +81,10 @@ class Menu extends Model
             "{$this->locale->name}.menu.{$this->location}",
             "{$this->locale->name}.menu.default",
             "{$this->locale->name}.menu",
+            "menu.{$this->location}.{$this->name}",
             "menu.{$this->name}",
+            "menu.{$this->location}.default",
+            "menu.{$this->location}",
             "menu.default",
             "menu",
         ];
