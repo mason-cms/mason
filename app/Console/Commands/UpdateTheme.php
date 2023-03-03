@@ -55,6 +55,7 @@ class UpdateTheme extends Command
                 $this->info("Theme updated");
                 return Command::SUCCESS;
             } catch (\Exception $e) {
+                \Sentry\captureException($e);
                 $this->error($e);
                 return Command::FAILURE;
             }

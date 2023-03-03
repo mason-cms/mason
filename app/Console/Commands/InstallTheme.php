@@ -52,15 +52,11 @@ class InstallTheme extends Command
 
             try {
                 $this->theme->install();
-
                 $this->info("Theme installed");
-
                 return Command::SUCCESS;
             } catch (\Exception $e) {
                 \Sentry\captureException($e);
-
                 $this->error("Theme could not be installed: {$e}");
-
                 return Command::FAILURE;
             }
         } else {
