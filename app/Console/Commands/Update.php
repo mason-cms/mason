@@ -49,7 +49,7 @@ class Update extends Command
         }
 
         // Reinstall theme in case composer file was updated
-        Artisan::call('mason:theme:install', [], $this->getOutput());
+        // Artisan::call('mason:theme:install', [], $this->getOutput());
 
         if ($this->option('deploy')) {
             Artisan::call('mason:deploy', [], $this->getOutput());
