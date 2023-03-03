@@ -50,15 +50,22 @@ class InstallTheme extends Command
         if (isset($this->theme) && $this->theme instanceof Theme && isset($this->theme->name)) {
             $this->info("Installing theme: {$this->theme->name}");
 
-            if ($this->theme->install()) {
+            try {
+                $this->theme->install();
+
                 $this->info("Theme installed");
+
                 return Command::SUCCESS;
-            } else {
-                $this->error("Theme could not be installed");
+            } catch (\Exception $e) {
+                \Sentry\captureException($e);
+
+                $this->error("Theme could not be installed: {$e}");
+
                 return Command::FAILURE;
             }
         } else {
             $this->error("No theme to install.");
+
             return Command::FAILURE;
         }
     }
