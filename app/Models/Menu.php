@@ -75,14 +75,10 @@ class Menu extends Model
     public function view(): ?string
     {
         $views = [
-            "{$this->locale->name}.menu.{$this->location}.{$this->name}",
-            "{$this->locale->name}.menu.{$this->name}",
             "{$this->locale->name}.menu.{$this->location}.default",
             "{$this->locale->name}.menu.{$this->location}",
             "{$this->locale->name}.menu.default",
             "{$this->locale->name}.menu",
-            "menu.{$this->location}.{$this->name}",
-            "menu.{$this->name}",
             "menu.{$this->location}.default",
             "menu.{$this->location}",
             "menu.default",
