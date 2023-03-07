@@ -155,15 +155,13 @@ $(document)
             .appendTo('body');
 
         return $form.submit();
-    });
-
-$(window)
-    .on('keypress', function (e) {
+    })
+    .on('keydown', function (e) {
         /**
          * CTRL+S
          * Take over the control+save key to trigger click events on elements with 'save' class
          */
-        if (e.ctrlKey && e.which === 83) {
+        if ((e.metaKey || e.ctrlKey) && e.keyCode === 83) {
             let $save = $('.save');
 
             if ($save.length > 0) {
