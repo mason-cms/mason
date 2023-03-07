@@ -122,7 +122,7 @@ class Block extends Model
             return view($view, array_merge($data, ['block' => $this]))->render();
         }
 
-        return null;
+        return $this->content;
     }
 
     /**
