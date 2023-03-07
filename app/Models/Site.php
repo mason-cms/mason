@@ -199,9 +199,20 @@ class Site
         return $query;
     }
 
-    public function settings(): Builder
+    public function settings(string $name = null): Builder
     {
-        return Setting::query();
+        $query = Setting::query();
+
+        if (isset($name)) {
+            $query->byName($name);
+        }
+
+        return $query;
+    }
+
+    public function setting(string $name): ?Setting
+    {
+        return $this->settings()->byname($name)->first();
     }
 
     public function users(): Builder
