@@ -36,6 +36,12 @@ class Locale extends Model
     {
         parent::boot();
 
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder
+                ->orderBy('is_default', 'desc')
+                ->orderBy('title');
+        });
+
         static::saved(function (Locale $locale) {
             if ($locale->is_default) {
                 foreach (Locale::default()->not($locale)->get() as $l) {
