@@ -205,7 +205,7 @@ class Setup extends Command
         $rootUser->is_root = true;
         $rootUser->name = $this->ask("What is your name?");
         $rootUser->email = $this->ask("What is your email?");
-        $rootUser->password = Hash::make($this->askPassword());
+        $rootUser->password = $this->askPassword();
 
         return $rootUser->save();
     }
