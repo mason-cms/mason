@@ -34,7 +34,11 @@ class SettingsController extends Controller
                 $value = $requestInput['settings'][$setting->name];
 
                 if ($value instanceof UploadedFile) {
-                    $value = Storage::putFileAs('/', $value, $value->getClientOriginalName(), 'public');
+                    if ($key = Storage::putFileAs('/', $value, $value->getClientOriginalName(), 'public')) {
+                        $value = $key;
+                    } else {
+                        $value = null;
+                    }
                 }
 
                 Setting::set($setting->name, $value);
