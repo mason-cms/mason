@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +24,7 @@ class Setting extends Model
 
     public static function get(string $name): ?string
     {
-        if ($setting = static::where('name', $name)->first()) {
+        if ($setting = static::byName($name)->first()) {
             return $setting->value;
         }
 
@@ -35,6 +36,11 @@ class Setting extends Model
         $setting = static::firstOrCreate(['name' => $name]);
 
         return $setting->update(['value' => $value]);
+    }
+
+    public function scopeByName(Builder $query, string $name): Builder
+    {
+        return $query->where('name', $name);
     }
 
     public function getValueAttribute(): ?string
