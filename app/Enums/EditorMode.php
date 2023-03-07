@@ -11,7 +11,7 @@ enum EditorMode: string
     {
         return match ($this) {
             self::WYSIWYG => 'ck-editor',
-            self::CODE => 'ace-editor',
+            self::CODE => 'ace-editor is-code',
         };
     }
 }
