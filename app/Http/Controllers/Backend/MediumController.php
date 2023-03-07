@@ -63,12 +63,20 @@ class MediumController extends Controller
      */
     public function store(Request $request)
     {
-        $medium = new Medium($request->all()['medium'] ?? []);
+        $media = collect();
 
-        $medium->saveOrFail();
+        foreach ($request->file('files') as $file) {
+            $medium = new Medium([
+                'file' => $file,
+            ]);
+
+            $medium->saveOrFail();
+
+            $media->push($media);
+        }
 
         if ($request->expectsJson()) {
-            return response()->json($medium);
+            return response()->json($media);
         }
 
         return redirect()->route('backend.medium.index');

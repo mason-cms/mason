@@ -45,7 +45,8 @@
                                         id="media-file"
                                         class="file-input"
                                         type="file"
-                                        name="medium[file]"
+                                        name="files[]"
+                                        multiple
                                     />
 
                                     <span class="file-cta">

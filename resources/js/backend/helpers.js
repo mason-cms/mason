@@ -46,7 +46,13 @@ $(document)
         }
 
         if (typeof e.target.files === 'object' && e.target.files.length > 0) {
-            $fileName.text(e.target.files[0].name);
+            let fileNames = [];
+
+            for (let i = 0; i < e.target.files.length; i++) {
+                fileNames.push(e.target.files[i].name);
+            }
+
+            $fileName.text(fileNames.join(', '));
         } else {
             $fileName.text('');
         }
