@@ -141,7 +141,7 @@ class Block extends Model
     public function getDefaultEditorModeAttribute(): EditorMode
     {
         return isset($this->location_info, $this->location_info->defaultEditorMode)
-            ? $this->location_info->defaultEditorMode
+            ? EditorMode::from($this->location_info->defaultEditorMode)
             : EditorMode::WYSIWYG;
     }
 
