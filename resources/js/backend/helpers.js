@@ -156,3 +156,20 @@ $(document)
 
         return $form.submit();
     });
+
+$(window)
+    .on('keypress', function (e) {
+        /**
+         * CTRL+S
+         * Take over the control+save key to trigger click events on elements with 'save' class
+         */
+        if (e.ctrlKey && e.which === 83) {
+            let $save = $('.save');
+
+            if ($save.length > 0) {
+                e.preventDefault();
+                $save.click();
+                return false;
+            }
+        }
+    });
