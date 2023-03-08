@@ -22,7 +22,7 @@
 
         <footer class="modal-card-foot">
             <button
-                class="button is-dark"
+                class="button save is-success"
                 type="submit"
             >
                 @icon('fa-floppy-disk')
