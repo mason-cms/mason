@@ -34,6 +34,8 @@ class Medium extends Model
 
     protected $casts = [
         'filesize' => 'integer',
+        'image_width' => 'integer',
+        'image_height' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -141,6 +143,15 @@ class Medium extends Model
         $this->content_type = $file->getMimeType();
 
         $this->filesize = $file->getSize();
+
+        if ($this->is_image) {
+            if ($realPath = $file->getRealPath()) {
+                if ($imageSize = getimagesize($realPath)) {
+                    $this->image_width = $imageSize[0] ?? null;
+                    $this->image_height = $imageSize[1] ?? null;
+                }
+            }
+        }
 
         $this->storage_key = Storage::putFileAs(
             static::STORAGE_PATH,
