@@ -55,6 +55,13 @@
                     </div>
                 @endisset
 
+                @isset($medium->image_width, $medium->image_height)
+                    <div class="control">
+                        @icon('fa-ruler')
+                        <span>{{ $medium->image_width }}x{{ $medium->image_height }}</span>
+                    </div>
+                @endisset
+
                 @isset($medium->created_at)
                     <div class="control">
                         @icon('fa-calendar')
