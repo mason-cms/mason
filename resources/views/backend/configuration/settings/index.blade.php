@@ -47,7 +47,41 @@
                             <div class="field-body">
                                 <div class="field">
                                     <div class="control">
-                                        @if ($setting->type === 'file')
+                                        @if ($setting->type === 'text')
+                                            <input
+                                                class="input"
+                                                type="text"
+                                                name="settings[{{ $setting->name }}]"
+                                                value="{!! $setting->value !!}"
+                                            />
+                                        @elseif ($setting->type === 'email')
+                                            <input
+                                                class="input"
+                                                type="email"
+                                                name="settings[{{ $setting->name }}]"
+                                                value="{!! $setting->value !!}"
+                                            />
+                                        @elseif ($setting->type === 'tel')
+                                            <input
+                                                class="input"
+                                                type="tel"
+                                                name="settings[{{ $setting->name }}]"
+                                                value="{!! $setting->value !!}"
+                                            />
+                                        @elseif ($setting->type === 'url')
+                                            <input
+                                                class="input"
+                                                type="url"
+                                                name="settings[{{ $setting->name }}]"
+                                                value="{!! $setting->value !!}"
+                                            />
+                                        @elseif ($setting->type === 'textarea')
+                                            <textarea
+                                                class="textarea"
+                                                name="settings[{{ $setting->name }}]"
+                                                rows="3"
+                                            >{!! $setting->value !!}</textarea>
+                                        @elseif ($setting->type === 'file')
                                             <div class="file {{ isset($setting->value) ? 'has-name' : '' }}">
                                                 <label class="file-label">
                                                     <input
