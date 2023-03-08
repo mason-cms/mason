@@ -18,7 +18,11 @@ $(document)
     })
     .on('input', 'input.slug', function () {
         let $input = $(this),
-            slug = $input.val().toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+            slug = $input.val()
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/ /g,'-')
+                .replace(/[^\w-]+/g,'');
 
         $input.val(slug);
     })
@@ -28,7 +32,11 @@ $(document)
             $from = $(from).first();
 
         if (! $input.val() && $from.length === 1) {
-            let slug = $from.val().toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+            let slug = $from.val()
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/ /g,'-')
+                .replace(/[^\w-]+/g,'');
 
             $input.val(slug).trigger('input');
         }
