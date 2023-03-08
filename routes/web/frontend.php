@@ -23,19 +23,20 @@ Route::get('/{taxonomyType:name}/{taxonomy:name}/{entryType:name?}', [FrontEndCo
     ->name('taxonomy');
 
 if (Schema::hasTable('locales')) {
-    $locales = Locale::all()->pluck('name')->join('|');
+    $locales = Locale::all();
+    $localeNames = $locales->pluck('name')->join('|');
 
     Route::get('/{locale:name}', [FrontEndController::class, 'home'])
-        ->where(['locale' => $locales])
+        ->where(['locale' => $localeNames])
         ->name('locale.home');
 
     Route::get('/{locale:name}/{entry:name}', [FrontEndController::class, 'entry'])
-        ->where(['locale' => $locales])
+        ->where(['locale' => $localeNames])
         ->where(['entry' => $alphanum])
         ->name('locale.entry');
 
     Route::get('/{locale:name}/{taxonomyType:name}/{taxonomy:name}/{entryType:name?}', [FrontEndController::class, 'taxonomy'])
-        ->where(['locale' => $locales])
+        ->where(['locale' => $localeNames])
         ->where([
             'taxonomy' => $alphanum,
             'taxonomyType' => $alphanum,
