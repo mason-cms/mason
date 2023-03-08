@@ -6,7 +6,10 @@
                     <a href="{{ route('backend.medium.show', [$medium]) }}">
                         <img
                             src="{{ $medium->url }}"
+                            width="{{ $medium->image_width }}"
+                            height="{{ $medium->image_height }}"
                             alt="{{ $medium->title }}"
+                            loading="lazy"
                         />
                     </a>
                 </figure>
