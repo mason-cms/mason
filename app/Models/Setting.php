@@ -38,6 +38,11 @@ class Setting extends Model
         return $setting->update(['value' => $value]);
     }
 
+    public function __toString()
+    {
+        return "{$this->value}";
+    }
+
     public function scopeByName(Builder $query, string $name): Builder
     {
         return $query->where('name', $name);
