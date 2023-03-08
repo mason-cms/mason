@@ -110,6 +110,11 @@ class Medium extends Model
         return $query->where('title', 'LIKE', "%{$term}%");
     }
 
+    public function scopeImages(Builder $query): Builder
+    {
+        return $query->where('content_type', 'like', 'image/%');
+    }
+
     /**
      * ==================================================
      * Helpers
@@ -119,6 +124,26 @@ class Medium extends Model
     public function __toString(): string
     {
         return "{$this->title}";
+    }
+
+    public function calcImageSize($path = null): bool
+    {
+        $path ??= $this->storage_path;
+
+        if ($this->is_image) {
+            if (file_exists($path)) {
+                if ($imageSize = @getimagesize($path)) {
+                    if (isset($imageSize[0], $imageSize[1])) {
+                        $this->image_width = $imageSize[0];
+                        $this->image_height = $imageSize[1];
+
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -146,10 +171,7 @@ class Medium extends Model
 
         if ($this->is_image) {
             if ($realPath = $file->getRealPath()) {
-                if ($imageSize = getimagesize($realPath)) {
-                    $this->image_width = $imageSize[0] ?? null;
-                    $this->image_height = $imageSize[1] ?? null;
-                }
+                $this->calcImageSize($realPath);
             }
         }
 
@@ -159,6 +181,13 @@ class Medium extends Model
             $filename,
             static::DEFAULT_VISIBILITY
         );
+    }
+
+    public function getStoragePathAttribute(): ?string
+    {
+        return isset($this->storage_key)
+            ? Storage::path($this->storage_key)
+            : null;
     }
 
     public function getUrlAttribute(): ?string
