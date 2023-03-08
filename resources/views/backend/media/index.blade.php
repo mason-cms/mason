@@ -46,9 +46,9 @@
 
         @if ($media->count() > 0)
             <div class="columns is-multiline same-height-cards">
-                @foreach ($media as $m)
+                @foreach ($media as $medium)
                     <div class="column is-4 is-3-desktop">
-                        @include('backend.media.partials.card', ['media' => $m])
+                        @include('backend.media.partials.card', ['medium' => $medium])
                     </div>
                 @endforeach
             </div>

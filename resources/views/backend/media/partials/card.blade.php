@@ -1,12 +1,12 @@
 <div class="card">
-    @if ($media->is_image)
-        @isset($media->url)
+    @if ($medium->is_image)
+        @isset($medium->url)
             <div class="card-image">
                 <figure class="image">
-                    <a href="{{ route('backend.medium.show', [$media]) }}">
+                    <a href="{{ route('backend.medium.show', [$medium]) }}">
                         <img
-                            src="{{ $media->url }}"
-                            alt="{{ $media->title }}"
+                            src="{{ $medium->url }}"
+                            alt="{{ $medium->title }}"
                         />
                     </a>
                 </figure>
@@ -17,48 +17,48 @@
     <div class="card-content">
         <div class="block">
             <h2 class="title is-2">
-                <a href="{{ route('backend.medium.show', [$media]) }}">
-                    {{ $media->title }}
+                <a href="{{ route('backend.medium.show', [$medium]) }}">
+                    {{ $medium->title }}
                 </a>
             </h2>
 
-            @isset($media->relative_url)
+            @isset($medium->relative_url)
                 <div class="subtitle">
-                    {{ $media->relative_url }}
+                    {{ $medium->relative_url }}
                 </div>
             @endisset
         </div>
 
         <div class="block">
             <div class="field is-grouped is-grouped-multiline">
-                @isset($media->locale)
+                @isset($medium->locale)
                     <div
                         class="control"
                         title="@lang('media.attributes.locale')"
                     >
                         @icon('fa-language')
-                        <span>{{ $media->locale }}</span>
+                        <span>{{ $medium->locale }}</span>
                     </div>
                 @endisset
 
-                @isset($media->content_type)
+                @isset($medium->content_type)
                     <div class="control">
                         @icon('fa-file-circle-question')
-                        <span>{{ $media->content_type }}</span>
+                        <span>{{ $medium->content_type }}</span>
                     </div>
                 @endisset
 
-                @isset($media->filesize)
+                @isset($medium->filesize)
                     <div class="control">
                         @icon('fa-weight-scale')
-                        <span>{{ $media->filesize }}</span>
+                        <span>{{ $medium->filesize }}</span>
                     </div>
                 @endisset
 
-                @isset($media->created_at)
+                @isset($medium->created_at)
                     <div class="control">
                         @icon('fa-calendar')
-                        <span>{{ $media->created_at }}</span>
+                        <span>{{ $medium->created_at }}</span>
                     </div>
                 @endisset
             </div>
@@ -68,7 +68,7 @@
     <footer class="card-footer">
         <a
             class="card-footer-item"
-            href="{{ $media->url }}"
+            href="{{ $medium->url }}"
             target="_blank"
         >
             @icon('fa-arrow-up-right-from-square')
@@ -77,7 +77,7 @@
 
         <a
             class="card-footer-item"
-            href="{{ route('backend.medium.edit', [$media]) }}"
+            href="{{ route('backend.medium.edit', [$medium]) }}"
         >
             @icon('fa-pencil')
             <span class="is-hidden-mobile">@lang('media.actions.edit.label')</span>
@@ -85,7 +85,7 @@
 
         <a
             class="card-footer-item"
-            href="{{ route('backend.medium.destroy', [$media]) }}"
+            href="{{ route('backend.medium.destroy', [$medium]) }}"
             data-confirm="@lang('general.confirm')"
             data-method="DELETE"
         >
