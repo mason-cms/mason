@@ -210,9 +210,17 @@ class Site
         return $query;
     }
 
-    public function setting(string $name): ?Setting
+    public function setting(string $name, bool $returnValue = true): mixed
     {
-        return $this->settings()->byname($name)->first();
+        $setting = $this->settings()->byname($name)->first();
+
+        if (isset($setting)) {
+            return $returnValue
+                ? $setting->value
+                : $setting;
+        }
+
+        return null;
     }
 
     public function users(): Builder
