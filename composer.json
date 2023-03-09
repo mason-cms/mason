@@ -21,7 +21,9 @@
         "limestonesoftware/granite": "dev-master",
         "sentry/sentry-laravel": "^3.0",
         "symfony/http-client": "^6.1",
-        "symfony/mailgun-mailer": "^6.1"
+        "symfony/mailgun-mailer": "^6.1",
+        "thunderer/shortcode": "^0.7",
+        "urodoz/truncate-html": "@stable"
     },
     "require-dev": {
         "spatie/laravel-ignition": "^1.0",
