@@ -246,7 +246,7 @@ class Theme
             if (isset($setting->type)) {
                 switch ($setting->type) {
                     case 'file':
-                        $value = Storage::url($value);
+                        $value = isset($value) ? Storage::url($value) : null;
                         break;
                 }
             }
