@@ -184,6 +184,22 @@ class Site
             ->first();
     }
 
+    public function media(mixed $locale = null): Builder
+    {
+        $query = Medium::query();
+
+        if ($locale ??= $this->locale) {
+            $query->byLocale($locale);
+        }
+
+        return $query;
+    }
+
+    public function medium(int $id): ?Medium
+    {
+        return $this->media()->find($id);
+    }
+
     public function blocks(string $location = null, mixed $locale = null): Builder
     {
         $query = Block::query();
