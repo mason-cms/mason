@@ -88,6 +88,11 @@ class Medium extends Model
         return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
     }
 
+    public function scopeByTitle(Builder $query, string $title): Builder
+    {
+        return $query->where('title', $title);
+    }
+
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         if (isset($filters['status'])) {
