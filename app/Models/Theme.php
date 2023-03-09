@@ -41,6 +41,10 @@ class Theme
         $viewPaths = config('view.paths');
         $viewPaths[] = $this->path("resources/views");
         config(['view.paths' => array_unique($viewPaths)]);
+
+        if (file_exists($bootFile = $this->path('boot.php'))) {
+            require_once $bootFile;
+        }
     }
 
     public function name(): ?string

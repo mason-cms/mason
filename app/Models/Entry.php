@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EditorMode;
+use App\Facades\Parser;
 use App\Traits\MenuItemable;
 use App\Traits\Metable;
 use Illuminate\Database\Eloquent\Builder;
@@ -285,6 +286,26 @@ class Entry extends Model
     public function setTaxonomiesAttribute($taxonomies): void
     {
         $this->taxonomies()->sync($taxonomies);
+    }
+
+    public function getHtmlAttribute(): ?string
+    {
+        if (isset($this->content)) {
+            $html = $this->content;
+            $html = Parser::process($html);
+            return $html;
+        }
+
+        return null;
+    }
+
+    public function getPreviewAttribute(): ?string
+    {
+        if (isset($this->html)) {
+            return Parser::truncate($this->html);
+        }
+
+        return null;
     }
 
     /**
