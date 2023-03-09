@@ -34,6 +34,14 @@
 
         <div class="block">
             <div class="field is-grouped is-grouped-multiline">
+                <div
+                    class="control"
+                    title="@lang('media.attributes.id')"
+                >
+                    @icon('fa-hashtag')
+                    <span>{{ $medium->getKey() }}</span>
+                </div>
+
                 @isset($medium->locale)
                     <div
                         class="control"
