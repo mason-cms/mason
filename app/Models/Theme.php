@@ -15,7 +15,7 @@ class Theme
     public $package;
     public $vendor;
     public $project;
-    public $version;
+    public $branch;
     public $settings;
 
     public static function getInstance(string $name = null): self
@@ -29,7 +29,7 @@ class Theme
 
         $nameParts = explode(':', $this->name, 2);
         $this->package = $nameParts[0] ?? null;
-        $this->version = $nameParts[1] ?? null;
+        $this->branch = $nameParts[1] ?? 'master';
 
         $packageParts = explode('/', $this->package, 2);
         $this->vendor = $packageParts[0] ?? null;
@@ -67,16 +67,25 @@ class Theme
         return $this->package;
     }
 
-    public function version(): ?string
+    public function branch(): ?string
     {
-        return $this->version;
+        return $this->branch;
+    }
+
+    public function repository()
+    {
+        return isset($this->package)
+            ? "https://github.com/{$this->package}"
+            : null;
     }
 
     public function path(string $path = ''): string
     {
+        $dir = "themes/{$this->package}";
+
         return !empty($path)
-            ? base_path("vendor/{$this->package}/{$path}")
-            : base_path("vendor/{$this->package}");
+            ? base_path("{$dir}/{$path}")
+            : base_path("{$dir}");
     }
 
     public function public_path(string $path = ''): string
@@ -139,34 +148,68 @@ class Theme
         return $this->blockLocations()->where('name', $name)->first();
     }
 
-    public function install(): array
+    public function install(): void
     {
         if (! isset($this->name)) {
             throw new \Exception("No theme name");
         }
 
-        $composer = env('COMPOSER_PATH', 'composer');
+        if (! $repository = $this->repository()) {
+            throw new \Exception("No theme repository defined.");
+        }
 
-        return [
-            run("{$composer} require {$this->name} --no-interaction --update-no-dev --prefer-dist --optimize-autoloader"),
-            $this->createSymlink(),
-            $this->createMenus(),
-        ];
+        if (! $path = $this->path()) {
+            throw new \Exception("No theme path defined.");
+        }
+
+        if (is_dir($path)) {
+            throw new \Exception("Theme is already installed at {$path}.");
+        }
+
+        if (! $branch = $this->branch()) {
+            throw new \Exception("No theme branch defined.");
+        }
+
+        run(implode("; ", [
+            "git clone {$repository} {$path}",
+            "cd {$path}",
+            "git fetch --all",
+            "git reset --hard {$branch}",
+        ]));
+
+        $this->createSymlink();
+        $this->createMenus();
     }
 
-    public function update(): array
+    public function update(): void
     {
         if (! isset($this->name)) {
             throw new \Exception("No theme name");
         }
 
-        $composer = env('COMPOSER_PATH', 'composer');
+        if (! $path = $this->path()) {
+            throw new \Exception("No theme path defined.");
+        }
 
-        return [
-            run("{$composer} update {$this->name} --no-interaction --no-dev --prefer-dist --optimize-autoloader"),
-            $this->createSymlink(),
-            $this->createMenus(),
-        ];
+        if (! is_dir($path)) {
+            throw new \Exception("Theme has not been installed yet.");
+        }
+
+        if (! $branch = $this->branch()) {
+            throw new \Exception("No theme branch defined.");
+        }
+
+        $datetime = date('YmdGis');
+
+        run(implode("; ", [
+            "cd {$path}",
+            "git fetch --all",
+            "git branch backup-{$datetime}",
+            "git reset --hard {$branch}",
+        ]));
+
+        $this->createSymlink();
+        $this->createMenus();
     }
 
     public function createSymlink(): bool

@@ -18,7 +18,6 @@
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "limestonesoftware/granite": "dev-master",
         "sentry/sentry-laravel": "^3.0",
         "symfony/http-client": "^6.1",
         "symfony/mailgun-mailer": "^6.1",
