@@ -31,7 +31,6 @@ class Entry extends Model
         'name',
         'locale_id',
         'title',
-        'description',
         'content',
         'editor_mode',
         'summary',
@@ -239,11 +238,6 @@ class Entry extends Model
     public function getTextAttribute(): ?string
     {
         return strip_tags($this->attributes['content']);
-    }
-
-    public function getSummaryAttribute(): ?string
-    {
-        return $this->attributes['summary'] ?? Str::limit($this->text, 150);
     }
 
     public function getStatusAttribute(): string

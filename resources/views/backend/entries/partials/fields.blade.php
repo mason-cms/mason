@@ -75,18 +75,18 @@
                 <div class="field">
                     <label
                         class="label"
-                        for="entry-description"
+                        for="entry-summary"
                     >
-                        @lang('entries.attributes.description')
+                        @lang('entries.attributes.summary')
                     </label>
 
                     <div class="control">
                         <textarea
-                            id="entry-description"
+                            id="entry-summary"
                             class="textarea"
-                            name="entry[description]"
+                            name="entry[summary]"
                             rows="4"
-                        >{!! $entry->description !!}</textarea>
+                        >{!! $entry->summary !!}</textarea>
                     </div>
                 </div>
             </div>
