@@ -31,6 +31,7 @@ class Entry extends Model
         'name',
         'locale_id',
         'title',
+        'description',
         'content',
         'editor_mode',
         'summary',

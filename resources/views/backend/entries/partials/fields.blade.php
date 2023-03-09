@@ -71,6 +71,24 @@
                         @endforeach
                     </div>
                 </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="entry-description"
+                    >
+                        @lang('entries.attributes.description')
+                    </label>
+
+                    <div class="control">
+                        <textarea
+                            id="entry-description"
+                            class="textarea"
+                            name="entry[description]"
+                            rows="4"
+                        >{!! $entry->description !!}</textarea>
+                    </div>
+                </div>
             </div>
         </fieldset>
     </div>

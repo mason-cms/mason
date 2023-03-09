@@ -12,6 +12,7 @@ return [
         'name' => "Name",
         'locale' => "Language",
         'title' => "Title",
+        'description' => "Description",
         'content' => "Content",
         'author' => "Author",
         'cover' => "Cover image",
