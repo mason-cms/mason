@@ -173,8 +173,8 @@ class Theme
         run(implode("; ", [
             "git clone {$repository} {$path}",
             "cd {$path}",
-            "git fetch --all",
-            "git reset --hard {$branch}",
+            "git checkout {$branch}",
+            "git pull",
         ]));
 
         $this->createSymlink();
