@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EditorMode;
+use App\Facades\Parser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -122,7 +123,7 @@ class Block extends Model
             return view($view, array_merge($data, ['block' => $this]))->render();
         }
 
-        return $this->content;
+        return $this->html;
     }
 
     /**
@@ -143,6 +144,17 @@ class Block extends Model
         return isset($this->location_info, $this->location_info->defaultEditorMode)
             ? EditorMode::from($this->location_info->defaultEditorMode)
             : EditorMode::WYSIWYG;
+    }
+
+    public function getHtmlAttribute(): ?string
+    {
+        if (isset($this->content)) {
+            $html = $this->content;
+            $html = Parser::process($html);
+            return $html;
+        }
+
+        return null;
     }
 
     /**
