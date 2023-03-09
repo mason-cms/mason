@@ -26,7 +26,6 @@ class Medium extends Model
 
     protected $fillable = [
         'title',
-        'locale_id',
         'parent_id',
         'parent_type',
         'file',
@@ -60,16 +59,6 @@ class Medium extends Model
                 ->orderBy('created_at', 'desc');
         });
 
-        static::creating(function (Medium $media) {
-            if (! isset($media->locale)) {
-                if (isset($media->parent, $media->parent->locale)) {
-                    $media->locale()->associate($media->parent->locale);
-                } elseif ($defaultLocale = Locale::getDefault()) {
-                    $media->locale()->associate($defaultLocale);
-                }
-            }
-        });
-
         static::deleted(function (Medium $medium) {
             if (isset($medium->storage_key) && Storage::exists($medium->storage_key)) {
                 Storage::delete($medium->storage_key);
@@ -83,11 +72,6 @@ class Medium extends Model
      * ==================================================
      */
 
-    public function scopeByLocale(Builder $query, mixed $locale): Builder
-    {
-        return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
-    }
-
     public function scopeByTitle(Builder $query, string $title): Builder
     {
         return $query->where('title', $title);
@@ -97,10 +81,6 @@ class Medium extends Model
     {
         if (isset($filters['status'])) {
             $query->byStatus($filters['status']);
-        }
-
-        if (isset($filters['locale_id'])) {
-            $query->byLocale($filters['locale_id']);
         }
 
         if (isset($filters['author_id'])) {
@@ -217,10 +197,5 @@ class Medium extends Model
     public function parent(): MorphTo
     {
         return $this->morphTo();
-    }
-
-    public function locale(): BelongsTo
-    {
-        return $this->belongsTo(Locale::class);
     }
 }

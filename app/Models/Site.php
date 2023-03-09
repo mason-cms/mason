@@ -184,15 +184,9 @@ class Site
             ->first();
     }
 
-    public function media(mixed $locale = null): Builder
+    public function media(): Builder
     {
-        $query = Medium::query();
-
-        if ($locale ??= $this->locale) {
-            $query->byLocale($locale);
-        }
-
-        return $query;
+        return Medium::query();
     }
 
     public function medium(int $id): ?Medium
