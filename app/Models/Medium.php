@@ -131,6 +131,32 @@ class Medium extends Model
         return false;
     }
 
+    public function generateThumbnail(string $path = null)
+    {
+        $path ??= $this->storage_path;
+
+        if (isset($path) && is_readable($path)) {
+            if ($this->is_pdf) {
+                $im = new \Imagick();
+                $im->readImage("{$this->storage_path}[0]");
+                $im->setImageFormat('jpg');
+                $filename = str_replace('.pdf', '-thumbnail.jpg', $this->title);
+                $path = sys_get_temp_dir() . $filename;
+
+                if ($im->writeImage($path)) {
+                    $this->thumbnail_storage_key = Storage::putFileAs(
+                        path: self::STORAGE_PATH,
+                        file: $path,
+                        name: $filename,
+                        options: static::DEFAULT_VISIBILITY
+                    );
+                } else {
+                    throw new \Exception("Cannot write image to: {$path}");
+                }
+            }
+        }
+    }
+
     /**
      * ==================================================
      * Accessors & Mutators
@@ -140,6 +166,7 @@ class Medium extends Model
     public function setFileAttribute(File|UploadedFile $file): void
     {
         $filename = $originalName = $file->getClientOriginalName();
+        $realPath = $file->getRealPath();
 
         while (Storage::exists(static::STORAGE_PATH . '/' . $filename)) {
             $i ??= 2;
@@ -155,9 +182,7 @@ class Medium extends Model
         $this->filesize = $file->getSize();
 
         if ($this->is_image) {
-            if ($realPath = $file->getRealPath()) {
-                $this->calcImageSize($realPath);
-            }
+            $this->calcImageSize($realPath);
         }
 
         $this->storage_key = Storage::putFileAs(
@@ -166,6 +191,8 @@ class Medium extends Model
             $filename,
             static::DEFAULT_VISIBILITY
         );
+
+        $this->generateThumbnail($realPath);
     }
 
     public function getStoragePathAttribute(): ?string
@@ -182,10 +209,34 @@ class Medium extends Model
             : null;
     }
 
+    public function getThumbnailUrlAttribute(): ?string
+    {
+        return isset($this->thumbnail_storage_key)
+            ? Storage::url($this->thumbnail_storage_key)
+            : null;
+    }
+
+    public function getPreviewUrlAttribute(): ?string
+    {
+        if (isset($this->thumbnail_url)) {
+            return $this->thumbnail_url;
+        } elseif ($this->is_image) {
+            return $this->url;
+        }
+
+        return null;
+    }
+
     public function getIsImageAttribute(): bool
     {
         return isset($this->content_type)
             && str_starts_with($this->content_type, 'image/');
+    }
+
+    public function getIsPdfAttribute(): bool
+    {
+        return isset($this->content_type)
+            && $this->content_type === 'application/pdf';
     }
 
     /**
