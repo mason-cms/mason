@@ -92,12 +92,12 @@ class ParserServiceProvider extends ServiceProvider
                 $linkClass = $parameters['link-class'] ?? null;
                 $linkTarget = $parameters['link-target'] ?? '_self';
                 $imgClass = $parameters['img-class'] ?? null;
-                $imgWidth = $parameters['img-width'] ?? null;
-                $imgHeight = $parameters['img-height'] ?? null;
-                $imgAlt = $parameters['img-alt'] ?? null;
-                $imgLoading = $parameters['img-loading'] ?? 'lazy';
+                $width = $parameters['width'] ?? null;
+                $height = $parameters['img-height'] ?? null;
+                $alt = $parameters['alt'] ?? null;
+                $loading = $parameters['loading'] ?? 'lazy';
 
-                $img = "<img class=\"{$imgClass}\" src=\"{$medium->preview_url}\" width=\"{$imgWidth}\" height=\"{$imgHeight}\" alt=\"{$imgAlt}\" loading=\"{$imgLoading}\" />";
+                $img = "<img class=\"{$imgClass}\" src=\"{$medium->preview_url}\" width=\"{$width}\" height=\"{$height}\" alt=\"{$alt}\" loading=\"{$loading}\" />";
 
                 return "<a class=\"{$linkClass}\" href=\"{$medium->url}\" target=\"{$linkTarget}\">{$img}</a>";
             }
