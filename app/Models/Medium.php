@@ -192,7 +192,11 @@ class Medium extends Model
             static::DEFAULT_VISIBILITY
         );
 
-        $this->generateThumbnail($realPath);
+        try {
+            $this->generateThumbnail($realPath);
+        } catch (\Exception $e) {
+            \Sentry\captureException($e);
+        }
     }
 
     public function getStoragePathAttribute(): ?string
