@@ -63,6 +63,10 @@ class Medium extends Model
             if (isset($medium->storage_key) && Storage::exists($medium->storage_key)) {
                 Storage::delete($medium->storage_key);
             }
+
+            if (isset($medium->thumbnail_storage_key) && Storage::exists($medium->thumbnail_storage_key)) {
+                Storage::delete($medium->thumbnail_storage_key);
+            }
         });
     }
 
