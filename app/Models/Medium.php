@@ -138,7 +138,7 @@ class Medium extends Model
         if (isset($path) && is_readable($path)) {
             if ($this->is_pdf) {
                 $im = new \Imagick();
-                $im->readImage("{$this->storage_path}[0]");
+                $im->readImage("{$path}[0]");
                 $im->setImageFormat('jpg');
                 $filename = str_replace('.pdf', '-thumbnail.jpg', $this->title);
                 $path = sys_get_temp_dir() . $filename;
