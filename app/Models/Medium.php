@@ -154,6 +154,9 @@ class Medium extends Model
                         name: $filename,
                         options: static::DEFAULT_VISIBILITY
                     );
+
+                    $im->clear();
+                    $im->destroy();
                 } else {
                     throw new \Exception("Cannot write image to: {$path}");
                 }
