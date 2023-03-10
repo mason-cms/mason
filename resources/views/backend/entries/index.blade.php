@@ -49,7 +49,7 @@
         <hr />
 
         @if ($entries->count() > 0)
-            <div class="columns is-multiline same-height-cards">
+            <div class="columns is-multiline is-card-grid">
                 @foreach ($entries as $entry)
                     <div class="column is-4 is-3-desktop">
                         @include('backend.entries.partials.card')

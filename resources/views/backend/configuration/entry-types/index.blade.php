@@ -32,7 +32,7 @@
         <hr />
 
         @if ($entryTypes->count() > 0)
-            <div class="columns is-multiline same-height-cards">
+            <div class="columns is-multiline is-card-grid">
                 @foreach ($entryTypes as $entryType)
                     <div class="column is-4 is-3-desktop">
                         @include('backend.configuration.entry-types.partials.card')

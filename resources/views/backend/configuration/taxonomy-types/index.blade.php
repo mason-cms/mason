@@ -32,7 +32,7 @@
         <hr />
 
         @if ($taxonomyTypes->count() > 0)
-            <div class="columns is-multiline same-height-cards">
+            <div class="columns is-multiline is-card-grid">
                 @foreach ($taxonomyTypes as $taxonomyType)
                     <div class="column is-4 is-3-desktop">
                         @include('backend.configuration.taxonomy-types.partials.card')

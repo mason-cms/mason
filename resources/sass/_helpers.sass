@@ -12,3 +12,17 @@
 .file-dropzone
     padding: 3rem
     border: 2px dashed $grey-light
+
+.columns
+    &.is-card-grid
+        > .column
+            display: flex
+
+            > .card
+                position: relative
+                padding-bottom: 3rem
+
+                > .card-footer
+                    position: absolute
+                    bottom: 0
+                    width: 100%

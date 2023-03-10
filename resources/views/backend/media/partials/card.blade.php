@@ -3,6 +3,7 @@
         <div class="card-image">
             <a href="{{ route('backend.medium.show', [$medium]) }}">
                 <img
+                    class="is-block"
                     src="{{ $medium->preview_url }}"
                     alt="{{ $medium->title }}"
                     loading="lazy"

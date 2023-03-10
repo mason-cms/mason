@@ -32,7 +32,7 @@
         <hr />
 
         @if ($locales->count() > 0)
-            <div class="columns is-multiline same-height-cards">
+            <div class="columns is-multiline is-card-grid">
                 @foreach ($locales as $locale)
                     <div class="column is-4 is-3-desktop">
                         @include('backend.configuration.locales.partials.card')

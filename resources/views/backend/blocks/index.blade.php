@@ -81,7 +81,7 @@
         <hr />
 
         @if (isset($blocks) && $blocks->count() > 0)
-            <div class="columns is-multiline same-height-cards">
+            <div class="columns is-multiline is-card-grid">
                 @foreach ($blocks as $block)
                     <div class="column is-4 is-3-desktop">
                         @include('backend.blocks.partials.card')
