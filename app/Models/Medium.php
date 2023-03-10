@@ -145,12 +145,12 @@ class Medium extends Model
                 $im->readImage("{$path}[0]");
                 $im->setImageFormat('jpg');
                 $filename = str_replace('.pdf', '-thumbnail.jpg', $this->title);
-                $path = sys_get_temp_dir() . $filename;
+                $tmp = tempnam(sys_get_temp_dir(), 'imagick_');
 
-                if ($im->writeImage($path)) {
+                if ($im->writeImage($tmp)) {
                     $this->thumbnail_storage_key = Storage::putFileAs(
                         path: self::STORAGE_PATH,
-                        file: $path,
+                        file: $tmp,
                         name: $filename,
                         options: static::DEFAULT_VISIBILITY
                     );
@@ -158,7 +158,7 @@ class Medium extends Model
                     $im->clear();
                     $im->destroy();
                 } else {
-                    throw new \Exception("Cannot write image to: {$path}");
+                    throw new \Exception("Cannot write image to: {$tmp}");
                 }
             }
         }
