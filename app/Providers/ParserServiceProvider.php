@@ -46,10 +46,8 @@ class ParserServiceProvider extends ServiceProvider
 
             if (isset($medium)) {
                 if ($medium->is_image) {
-                    $class = $parameters['class'] ?? '';
-                    $width = $parameters['width'] ?? $medium->image_width;
-                    $height = $parameters['height'] ?? $medium->image_height;
-                    $alt = $parameters['alt'] ?? '';
+                    $class = $parameters['class'] ?? null;
+                    $alt = $parameters['alt'] ?? null;
                     $loading = $parameters['loading'] ?? 'lazy';
 
                     if (isset($parameters['width'], $parameters['height'])) {
@@ -78,6 +76,30 @@ class ParserServiceProvider extends ServiceProvider
                 } else {
                     return "<!-- media type not supported -->";
                 }
+            }
+
+            return "<!-- media not found -->";
+        });
+
+        \Parser::registerShortcode('thumbnail', function (array $parameters = []) {
+            if (isset($parameters['id'])) {
+                $medium = site()->medium($parameters['id']);
+            } elseif (isset($parameters['title'])) {
+                $medium = site()->media()->byTitle($parameters['title'])->first();
+            }
+
+            if (isset($medium, $medium->url, $medium->preview_url)) {
+                $linkClass = $parameters['link-class'] ?? null;
+                $linkTarget = $parameters['link-target'] ?? '_self';
+                $imgClass = $parameters['img-class'] ?? null;
+                $imgWidth = $parameters['img-width'] ?? null;
+                $imgHeight = $parameters['img-height'] ?? null;
+                $imgAlt = $parameters['img-alt'] ?? null;
+                $imgLoading = $parameters['img-loading'] ?? 'lazy';
+
+                $img = "<img class=\"{$imgClass}\" src=\"{$medium->preview_url}\" width=\"{$imgWidth}\" height=\"{$imgHeight}\" alt=\"{$imgAlt}\" loading=\"{$imgLoading}\" />";
+
+                return "<a class=\"{$linkClass}\" href=\"{$medium->url}\" target=\"{$linkTarget}\">{$img}</a>";
             }
 
             return "<!-- media not found -->";
