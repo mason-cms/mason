@@ -1,21 +1,15 @@
 <div class="card">
-    @if ($medium->is_image)
-        @isset($medium->url)
-            <div class="card-image">
-                <figure class="image">
-                    <a href="{{ route('backend.medium.show', [$medium]) }}">
-                        <img
-                            src="{{ $medium->url }}"
-                            width="{{ $medium->image_width }}"
-                            height="{{ $medium->image_height }}"
-                            alt="{{ $medium->title }}"
-                            loading="lazy"
-                        />
-                    </a>
-                </figure>
-            </div>
-        @endisset
-    @endif
+    @isset($medium->preview_url)
+        <div class="card-image">
+            <a href="{{ route('backend.medium.show', [$medium]) }}">
+                <img
+                    src="{{ $medium->preview_url }}"
+                    alt="{{ $medium->title }}"
+                    loading="lazy"
+                />
+            </a>
+        </div>
+    @endisset
 
     <div class="card-content">
         <div class="block">
@@ -86,7 +80,7 @@
     <footer class="card-footer">
         <a
             class="card-footer-item"
-            href="{{ $medium->url }}"
+            href="{{ route('backend.medium.show', [$medium]) }}"
             target="_blank"
         >
             @icon('fa-arrow-up-right-from-square')
