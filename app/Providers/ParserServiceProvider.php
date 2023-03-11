@@ -58,14 +58,14 @@ class ParserServiceProvider extends ServiceProvider
 
                         if (isset($medium->image_width, $medium->image_height) && $medium->image_width > 0) {
                             $ratio = $width / $medium->image_width;
-                            $height = $medium->image_height * $ratio;
+                            $height = round($medium->image_height * $ratio);
                         }
                     } elseif (isset($parameters['height'])) {
                         $height = $parameters['height'];
 
                         if (isset($medium->image_width, $medium->image_height) && $medium->image_height > 0) {
                             $ratio = $height / $medium->image_height;
-                            $width = $medium->image_width * $ratio;
+                            $width = round($medium->image_width * $ratio);
                         }
                     } else {
                         $width = $medium->image_width;
