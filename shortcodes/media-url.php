@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\Shortcode;
+use App\Facades\Parser;
 
 Parser::registerShortcode('media-url', function (array $parameters = []) {
     if (isset($parameters['id'])) {
