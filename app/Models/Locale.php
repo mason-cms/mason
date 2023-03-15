@@ -71,13 +71,13 @@ class Locale extends Model
         return $locale instanceof static && $locale->is_default;
     }
 
-    public static function exists($locale): bool
+    public static function exists(Locale|string $locale): bool
     {
         if (is_string($locale)) {
             $locale = static::findByName($locale);
         }
 
-        return $locale instanceof static && $locale->exists();
+        return $locale instanceof static && $locale->getKey();
     }
 
     /**
