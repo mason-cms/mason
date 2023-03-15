@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 class EntryType extends Model
 {
@@ -58,7 +59,7 @@ class EntryType extends Model
      * ==================================================
      */
 
-    public function scopeByName(Builder $query, string $name): Builder
+    public function scopeByName(Builder $query, mixed $name): Builder
     {
         return is_iterable($name)
             ? $query->whereIn('name', $name)
@@ -79,10 +80,6 @@ class EntryType extends Model
     public function view(): ?string
     {
         $views = [
-            "{$this->locale->name}.{$this->name}.entries", // en.post.entries
-            "{$this->locale->name}.entries.{$this->name}", // en.entries.post
-            "{$this->locale->name}.entries.default", // en.entries.default
-            "{$this->locale->name}.entries", // en.entries
             "{$this->name}.entries", // post.entries
             "entries.{$this->name}", // entries.post
             "entries.default", // entries.default
