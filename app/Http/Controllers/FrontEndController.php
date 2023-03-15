@@ -69,22 +69,20 @@ class FrontEndController extends Controller
         if (isset($params[0]) && Locale::exists($params[0])) {
             $this->site->setLocale($localeName = $params[0]);
             $entryName = $params[1] ?? null;
+
+            if (Locale::isDefault($localeName)) {
+                return redirect()->route('entry', ['entry' => $entryName]);
+            }
         } else {
             $entryName = $params[0] ?? null;
         }
 
-        if (isset($entryName)) {
-            if ($entry = $this->site->entry($entryName)) {
-                if (isset($localeName) && Locale::isDefault($localeName)) {
-                    return redirect()->to($entry->url);
-                }
-
-                if ($view = $entry->view()) {
-                    return response()->view($view, [
-                        'site' => $this->site,
-                        'entry' => $entry,
-                    ]);
-                }
+        if (isset($entryName) && $entry = $this->site->entry($entryName)) {
+            if ($view = $entry->view()) {
+                return response()->view($view, [
+                    'site' => $this->site,
+                    'entry' => $entry,
+                ]);
             }
         }
 
