@@ -205,7 +205,8 @@ class Theme
             "cd {$path}",
             "git fetch --all",
             "git branch backup-{$datetime}",
-            "git reset --hard {$branch}",
+            "git checkout {$branch}",
+            "git pull",
         ]));
 
         $this->createSymlink();
