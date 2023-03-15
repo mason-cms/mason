@@ -18,12 +18,6 @@ $taxonomyTypeNames = $taxonomyTypes->pluck('name')->join('|');
 Route::get('/', [FrontEndController::class, 'home'])
     ->name('home');
 
-Route::get('/{entry:name}', [FrontEndController::class, 'entry'])
-    ->where([
-        'entry' => $alphanum,
-    ])
-    ->name('entry');
-
 Route::get('/{taxonomyType:name}/{taxonomy:name}/{entryType:name?}', [FrontEndController::class, 'taxonomy'])
     ->where([
         'taxonomy' => $alphanum,
@@ -38,6 +32,12 @@ Route::get('/{entryType:name}', [FrontEndController::class, 'entryType'])
     ])
     ->name('entryType');
 
+Route::get('/{entry:name}', [FrontEndController::class, 'entry'])
+    ->where([
+        'entry' => $alphanum,
+    ])
+    ->name('entry');
+
 if (Schema::hasTable('locales')) {
     $locales = Locale::all();
     $localeNames = $locales->pluck('name')->join('|');
@@ -45,13 +45,6 @@ if (Schema::hasTable('locales')) {
     Route::get('/{locale:name}', [FrontEndController::class, 'home'])
         ->where(['locale' => $localeNames])
         ->name('locale.home');
-
-    Route::get('/{locale:name}/{entry:name}', [FrontEndController::class, 'entry'])
-        ->where([
-            'locale' => $localeNames,
-            'entry' => $alphanum,
-        ])
-        ->name('locale.entry');
 
     Route::get('/{locale:name}/{taxonomyType:name}/{taxonomy:name}/{entryType:name?}', [FrontEndController::class, 'taxonomy'])
         ->where([
@@ -68,4 +61,11 @@ if (Schema::hasTable('locales')) {
             'entryType' => $entryTypeNames,
         ])
         ->name('locale.entryType');
+
+    Route::get('/{locale:name}/{entry:name}', [FrontEndController::class, 'entry'])
+        ->where([
+            'locale' => $localeNames,
+            'entry' => $alphanum,
+        ])
+        ->name('locale.entry');
 }
