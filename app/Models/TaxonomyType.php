@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 class TaxonomyType extends Model
 {
@@ -20,7 +22,33 @@ class TaxonomyType extends Model
     ];
 
     /**
+     * ==================================================
+     * Static Methods
+     * ==================================================
+     */
+
+    public static function findByName(string $name): ?self
+    {
+        return static::where('name', $name)->first();
+    }
+
+    /**
+     * ==================================================
+     * Scopes
+     * ==================================================
+     */
+
+    public function scopeByName(Builder $query, mixed $name): Builder
+    {
+        return is_iterable($name)
+            ? $query->whereIn('name', $name)
+            : $query->where('name', $name);
+    }
+
+    /**
+     * ==================================================
      * Helpers
+     * ==================================================
      */
 
     public function __toString(): string
@@ -29,7 +57,9 @@ class TaxonomyType extends Model
     }
 
     /**
+     * ==================================================
      * Relationships
+     * ==================================================
      */
 
     public function taxonomies(): HasMany
