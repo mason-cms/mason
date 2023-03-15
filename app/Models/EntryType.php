@@ -76,6 +76,28 @@ class EntryType extends Model
         return "{$this->plural_title}";
     }
 
+    public function view(): ?string
+    {
+        $views = [
+            "{$this->locale->name}.{$this->name}.entries", // en.post.entries
+            "{$this->locale->name}.entries.{$this->name}", // en.entries.post
+            "{$this->locale->name}.entries.default", // en.entries.default
+            "{$this->locale->name}.entries", // en.entries
+            "{$this->name}.entries", // post.entries
+            "entries.{$this->name}", // entries.post
+            "entries.default", // entries.default
+            "entries", // entries
+        ];
+
+        foreach ($views as $view) {
+            if (view()->exists($view)) {
+                return $view;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * ==================================================
      * Relationships

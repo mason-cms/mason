@@ -91,6 +91,32 @@ class FrontEndController extends Controller
         abort(404);
     }
 
+    public function entryType(Request $request, ...$params)
+    {
+        if (isset($params[0]) && Locale::exists($params[0])) {
+            $this->site->setLocale($localeName = $params[0]);
+            $entryType = $params[1] ?? null;
+
+            if (Locale::isDefault($localeName)) {
+                return redirect()->to('entryType', ['entryType' => $entryType]);
+            }
+        } else {
+            $entryType = $params[0] ?? null;
+        }
+
+        if (isset($entryType)) {
+            if ($view = $entryType->view()) {
+                return response()->view($view, [
+                    'site' => $this->site,
+                    'entryType' => $entryType,
+                    'entries' => $this->site->entries($entryType),
+                ]);
+            }
+        }
+
+        abort(404);
+    }
+
     /**
      * Show a specified taxonomy
      *
