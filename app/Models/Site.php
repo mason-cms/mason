@@ -156,7 +156,7 @@ class Site
         return $query;
     }
 
-    public function entryType(string $name): ?Taxonomy
+    public function entryType(string $name): ?EntryType
     {
         return $this->entryTypes()
             ->byName($name)
