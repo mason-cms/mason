@@ -20,8 +20,8 @@ Route::get('/', [FrontEndController::class, 'home'])
 
 Route::get('/{taxonomyType:name}/{taxonomy:name}/{entryType:name?}', [FrontEndController::class, 'taxonomy'])
     ->where([
-        'taxonomy' => $alphanum,
         'taxonomyType' => $taxonomyTypeNames,
+        'taxonomy' => $alphanum,
         'entryType' => $entryTypeNames,
     ])
     ->name('taxonomy');
