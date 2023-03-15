@@ -163,6 +163,20 @@ class Site
             ->first();
     }
 
+    public function taxonomyTypes(): Builder
+    {
+        $query = TaxonomyType::query();
+
+        return $query;
+    }
+
+    public function taxonomyType(string $name): ?TaxonomyType
+    {
+        return $this->taxonomyTypes()
+            ->byName($name)
+            ->first();
+    }
+
     public function taxonomies(mixed $type = null, mixed $locale = null): Builder
     {
         $query = Taxonomy::byLocale($locale ?? $this->locale);
