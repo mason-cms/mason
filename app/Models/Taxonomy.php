@@ -68,7 +68,7 @@ class Taxonomy extends Model
      * ==================================================
      */
 
-    public function scopeByName(Builder $query, string $name): Builder
+    public function scopeByName(Builder $query, mixed $name): Builder
     {
         return is_iterable($name)
             ? $query->whereIn('name', $name)
