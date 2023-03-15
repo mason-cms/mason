@@ -89,6 +89,13 @@ class FrontEndController extends Controller
         abort(404);
     }
 
+    /**
+     * List entries for an entry type
+     *
+     * @param Request $request
+     * @param ...$params
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|void
+     */
     public function entryType(Request $request, ...$params)
     {
         if (isset($params[0]) && Locale::exists($params[0])) {
@@ -126,33 +133,38 @@ class FrontEndController extends Controller
     {
         if (isset($params[0]) && Locale::exists($params[0])) {
             $this->site->setLocale($localeName = $params[0]);
-            $taxonomyType = $params[1] ?? null;
+            $taxonomyTypeName = $params[1] ?? null;
             $taxonomyName = $params[2] ?? null;
             $entryTypeName = $params[3] ?? null;
+
+            if (Locale::isDefault($localeName)) {
+                return redirect()->route('taxonomy', [
+                    'taxonomyType' => $taxonomyTypeName,
+                    'taxonomy' => $taxonomyName,
+                    'entryType' => $entryTypeName,
+                ]);
+            }
         } else {
-            $taxonomyType = $params[0] ?? null;
+            $taxonomyTypeName = $params[0] ?? null;
             $taxonomyName = $params[1] ?? null;
             $entryTypeName = $params[2] ?? null;
         }
 
-        if (isset($taxonomyType, $taxonomyName)) {
-            if ($taxonomy = $this->site->taxonomy($taxonomyName, $localeName ?? null, $taxonomyType)) {
-                if (isset($localeName) && Locale::isDefault($localeName)) {
-                    return redirect()->to($taxonomy->url);
-                }
+        if (isset($taxonomyTypeName) && $taxonomyType = $this->site->taxonomyType(name: $taxonomyTypeName)) {
+            if (isset($taxonomyName) && $taxonomy = $this->site->taxonomy(name: $taxonomyName, type: $taxonomyType)->first()) {
+                $entries = $taxonomy->entries();
 
-                $entriesQuery = $taxonomy->entries();
-
-                if (isset($entryTypeName) && $entryType = EntryType::findByName($entryTypeName)) {
-                    $entriesQuery->byType($entryType);
+                if (isset($entryTypeName) && $entryType = $this->site->entryType($entryTypeName)) {
+                    $entries->byType($entryType);
                 }
 
                 if ($view = $taxonomy->view()) {
                     return response()->view($view, [
                         'site' => $this->site,
+                        'taxonomyType' => $this->site->taxonomyType($taxonomyTypeName),
                         'taxonomy' => $taxonomy,
                         'entryType' => $entryType ?? null,
-                        'entries' => $entriesQuery->paginate(),
+                        'entries' => $entries,
                     ]);
                 }
             }
