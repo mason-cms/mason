@@ -149,6 +149,20 @@ class Site
             ->first();
     }
 
+    public function entryTypes(): Builder
+    {
+        $query = EntryType::query();
+
+        return $query;
+    }
+
+    public function entryType(string $name): ?Taxonomy
+    {
+        return $this->entryTypes()
+            ->byName($name)
+            ->first();
+    }
+
     public function taxonomies(mixed $type = null, mixed $locale = null): Builder
     {
         $query = Taxonomy::byLocale($locale ?? $this->locale);
