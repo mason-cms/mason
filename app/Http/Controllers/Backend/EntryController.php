@@ -29,8 +29,6 @@ class EntryController extends Controller
             $query->filter($filters);
         }
 
-        $query->orderBy('created_at', 'desc');
-
         $total = $query->count();
 
         $entries = $query->paginate($perPage = $request->input('per_page') ?? 25);
