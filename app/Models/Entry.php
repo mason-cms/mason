@@ -66,10 +66,7 @@ class Entry extends Model
         parent::boot();
 
         static::addGlobalScope('order', function (Builder $builder) {
-            $builder
-                ->orderBy('is_home', 'desc')
-                ->orderBy('published_at', 'desc')
-                ->orderBy('created_at', 'desc');
+            $builder->orderBy('is_home', 'desc');
         });
 
         static::creating(function (Entry $entry) {

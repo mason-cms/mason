@@ -21,6 +21,8 @@ class EntryTypeSeeder extends Seeder
                 'plural_title' => "Pages",
                 'icon_class' => "fa-file-lines",
                 'default_editor_mode' => EditorMode::CODE,
+                'default_order_column' => 'title',
+                'default_order_direction' => 'asc',
             ],
 
             'post' => [
@@ -28,6 +30,8 @@ class EntryTypeSeeder extends Seeder
                 'plural_title' => "Posts",
                 'icon_class' => "fa-newspaper",
                 'default_editor_mode' => EditorMode::WYSIWYG,
+                'default_order_column' => 'created_at',
+                'default_order_direction' => 'desc',
             ],
         ];
 

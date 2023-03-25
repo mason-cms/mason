@@ -10,6 +10,8 @@ return [
         'iconClass' => "Icon Class",
         'icon' => "Icon",
         'defaultEditorMode' => "Default Editor Mode",
+        'defaultOrderColumn' => "Order by",
+        'defaultOrderDirection' => "Order",
     ],
 
     'actions' => [

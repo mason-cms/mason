@@ -19,7 +19,7 @@ class EntryController extends Controller
      */
     public function index(Request $request, EntryType $entryType)
     {
-        $query = Entry::byType($entryType);
+        $query = $entryType->entries();
 
         if ($search = $request->input('search')) {
             $query->search($search);
@@ -52,8 +52,7 @@ class EntryController extends Controller
      */
     public function create(Request $request, EntryType $entryType)
     {
-        $entry = new Entry;
-        $entry->type()->associate($entryType);
+        $entry = $entryType->entries()->make();
         $entry->locale()->associate(Locale::getDefault());
         $entry->author()->associate($request->user());
         $entry->saveOrFail();

@@ -96,6 +96,52 @@
                     </div>
                 </div>
             </div>
+
+            <div class="column is-4">
+                <div class="field">
+                    <label class="label">
+                        @lang('entryTypes.attributes.defaultOrderColumn')
+                    </label>
+
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select name="entry_type[default_order_column]">
+                                <option></option>
+
+                                @foreach (\App\Models\EntryType::ORDER_COLUMNS as $column)
+                                    <option
+                                        value="{{ $column }}"
+                                        {{ isset($entryType->default_order_column) && $entryType->default_order_column === $column ? 'selected' : '' }}
+                                    >{{ $column }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column is-2">
+                <div class="field">
+                    <label class="label">
+                        @lang('entryTypes.attributes.defaultOrderDirection')
+                    </label>
+
+                    <div class="control">
+                        <div class="select is-fullwidth">
+                            <select name="entry_type[default_order_direction]">
+                                <option></option>
+
+                                @foreach (\App\Models\EntryType::ORDER_DIRECTIONS as $direction)
+                                    <option
+                                        value="{{ $direction }}"
+                                        {{ isset($entryType->default_order_direction) && $entryType->default_order_direction === $direction ? 'selected' : '' }}
+                                    >{{ $direction }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

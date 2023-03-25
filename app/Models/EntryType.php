@@ -15,16 +15,39 @@ class EntryType extends Model
     use HasFactory,
         SoftDeletes;
 
+    const ORDER_COLUMNS = [
+        'id',
+        'name',
+        'title',
+        'published_at',
+        'created_at',
+    ];
+
+    const ORDER_DIRECTIONS = [
+        'asc',
+        'desc',
+    ];
+
+    const DEFAULT_ORDER_COLUMN = 'created_at';
+    const DEFAULT_ORDER_DIRECTION = 'desc';
+
     protected $fillable = [
         'name',
         'singular_title',
         'plural_title',
         'icon_class',
         'default_editor_mode',
+        'default_order_column',
+        'default_order_direction',
     ];
 
     protected $casts = [
         'default_editor_mode' => EditorMode::class,
+    ];
+
+    protected $attributes = [
+        'default_order_column' => self::DEFAULT_ORDER_COLUMN,
+        'default_order_direction' => self::DEFAULT_ORDER_DIRECTION,
     ];
 
     /**
@@ -103,6 +126,11 @@ class EntryType extends Model
 
     public function entries(): HasMany
     {
-        return $this->hasMany(Entry::class, 'type_id');
+        return $this
+            ->hasMany(Entry::class, 'type_id')
+            ->orderBy(
+                column: $this->default_order_column ?? self::DEFAULT_ORDER_COLUMN,
+                direction: $this->default_order_direction ?? self::DEFAULT_ORDER_DIRECTION
+            );
     }
 }
