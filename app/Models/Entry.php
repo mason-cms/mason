@@ -289,11 +289,7 @@ class Entry extends Model
 
     public function getPreviewAttribute(): ?string
     {
-        if (isset($this->html)) {
-            return Parser::truncate($this->html);
-        }
-
-        return null;
+        return Parser::truncate($this->summary ?? $this->html);
     }
 
     /**
