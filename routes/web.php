@@ -14,9 +14,9 @@
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])
-    ->prefix('/backend')
-    ->name('backend.')
-    ->group(base_path('routes/web/backend.php'));
+    ->prefix('/workshop')
+    ->name('workshop.')
+    ->group(base_path('routes/web/workshop.php'));
 
 Route::middleware('guest')
     ->group(base_path('routes/web/guest.php'));
