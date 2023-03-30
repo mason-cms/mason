@@ -7,7 +7,9 @@ $(document).ready(function () {
     $('.ace-editor').each(function () {
         let $this = $(this).hide(),
             editorMode = $this.data('editor-mode'),
-            editorMaxLines = $this.data('editor-max-lines') || $this.attr('rows') || 30;
+            editorMaxLines = $this.data('editor-max-lines') || $this.attr('rows') || 30,
+            input = $this.data('input'),
+            $input = typeof input === 'string' ? $(input) : null;
 
         if (! editorMode) {
             if ($this.hasClass('is-code') || $this.hasClass('is-html')) {
@@ -28,10 +30,16 @@ $(document).ready(function () {
             useWorker: false
         });
 
-        editor.setValue($this.val(), -1);
+        editor.setValue($this.html(), -1);
 
-        editor.session.on('change', function() {
-            $this.val(editor.session.getValue());
-        });
+        if ($input && $input.length > 0) {
+            console.log($input);
+
+            $input.val(editor.session.getValue());
+
+            editor.session.on('change', function() {
+                $input.val(editor.session.getValue());
+            });
+        }
     });
 });

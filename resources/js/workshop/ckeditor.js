@@ -5,6 +5,10 @@
 
 $(document).ready(function () {
     $('.ck-editor').each(function () {
+        let $ckEditor = $(this),
+            input = $ckEditor.data('input'),
+            $input = typeof input === 'string' ? $(input) : null;
+
         ClassicEditor
             .create(this, {
                 extraPlugins: [MasonUploadAdapterPlugin],
@@ -17,6 +21,16 @@ $(document).ready(function () {
                             styles: true
                         }
                     ]
+                }
+            })
+            .then(function (ckEditor) {
+                if ($input && $input.length > 0) {
+                    $input.val(ckEditor.getData());
+
+                    ckEditor.model.document.on('change:data', function () {
+                        console.log('change');
+                        $input.val(ckEditor.getData());
+                    });
                 }
             })
             .catch(error => {

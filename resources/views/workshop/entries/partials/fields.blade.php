@@ -47,13 +47,19 @@
 
                 <div class="field">
                     <div class="control">
-                        <textarea
-                            id="entry-content"
+                        <div
+                            id="entry-content-editor"
                             class="textarea {{ isset($entry->editor_mode) ? $entry->editor_mode->cssClass() : '' }}"
-                            name="entry[content]"
                             rows="40"
+                            data-input="#entry-content-input"
                             data-media-upload="{{ route('workshop.medium.store', ['medium' => ['parent_id' => $entry->getKey(), 'parent_type' => get_class($entry)]]) }}"
-                        >{!! $entry->content !!}</textarea>
+                        >{!! $entry->content !!}</div>
+
+                        <input
+                            id="entry-content-input"
+                            type="hidden"
+                            name="entry[content]"
+                        />
                     </div>
                 </div>
 
