@@ -1,6 +1,6 @@
-require('./backend/helpers');
-require('./backend/layout');
-require('./backend/modal');
-require('./backend/menus');
-require('./backend/ckeditor');
-require('./backend/ace');
+require('./workshop/helpers');
+require('./workshop/layout');
+require('./workshop/modal');
+require('./workshop/menus');
+require('./workshop/ckeditor');
+require('./workshop/ace');
