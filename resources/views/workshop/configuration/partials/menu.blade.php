@@ -4,7 +4,7 @@
 
 <nav class="menu">
     <p class="menu-label">
-        @icon(\App\Http\Controllers\Backend\ConfigurationController::ICON)
+        @icon(\App\Http\Controllers\Workshop\ConfigurationController::ICON)
         <span>@lang('configuration.title')</span>
     </p>
 

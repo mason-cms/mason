@@ -36,7 +36,7 @@
                 href="{{ $routeUri = route('workshop.dashboard') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
-                @icon(\App\Http\Controllers\Backend\DashboardController::ICON, 'has-text-success')
+                @icon(\App\Http\Controllers\Workshop\DashboardController::ICON, 'has-text-success')
                 <span>@lang('dashboard.title')</span>
             </a>
 
@@ -120,7 +120,7 @@
                 href="{{ $routeUri = route('workshop.configuration.general') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
-                @icon(\App\Http\Controllers\Backend\ConfigurationController::ICON, 'has-text-success')
+                @icon(\App\Http\Controllers\Workshop\ConfigurationController::ICON, 'has-text-success')
                 <span>@lang('configuration.title')</span>
             </a>
         </div>

@@ -7,7 +7,7 @@
                 <div class="level-item">
                     <h1 class="title is-1">
                         <a href="{{ route('workshop.dashboard') }}">
-                            @icon(\App\Http\Controllers\Backend\DashboardController::ICON)
+                            @icon(\App\Http\Controllers\Workshop\DashboardController::ICON)
                             <span>@lang('dashboard.title')</span>
                         </a>
                     </h1>
