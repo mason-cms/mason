@@ -1,8 +1,8 @@
-@extends('backend.configuration.layout')
+@extends('workshop.configuration.layout')
 
 @section('main')
     <form
-        action="{{ route('backend.configuration.taxonomy-type.update', [$taxonomyType]) }}"
+        action="{{ route('workshop.configuration.taxonomy-type.update', [$taxonomyType]) }}"
         method="POST"
         enctype="multipart/form-data"
     >
@@ -13,7 +13,7 @@
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-1">
-                        <a href="{{ route('backend.configuration.taxonomy-type.index') }}">
+                        <a href="{{ route('workshop.configuration.taxonomy-type.index') }}">
                             @icon('fa-arrow-left-long')
                             <span>@lang('taxonomyTypes.title')</span>
                         </a>
@@ -34,6 +34,6 @@
             </div>
         </div>
 
-        @include('backend.configuration.taxonomy-types.partials.fields')
+        @include('workshop.configuration.taxonomy-types.partials.fields')
     </form>
 @endsection

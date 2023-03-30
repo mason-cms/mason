@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -30,7 +30,7 @@ class UserController extends Controller
 
         $users = $query->paginate($perPage = $request->input('per_page') ?? 25);
 
-        return response()->view('backend.users.index', [
+        return response()->view('workshop.users.index', [
             'users' => $users,
             'total' => $total,
             'perPage' => $perPage,
@@ -49,7 +49,7 @@ class UserController extends Controller
     {
         $user = new User;
 
-        return response()->view('backend.users.create', compact('user'));
+        return response()->view('workshop.users.create', compact('user'));
     }
 
     /**
@@ -65,7 +65,7 @@ class UserController extends Controller
 
         $user->saveOrFail();
 
-        return redirect()->route('backend.users.index');
+        return redirect()->route('workshop.users.index');
     }
 
     /**
@@ -77,7 +77,7 @@ class UserController extends Controller
      */
     public function show(Request $request, User $user)
     {
-        return redirect()->route('backend.users.edit', [$user]);
+        return redirect()->route('workshop.users.edit', [$user]);
     }
 
     /**
@@ -89,7 +89,7 @@ class UserController extends Controller
      */
     public function edit(Request $request, User $user)
     {
-        return response()->view('backend.users.edit', compact('user'));
+        return response()->view('workshop.users.edit', compact('user'));
     }
 
     /**
@@ -119,6 +119,6 @@ class UserController extends Controller
     {
         $user->deleteOrFail();
 
-        return redirect()->route('backend.users.index');
+        return redirect()->route('workshop.users.index');
     }
 }

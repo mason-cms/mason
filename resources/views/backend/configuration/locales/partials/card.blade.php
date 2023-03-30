@@ -14,7 +14,7 @@
             </div>
 
             <h2 class="title is-2 locale-title">
-                <a href="{{ route('backend.configuration.locale.edit', [$locale]) }}">
+                <a href="{{ route('workshop.configuration.locale.edit', [$locale]) }}">
                     {{ $locale->title }}
                 </a>
             </h2>
@@ -26,7 +26,7 @@
     <div class="card-footer">
         <a
             class="card-footer-item"
-            href="{{ route('backend.configuration.locale.edit', [$locale]) }}"
+            href="{{ route('workshop.configuration.locale.edit', [$locale]) }}"
         >
             @icon('fa-pencil')
             <span class="is-hidden-mobile">@lang('locales.actions.edit.label')</span>
@@ -34,7 +34,7 @@
 
         <a
             class="card-footer-item"
-            href="{{ route('backend.configuration.locale.destroy', [$locale]) }}"
+            href="{{ route('workshop.configuration.locale.destroy', [$locale]) }}"
             data-confirm="@lang('general.confirm')"
             data-method="DELETE"
         >

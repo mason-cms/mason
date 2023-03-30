@@ -1,8 +1,8 @@
-@extends('backend.configuration.layout')
+@extends('workshop.configuration.layout')
 
 @section('main')
     <form
-        action="{{ route('backend.configuration.setting.update') }}"
+        action="{{ route('workshop.configuration.setting.update') }}"
         method="POST"
         enctype="multipart/form-data"
     >

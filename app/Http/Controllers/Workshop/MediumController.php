@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Models\Medium;
 use Illuminate\Http\Request;
@@ -30,7 +30,7 @@ class MediumController extends Controller
 
         $media = $query->paginate($perPage = $request->input('per_page') ?? 25);
 
-        return response()->view('backend.media.index', [
+        return response()->view('workshop.media.index', [
             'media' => $media,
             'total' => $total,
             'perPage' => $perPage,
@@ -49,7 +49,7 @@ class MediumController extends Controller
     {
         $medium = new Medium($request->all()['medium'] ?? []);
 
-        return response()->view('backend.media.create', [
+        return response()->view('workshop.media.create', [
             'medium' => $medium,
         ]);
     }
@@ -79,7 +79,7 @@ class MediumController extends Controller
             return response()->json($media);
         }
 
-        return redirect()->route('backend.medium.index');
+        return redirect()->route('workshop.medium.index');
     }
 
     /**
@@ -106,6 +106,6 @@ class MediumController extends Controller
     {
         $medium->deleteOrFail();
 
-        return redirect()->route('backend.medium.index');
+        return redirect()->route('workshop.medium.index');
     }
 }

@@ -2,7 +2,7 @@
     <td>
         {!! str_repeat('&mdash;', $depth) !!}
 
-        <a href="{{ route('backend.taxonomies.edit', [$taxonomy->type, $taxonomy]) }}">
+        <a href="{{ route('workshop.taxonomies.edit', [$taxonomy->type, $taxonomy]) }}">
             {{ $taxonomy->title }}
         </a>
     </td>
@@ -24,7 +24,7 @@
             <div class="control">
                 <a
                     class="button is-small"
-                    href="{{ route('backend.taxonomies.edit', [$taxonomy->type, $taxonomy]) }}"
+                    href="{{ route('workshop.taxonomies.edit', [$taxonomy->type, $taxonomy]) }}"
                 >
                     @icon('fa-pencil')
                 </a>
@@ -33,7 +33,7 @@
             <div class="control">
                 <a
                     class="button is-small"
-                    href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
+                    href="{{ route('workshop.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
                     data-confirm="@lang('general.confirm')"
                 >
                     @icon('fa-trash-can', 'has-text-danger')
@@ -44,5 +44,5 @@
 </tr>
 
 @foreach ($taxonomy->children as $taxonomy)
-    @include('backend.taxonomies.partials.row', ['depth' => $depth + 1])
+    @include('workshop.taxonomies.partials.row', ['depth' => $depth + 1])
 @endforeach

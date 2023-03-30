@@ -4,12 +4,12 @@
         @include('partials.head')
     </head>
     <body class="backend">
-        @include('backend.partials.navbar')
+        @include('workshop.partials.navbar')
 
         <main id="content">
             @yield('content')
         </main>
 
-        @include('backend.partials.scripts')
+        @include('workshop.partials.scripts')
     </body>
 </html>

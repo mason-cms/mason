@@ -1,9 +1,9 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.blocks.update', [$block]) }}"
+        action="{{ route('workshop.blocks.update', [$block]) }}"
         method="POST"
         enctype="multipart/form-data"
     >
@@ -15,7 +15,7 @@
                 <div class="level-item">
                     <h1 class="title is-1">
                         <a
-                            href="{{ route('backend.blocks.index', [
+                            href="{{ route('workshop.blocks.index', [
                                 'location' => $block->location,
                                 'locale_id' => $block->locale_id,
                             ]) }}"
@@ -41,7 +41,7 @@
                 <div class="level-item">
                     <a
                         class="button is-danger"
-                        href="{{ route('backend.blocks.destroy', [$block]) }}"
+                        href="{{ route('workshop.blocks.destroy', [$block]) }}"
                         data-confirm="@lang('general.confirm')"
                     >
                         @icon('fa-trash-can')
@@ -51,6 +51,6 @@
             </div>
         </div>
 
-        @include('backend.blocks.partials.fields')
+        @include('workshop.blocks.partials.fields')
     </form>
 @endsection

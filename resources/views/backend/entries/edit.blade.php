@@ -1,9 +1,9 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.entries.update', [$entry->type, $entry]) }}"
+        action="{{ route('workshop.entries.update', [$entry->type, $entry]) }}"
         method="POST"
         enctype="multipart/form-data"
     >
@@ -14,7 +14,7 @@
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-1">
-                        <a href="{{ route('backend.entries.index', [$entry->type]) }}">
+                        <a href="{{ route('workshop.entries.index', [$entry->type]) }}">
                             @icon('fa-arrow-left-long')
                             <span>{{ $entry->type }}</span>
                         </a>
@@ -37,7 +37,7 @@
                     <div class="level-item">
                         <a
                             class="button"
-                            href="{{ route('backend.entries.destroy', [$entry->type, $entry]) }}"
+                            href="{{ route('workshop.entries.destroy', [$entry->type, $entry]) }}"
                         >
                             @icon('fa-ban')
                             <span>@lang('entries.actions.cancel.label')</span>
@@ -61,7 +61,7 @@
                 <div class="level-item">
                     <a
                         class="button is-danger"
-                        href="{{ route('backend.entries.destroy', [$entry->type, $entry]) }}"
+                        href="{{ route('workshop.entries.destroy', [$entry->type, $entry]) }}"
                         data-confirm="@lang('general.confirm')"
                     >
                         @icon('fa-trash-can')
@@ -71,6 +71,6 @@
             </div>
         </div>
 
-        @include('backend.entries.partials.fields')
+        @include('workshop.entries.partials.fields')
     </form>
 @endsection

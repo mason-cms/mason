@@ -2,7 +2,7 @@
     <div class="card-content">
         <div class="block">
             <h2 class="title is-2 entry-title">
-                <a href="{{ route('backend.configuration.taxonomy-type.edit', [$taxonomyType]) }}">
+                <a href="{{ route('workshop.configuration.taxonomy-type.edit', [$taxonomyType]) }}">
                     @isset($taxonomyType->icon_class)
                         @icon($taxonomyType->icon_class, 'taxonomy-type-icon')
                     @endisset
@@ -18,7 +18,7 @@
     <div class="card-footer">
         <a
             class="card-footer-item"
-            href="{{ route('backend.configuration.taxonomy-type.edit', [$taxonomyType]) }}"
+            href="{{ route('workshop.configuration.taxonomy-type.edit', [$taxonomyType]) }}"
         >
             @icon('fa-pencil')
             <span class="is-hidden-mobile">@lang('taxonomyTypes.actions.edit.label')</span>
@@ -26,7 +26,7 @@
 
         <a
             class="card-footer-item"
-            href="{{ route('backend.configuration.taxonomy-type.destroy', [$taxonomyType]) }}"
+            href="{{ route('workshop.configuration.taxonomy-type.destroy', [$taxonomyType]) }}"
             data-confirm="@lang('general.confirm')"
             data-method="DELETE"
         >

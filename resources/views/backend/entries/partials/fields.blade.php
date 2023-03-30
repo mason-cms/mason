@@ -52,7 +52,7 @@
                             class="textarea {{ isset($entry->editor_mode) ? $entry->editor_mode->cssClass() : '' }}"
                             name="entry[content]"
                             rows="40"
-                            data-media-upload="{{ route('backend.medium.store', ['medium' => ['parent_id' => $entry->getKey(), 'parent_type' => get_class($entry)]]) }}"
+                            data-media-upload="{{ route('workshop.medium.store', ['medium' => ['parent_id' => $entry->getKey(), 'parent_type' => get_class($entry)]]) }}"
                         >{!! $entry->content !!}</textarea>
                     </div>
                 </div>
@@ -253,7 +253,7 @@
 
                             <div class="control">
                                 @foreach ($taxonomyType->taxonomies()->topLevel()->get() as $taxonomy)
-                                    @include('backend.entries.partials.taxonomy-checkbox')
+                                    @include('workshop.entries.partials.taxonomy-checkbox')
                                 @endforeach
                             </div>
                         </div>

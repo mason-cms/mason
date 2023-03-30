@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\EntryType;
@@ -26,7 +26,7 @@ class EntryTypeController extends Controller
             $query->filter($filters);
         }
 
-        return response()->view('backend.configuration.entry-types.index', [
+        return response()->view('workshop.configuration.entry-types.index', [
             'entryTypes' => $query->paginate($perPage = $request->input('per_page') ?? 25),
             'total' => $query->count(),
             'perPage' => $perPage,
@@ -45,7 +45,7 @@ class EntryTypeController extends Controller
     {
         $entryType = new EntryType($request->all()['entry_type'] ?? []);
 
-        return response()->view('backend.configuration.entry-types.create', compact('entryType'));
+        return response()->view('workshop.configuration.entry-types.create', compact('entryType'));
     }
 
     /**
@@ -61,7 +61,7 @@ class EntryTypeController extends Controller
 
         $entryType->saveOrFail();
 
-        return redirect()->route('backend.configuration.entry-type.show', [$entryType]);
+        return redirect()->route('workshop.configuration.entry-type.show', [$entryType]);
     }
 
     /**
@@ -73,7 +73,7 @@ class EntryTypeController extends Controller
      */
     public function show(Request $request, EntryType $entryType)
     {
-        return redirect()->route('backend.configuration.entry-type.edit', [$entryType]);
+        return redirect()->route('workshop.configuration.entry-type.edit', [$entryType]);
     }
 
     /**
@@ -85,7 +85,7 @@ class EntryTypeController extends Controller
      */
     public function edit(Request $request, EntryType $entryType)
     {
-        return response()->view('backend.configuration.entry-types.edit', compact('entryType'));
+        return response()->view('workshop.configuration.entry-types.edit', compact('entryType'));
     }
 
     /**
@@ -99,7 +99,7 @@ class EntryTypeController extends Controller
     {
         $entryType->updateOrFail($request->all()['entry_type'] ?? []);
 
-        return redirect()->route('backend.configuration.entry-type.index');
+        return redirect()->route('workshop.configuration.entry-type.index');
     }
 
     /**
@@ -114,6 +114,6 @@ class EntryTypeController extends Controller
     {
         $entryType->deleteOrFail();
 
-        return redirect()->route('backend.configuration.entry-type.index');
+        return redirect()->route('workshop.configuration.entry-type.index');
     }
 }

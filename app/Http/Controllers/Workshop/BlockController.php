@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Block;
@@ -23,7 +23,7 @@ class BlockController extends Controller
 
         $blocks = $query->paginate($perPage = $request->input('per_page') ?? 25);
 
-        return response()->view('backend.blocks.index', [
+        return response()->view('workshop.blocks.index', [
             'request' => $request,
             'blockLocations' => site(false)->theme()->blockLocations(),
             'locales' => Locale::all(),
@@ -39,7 +39,7 @@ class BlockController extends Controller
 
         $block->saveOrFail();
 
-        return redirect()->route('backend.blocks.edit', [$block]);
+        return redirect()->route('workshop.blocks.edit', [$block]);
     }
 
     public function store(Request $request)
@@ -48,12 +48,12 @@ class BlockController extends Controller
 
         $block->saveOrFail();
 
-        return redirect()->route('backend.blocks.edit', [$block]);
+        return redirect()->route('workshop.blocks.edit', [$block]);
     }
 
     public function edit(Request $request, Block $block)
     {
-        return response()->view('backend.blocks.edit', [
+        return response()->view('workshop.blocks.edit', [
             'request' => $request,
             'block' => $block,
             'blockLocations' => site(false)->theme()->blockLocations(),

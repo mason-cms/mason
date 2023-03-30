@@ -1,9 +1,9 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.medium.index') }}"
+        action="{{ route('workshop.medium.index') }}"
         method="GET"
     >
         <div class="level">
@@ -11,7 +11,7 @@
                 <div class="level-item">
                     <div>
                         <h1 class="title is-1">
-                            <a href="{{ route('backend.medium.index') }}">
+                            <a href="{{ route('workshop.medium.index') }}">
                                 @lang('media.title')
                             </a>
                         </h1>
@@ -25,19 +25,19 @@
 
             <div class="level-right">
                 <div class="level-item">
-                    @include('backend.partials.search')
+                    @include('workshop.partials.search')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.media.partials.filters')
+                    @include('workshop.media.partials.filters')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.partials.paginator')
+                    @include('workshop.partials.paginator')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.media.partials.buttons.create')
+                    @include('workshop.media.partials.buttons.create')
                 </div>
             </div>
         </div>
@@ -48,14 +48,14 @@
             <div class="columns is-multiline is-card-grid">
                 @foreach ($media as $medium)
                     <div class="column is-4 is-3-desktop">
-                        @include('backend.media.partials.card', ['medium' => $medium])
+                        @include('workshop.media.partials.card', ['medium' => $medium])
                     </div>
                 @endforeach
             </div>
 
             <hr />
 
-            {{ $media->appends(request()->input())->links('backend.partials.pagination') }}
+            {{ $media->appends(request()->input())->links('workshop.partials.pagination') }}
         @else
             <div class="section is-medium has-text-centered">
                 <p class="block no-records">
@@ -63,7 +63,7 @@
                 </p>
 
                 <p class="block">
-                    @include('backend.media.partials.buttons.create')
+                    @include('workshop.media.partials.buttons.create')
                 </p>
             </div>
         @endif

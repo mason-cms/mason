@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Locale;
@@ -26,7 +26,7 @@ class LocaleController extends Controller
             $query->filter($filters);
         }
 
-        return response()->view('backend.configuration.locales.index', [
+        return response()->view('workshop.configuration.locales.index', [
             'locales' => $query->paginate($perPage = $request->input('per_page') ?? 25),
             'total' => $query->count(),
             'perPage' => $perPage,
@@ -45,7 +45,7 @@ class LocaleController extends Controller
     {
         $locale = new Locale($request->all()['locale'] ?? []);
 
-        return response()->view('backend.configuration.locales.create', compact('locale'));
+        return response()->view('workshop.configuration.locales.create', compact('locale'));
     }
 
     /**
@@ -61,7 +61,7 @@ class LocaleController extends Controller
 
         $locale->saveOrFail();
 
-        return redirect()->route('backend.configuration.locale.show', [$locale]);
+        return redirect()->route('workshop.configuration.locale.show', [$locale]);
     }
 
     /**
@@ -73,7 +73,7 @@ class LocaleController extends Controller
      */
     public function show(Request $request, Locale $locale)
     {
-        return redirect()->route('backend.configuration.locale.edit', [$locale]);
+        return redirect()->route('workshop.configuration.locale.edit', [$locale]);
     }
 
     /**
@@ -85,7 +85,7 @@ class LocaleController extends Controller
      */
     public function edit(Request $request, Locale $locale)
     {
-        return response()->view('backend.configuration.locales.edit', compact('locale'));
+        return response()->view('workshop.configuration.locales.edit', compact('locale'));
     }
 
     /**
@@ -99,7 +99,7 @@ class LocaleController extends Controller
     {
         $locale->updateOrFail($request->all()['locale'] ?? []);
 
-        return redirect()->route('backend.configuration.locale.index');
+        return redirect()->route('workshop.configuration.locale.index');
     }
 
     /**
@@ -114,6 +114,6 @@ class LocaleController extends Controller
     {
         $locale->deleteOrFail();
 
-        return redirect()->route('backend.configuration.locale.index');
+        return redirect()->route('workshop.configuration.locale.index');
     }
 }

@@ -1,9 +1,9 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.users.index') }}"
+        action="{{ route('workshop.users.index') }}"
         method="GET"
     >
         <div class="level">
@@ -11,7 +11,7 @@
                 <div class="level-item">
                     <div>
                         <h1 class="title is-1">
-                            <a href="{{ route('backend.users.index') }}">
+                            <a href="{{ route('workshop.users.index') }}">
                                 @icon(\App\Models\User::ICON)
                                 <span>@lang('users.title')</span>
                             </a>
@@ -26,19 +26,19 @@
 
             <div class="level-right">
                 <div class="level-item">
-                    @include('backend.partials.search')
+                    @include('workshop.partials.search')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.users.partials.filters')
+                    @include('workshop.users.partials.filters')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.partials.paginator')
+                    @include('workshop.partials.paginator')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.users.partials.buttons.create')
+                    @include('workshop.users.partials.buttons.create')
                 </div>
             </div>
         </div>
@@ -49,12 +49,12 @@
             <div class="columns is-multiline">
                 @foreach ($users as $user)
                     <div class="column is-4-tablet is-3-desktop">
-                        @include('backend.users.partials.user')
+                        @include('workshop.users.partials.user')
                     </div>
                 @endforeach
             </div>
 
-            {{ $users->appends(request()->input())->links('backend.partials.pagination') }}
+            {{ $users->appends(request()->input())->links('workshop.partials.pagination') }}
         @else
             <div class="section is-medium has-text-centered">
                 <p class="block no-records">
@@ -62,7 +62,7 @@
                 </p>
 
                 <p class="block">
-                    @include('backend.users.partials.buttons.create')
+                    @include('workshop.users.partials.buttons.create')
                 </p>
             </div>
         @endif

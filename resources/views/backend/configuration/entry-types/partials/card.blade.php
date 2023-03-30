@@ -2,7 +2,7 @@
     <div class="card-content">
         <div class="block">
             <h2 class="title is-2 entry-title">
-                <a href="{{ route('backend.configuration.entry-type.edit', [$entryType]) }}">
+                <a href="{{ route('workshop.configuration.entry-type.edit', [$entryType]) }}">
                     @isset($entryType->icon_class)
                         @icon($entryType->icon_class, 'entry-type-icon')
                     @endisset
@@ -18,7 +18,7 @@
     <div class="card-footer">
         <a
             class="card-footer-item"
-            href="{{ route('backend.configuration.entry-type.edit', [$entryType]) }}"
+            href="{{ route('workshop.configuration.entry-type.edit', [$entryType]) }}"
         >
             @icon('fa-pencil')
             <span class="is-hidden-mobile">@lang('entryTypes.actions.edit.label')</span>
@@ -26,7 +26,7 @@
 
         <a
             class="card-footer-item"
-            href="{{ route('backend.configuration.entry-type.destroy', [$entryType]) }}"
+            href="{{ route('workshop.configuration.entry-type.destroy', [$entryType]) }}"
             data-confirm="@lang('general.confirm')"
             data-method="DELETE"
         >

@@ -1,17 +1,17 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <section class="section">
         <form
             class="autosave"
-            action="{{ route('backend.blocks.index') }}"
+            action="{{ route('workshop.blocks.index') }}"
             method="GET"
         >
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
                         <h1 class="title is-1">
-                            <a href="{{ route('backend.blocks.index') }}">
+                            <a href="{{ route('workshop.blocks.index') }}">
                                 @icon(\App\Models\Block::ICON)
                                 <span>@lang('blocks.title')</span>
                             </a>
@@ -69,7 +69,7 @@
                     </div>
 
                     <div class="level-item">
-                        @include('backend.blocks.partials.buttons.create', [
+                        @include('workshop.blocks.partials.buttons.create', [
                             'location' => $request->get('location'),
                             'localeId' => $request->get('locale_id'),
                         ])
@@ -84,7 +84,7 @@
             <div class="columns is-multiline is-card-grid">
                 @foreach ($blocks as $block)
                     <div class="column is-4 is-3-desktop">
-                        @include('backend.blocks.partials.card')
+                        @include('workshop.blocks.partials.card')
                     </div>
                 @endforeach
             </div>
@@ -95,7 +95,7 @@
                 </p>
 
                 <p class="block">
-                    @include('backend.blocks.partials.buttons.create', [
+                    @include('workshop.blocks.partials.buttons.create', [
                         'location' => $request->get('location'),
                         'localeId' => $request->get('locale_id'),
                     ])

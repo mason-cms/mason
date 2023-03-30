@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
@@ -35,7 +35,7 @@ class MenuItemController extends Controller
      */
     public function show(Request $request, Menu $menu, MenuItem $item)
     {
-        return redirect()->route('backend.menus.items.edit', [$menu, $item]);
+        return redirect()->route('workshop.menus.items.edit', [$menu, $item]);
     }
 
     /**
@@ -48,7 +48,7 @@ class MenuItemController extends Controller
      */
     public function edit(Request $request, Menu $menu, MenuItem $item)
     {
-        return response()->view('backend.menus.items.edit', compact('menu', 'item'));
+        return response()->view('workshop.menus.items.edit', compact('menu', 'item'));
     }
 
     /**

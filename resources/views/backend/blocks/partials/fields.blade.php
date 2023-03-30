@@ -22,7 +22,7 @@
                             class="textarea {{ isset($block->editor_mode) ? $block->editor_mode->cssClass() : '' }}"
                             name="block[content]"
                             rows="20"
-                            data-media-upload="{{ route('backend.medium.store', ['medium' => ['parent_id' => $block->getKey(), 'parent_type' => get_class($block)]]) }}"
+                            data-media-upload="{{ route('workshop.medium.store', ['medium' => ['parent_id' => $block->getKey(), 'parent_type' => get_class($block)]]) }}"
                         >{!! $block->content !!}</textarea>
                     </div>
                 </div>

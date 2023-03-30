@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
@@ -18,7 +18,7 @@ class SettingsController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->view('backend.configuration.settings.index', [
+        return response()->view('workshop.configuration.settings.index', [
             'settings' => site(false)->theme()->settings(),
         ]);
     }
@@ -45,6 +45,6 @@ class SettingsController extends Controller
             }
         }
 
-        return redirect()->route('backend.configuration.setting.index');
+        return redirect()->route('workshop.configuration.setting.index');
     }
 }

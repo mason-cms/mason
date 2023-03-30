@@ -46,7 +46,7 @@
                     <div class="control">
                         <a
                             class="button is-white edit-menu-item"
-                            href="{{ route('backend.menus.items.edit', [$item->menu, $item]) }}"
+                            href="{{ route('workshop.menus.items.edit', [$item->menu, $item]) }}"
                             title="@lang('menus.actions.edit.label')"
                             rel="open-modal"
                         >
@@ -57,7 +57,7 @@
                     <div class="control">
                         <a
                             class="button is-white create-sub-menu-item"
-                            href="{{ route('backend.menus.items.create', [$item->menu, 'item' => ['parent_id' => $item->id]]) }}"
+                            href="{{ route('workshop.menus.items.create', [$item->menu, 'item' => ['parent_id' => $item->id]]) }}"
                             title="@lang('menus.items.actions.create.label')"
                         >
                             @icon('fa-plus')
@@ -67,7 +67,7 @@
                     <div class="control">
                         <a
                             class="button is-white destroy-menu-item"
-                            href="{{ route('backend.menus.items.destroy', [$item->menu, $item]) }}"
+                            href="{{ route('workshop.menus.items.destroy', [$item->menu, $item]) }}"
                             title="@lang('menus.items.actions.destroy.label')"
                         >
                             @icon('fa-trash-can')
@@ -83,7 +83,7 @@
     <ul class="ui-sortable">
         @foreach ($item->children as $child)
             <li>
-                @include('backend.menus.partials.item', ['item' => $child])
+                @include('workshop.menus.partials.item', ['item' => $child])
             </li>
         @endforeach
     </ul>

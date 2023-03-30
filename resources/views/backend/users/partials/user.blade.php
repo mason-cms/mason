@@ -1,7 +1,7 @@
 <div class="user user-{{ $user->getKey() }} mb-4 has-text-centered">
     @isset($user->gravatar_url)
         <figure class="user-gravatar image is-128x128 is-centered block">
-            <a href="{{ route('backend.users.edit', [$user]) }}">
+            <a href="{{ route('workshop.users.edit', [$user]) }}">
                 <img
                     class="is-rounded"
                     src="{{ $user->gravatar_url }}?s=128"
@@ -24,7 +24,7 @@
         <div class="control">
             <a
                 class="button is-small"
-                href="{{ route('backend.users.edit', [$user]) }}"
+                href="{{ route('workshop.users.edit', [$user]) }}"
             >
                 @icon('fa-pencil')
             </a>
@@ -33,7 +33,7 @@
         <div class="control">
             <a
                 class="button is-small"
-                href="{{ route('backend.users.destroy', [$user]) }}"
+                href="{{ route('workshop.users.destroy', [$user]) }}"
                 data-confirm="@lang('general.confirm')"
             >
                 @icon('fa-trash-can', 'has-text-danger')

@@ -2,7 +2,7 @@
     <div class="card-content">
         <div class="block">
             <h3 class="title is-3">
-                <a href="{{ route('backend.blocks.edit', [$block]) }}">
+                <a href="{{ route('workshop.blocks.edit', [$block]) }}">
                     {{ $block->title ?? __('blocks.untitled') }}
                 </a>
             </h3>
@@ -36,7 +36,7 @@
     <div class="card-footer">
         <a
             class="card-footer-item"
-            href="{{ route('backend.blocks.edit', [$block]) }}"
+            href="{{ route('workshop.blocks.edit', [$block]) }}"
         >
             @icon('fa-pencil')
             <span class="is-hidden-mobile">@lang('blocks.actions.edit.label')</span>
@@ -44,7 +44,7 @@
 
         <a
             class="card-footer-item"
-            href="{{ route('backend.blocks.destroy', [$block]) }}"
+            href="{{ route('workshop.blocks.destroy', [$block]) }}"
             data-confirm="@lang('general.confirm')"
         >
             @icon('fa-trash-can')

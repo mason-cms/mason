@@ -1,9 +1,9 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.users.update', [$user]) }}"
+        action="{{ route('workshop.users.update', [$user]) }}"
         method="POST"
         enctype="multipart/form-data"
     >
@@ -14,7 +14,7 @@
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-1">
-                        <a href="{{ route('backend.users.index') }}">
+                        <a href="{{ route('workshop.users.index') }}">
                             @icon('fa-arrow-left-long')
                             <span>@lang('users.title')</span>
                         </a>
@@ -36,7 +36,7 @@
                 <div class="level-item">
                     <a
                         class="button is-danger"
-                        href="{{ route('backend.users.destroy', [$user]) }}"
+                        href="{{ route('workshop.users.destroy', [$user]) }}"
                         data-confirm="@lang('general.confirm')"
                     >
                         @icon('fa-trash-can')
@@ -46,6 +46,6 @@
             </div>
         </div>
 
-        @include('backend.users.partials.fields')
+        @include('workshop.users.partials.fields')
     </form>
 @endsection

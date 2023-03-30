@@ -1,7 +1,7 @@
 <div class="card">
     @isset($medium->preview_url)
         <div class="card-image">
-            <a href="{{ route('backend.medium.show', [$medium]) }}">
+            <a href="{{ route('workshop.medium.show', [$medium]) }}">
                 <img
                     class="is-block"
                     src="{{ $medium->preview_url }}"
@@ -15,7 +15,7 @@
     <div class="card-content">
         <div class="block">
             <h2 class="title is-2">
-                <a href="{{ route('backend.medium.show', [$medium]) }}">
+                <a href="{{ route('workshop.medium.show', [$medium]) }}">
                     {{ $medium->title }}
                 </a>
             </h2>
@@ -81,7 +81,7 @@
     <footer class="card-footer">
         <a
             class="card-footer-item"
-            href="{{ route('backend.medium.show', [$medium]) }}"
+            href="{{ route('workshop.medium.show', [$medium]) }}"
             target="_blank"
         >
             @icon('fa-arrow-up-right-from-square')
@@ -90,7 +90,7 @@
 
         <a
             class="card-footer-item"
-            href="{{ route('backend.medium.edit', [$medium]) }}"
+            href="{{ route('workshop.medium.edit', [$medium]) }}"
         >
             @icon('fa-pencil')
             <span class="is-hidden-mobile">@lang('media.actions.edit.label')</span>
@@ -98,7 +98,7 @@
 
         <a
             class="card-footer-item"
-            href="{{ route('backend.medium.destroy', [$medium]) }}"
+            href="{{ route('workshop.medium.destroy', [$medium]) }}"
             data-confirm="@lang('general.confirm')"
             data-method="DELETE"
         >

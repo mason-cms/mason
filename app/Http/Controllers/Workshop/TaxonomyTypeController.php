@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\TaxonomyType;
@@ -26,7 +26,7 @@ class TaxonomyTypeController extends Controller
             $query->filter($filters);
         }
 
-        return response()->view('backend.configuration.taxonomy-types.index', [
+        return response()->view('workshop.configuration.taxonomy-types.index', [
             'taxonomyTypes' => $query->paginate($perPage = $request->input('per_page') ?? 25),
             'total' => $query->count(),
             'perPage' => $perPage,
@@ -45,7 +45,7 @@ class TaxonomyTypeController extends Controller
     {
         $taxonomyType = new TaxonomyType($request->all()['taxonomy_type'] ?? []);
 
-        return response()->view('backend.configuration.taxonomy-types.create', compact('taxonomyType'));
+        return response()->view('workshop.configuration.taxonomy-types.create', compact('taxonomyType'));
     }
 
     /**
@@ -61,7 +61,7 @@ class TaxonomyTypeController extends Controller
 
         $taxonomyType->saveOrFail();
 
-        return redirect()->route('backend.configuration.taxonomy-type.show', [$taxonomyType]);
+        return redirect()->route('workshop.configuration.taxonomy-type.show', [$taxonomyType]);
     }
 
     /**
@@ -73,7 +73,7 @@ class TaxonomyTypeController extends Controller
      */
     public function show(Request $request, TaxonomyType $taxonomyType)
     {
-        return redirect()->route('backend.configuration.taxonomy-type.edit', [$taxonomyType]);
+        return redirect()->route('workshop.configuration.taxonomy-type.edit', [$taxonomyType]);
     }
 
     /**
@@ -85,7 +85,7 @@ class TaxonomyTypeController extends Controller
      */
     public function edit(Request $request, TaxonomyType $taxonomyType)
     {
-        return response()->view('backend.configuration.taxonomy-types.edit', compact('taxonomyType'));
+        return response()->view('workshop.configuration.taxonomy-types.edit', compact('taxonomyType'));
     }
 
     /**
@@ -99,7 +99,7 @@ class TaxonomyTypeController extends Controller
     {
         $taxonomyType->updateOrFail($request->all()['taxonomy_type'] ?? []);
 
-        return redirect()->route('backend.configuration.taxonomy-type.index');
+        return redirect()->route('workshop.configuration.taxonomy-type.index');
     }
 
     /**
@@ -114,6 +114,6 @@ class TaxonomyTypeController extends Controller
     {
         $taxonomyType->deleteOrFail();
 
-        return redirect()->route('backend.configuration.taxonomy-type.index');
+        return redirect()->route('workshop.configuration.taxonomy-type.index');
     }
 }

@@ -1,8 +1,8 @@
-@extends('backend.configuration.layout')
+@extends('workshop.configuration.layout')
 
 @section('main')
     <form
-        action="{{ route('backend.configuration.locale.store') }}"
+        action="{{ route('workshop.configuration.locale.store') }}"
         method="POST"
         enctype="multipart/form-data"
     >
@@ -12,7 +12,7 @@
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-1">
-                        <a href="{{ route('backend.configuration.locale.index') }}">
+                        <a href="{{ route('workshop.configuration.locale.index') }}">
                             @icon('fa-arrow-left-long')
                             <span>@lang('locales.title')</span>
                         </a>
@@ -33,6 +33,6 @@
             </div>
         </div>
 
-        @include('backend.configuration.locales.partials.fields')
+        @include('workshop.configuration.locales.partials.fields')
     </form>
 @endsection

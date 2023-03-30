@@ -16,5 +16,5 @@
 </label><br />
 
 @foreach ($taxonomy->children as $child)
-    @include('backend.entries.partials.taxonomy-checkbox', ['taxonomy' => $child, 'depth' => $depth + 1])
+    @include('workshop.entries.partials.taxonomy-checkbox', ['taxonomy' => $child, 'depth' => $depth + 1])
 @endforeach

@@ -1,9 +1,9 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.taxonomies.update', [$taxonomy->type, $taxonomy]) }}"
+        action="{{ route('workshop.taxonomies.update', [$taxonomy->type, $taxonomy]) }}"
         method="POST"
         enctype="multipart/form-data"
     >
@@ -14,7 +14,7 @@
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-1">
-                        <a href="{{ route('backend.taxonomies.index', [$taxonomy->type]) }}">
+                        <a href="{{ route('workshop.taxonomies.index', [$taxonomy->type]) }}">
                             @icon('fa-arrow-left-long')
                             <span>{{ $taxonomy->type }}</span>
                         </a>
@@ -37,7 +37,7 @@
                     <div class="level-item">
                         <a
                             class="button"
-                            href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
+                            href="{{ route('workshop.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
                         >
                             @icon('fa-ban')
                             <span>@lang('taxonomies.actions.cancel.label')</span>
@@ -48,7 +48,7 @@
                 <div class="level-item">
                     <a
                         class="button is-danger"
-                        href="{{ route('backend.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
+                        href="{{ route('workshop.taxonomies.destroy', [$taxonomy->type, $taxonomy]) }}"
                         data-confirm="@lang('general.confirm')"
                     >
                         @icon('fa-trash-can')
@@ -58,6 +58,6 @@
             </div>
         </div>
 
-        @include('backend.taxonomies.partials.fields')
+        @include('workshop.taxonomies.partials.fields')
     </form>
 @endsection

@@ -2,7 +2,7 @@
     @isset($entry->cover)
         <div class="card-image">
             <figure class="image entry-cover">
-                <a href="{{ route('backend.entries.edit', [$entry->type, $entry]) }}">
+                <a href="{{ route('workshop.entries.edit', [$entry->type, $entry]) }}">
                     <img
                         src="{{ $entry->cover->url }}"
                         alt="{{ $entry->cover->title }}"
@@ -21,7 +21,7 @@
                     </span>
                 @endif
 
-                <a href="{{ route('backend.entries.edit', [$entry->type, $entry]) }}">
+                <a href="{{ route('workshop.entries.edit', [$entry->type, $entry]) }}">
                     {{ $entry->title }}
                 </a>
             </h2>
@@ -93,7 +93,7 @@
 
         <a
             class="card-footer-item"
-            href="{{ route('backend.entries.edit', [$entry->type, $entry]) }}"
+            href="{{ route('workshop.entries.edit', [$entry->type, $entry]) }}"
         >
             @icon('fa-pencil')
             <span class="is-hidden-mobile">@lang('entries.actions.edit.label')</span>
@@ -101,7 +101,7 @@
 
         <a
             class="card-footer-item"
-            href="{{ route('backend.entries.destroy', [$entry->type, $entry]) }}"
+            href="{{ route('workshop.entries.destroy', [$entry->type, $entry]) }}"
             data-confirm="@lang('general.confirm')"
         >
             @icon('fa-trash-can')

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Entry;
@@ -33,7 +33,7 @@ class EntryController extends Controller
 
         $entries = $query->paginate($perPage = $request->input('per_page') ?? 25);
 
-        return response()->view('backend.entries.index', [
+        return response()->view('workshop.entries.index', [
             'entries' => $entries,
             'total' => $total,
             'perPage' => $perPage,
@@ -57,7 +57,7 @@ class EntryController extends Controller
         $entry->author()->associate($request->user());
         $entry->saveOrFail();
 
-        return redirect()->route('backend.entries.edit', [$entryType, $entry]);
+        return redirect()->route('workshop.entries.edit', [$entryType, $entry]);
     }
 
     /**
@@ -70,7 +70,7 @@ class EntryController extends Controller
      */
     public function show(Request $request, EntryType $entryType, Entry $entry)
     {
-        return redirect()->route('backend.entries.edit', [$entryType, $entry]);
+        return redirect()->route('workshop.entries.edit', [$entryType, $entry]);
     }
 
     /**
@@ -83,7 +83,7 @@ class EntryController extends Controller
      */
     public function edit(Request $request, EntryType $entryType, Entry $entry)
     {
-        return response()->view('backend.entries.edit', compact('entryType', 'entry'));
+        return response()->view('workshop.entries.edit', compact('entryType', 'entry'));
     }
 
     /**
@@ -117,6 +117,6 @@ class EntryController extends Controller
     {
         $entry->deleteOrFail();
 
-        return redirect()->route('backend.entries.index', [$entryType]);
+        return redirect()->route('workshop.entries.index', [$entryType]);
     }
 }

@@ -1,8 +1,8 @@
-@extends('backend.configuration.layout')
+@extends('workshop.configuration.layout')
 
 @section('main')
     <form
-        action="{{ route('backend.configuration.entry-type.store') }}"
+        action="{{ route('workshop.configuration.entry-type.store') }}"
         method="POST"
         enctype="multipart/form-data"
     >
@@ -12,7 +12,7 @@
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-1">
-                        <a href="{{ route('backend.configuration.entry-type.index') }}">
+                        <a href="{{ route('workshop.configuration.entry-type.index') }}">
                             @icon('fa-arrow-left-long')
                             <span>@lang('entryTypes.title')</span>
                         </a>
@@ -33,6 +33,6 @@
             </div>
         </div>
 
-        @include('backend.configuration.entry-types.partials.fields')
+        @include('workshop.configuration.entry-types.partials.fields')
     </form>
 @endsection

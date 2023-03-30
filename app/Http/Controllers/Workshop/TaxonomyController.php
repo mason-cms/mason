@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Taxonomy;
@@ -33,7 +33,7 @@ class TaxonomyController extends Controller
 
         $taxonomies = $query->paginate($perPage = $request->input('per_page') ?? 25);
 
-        return response()->view('backend.taxonomies.index', [
+        return response()->view('workshop.taxonomies.index', [
             'taxonomies' => $taxonomies,
             'total' => $total,
             'perPage' => $perPage,
@@ -58,7 +58,7 @@ class TaxonomyController extends Controller
         $taxonomy->locale()->associate(Locale::getDefault());
         $taxonomy->saveOrFail();
 
-        return redirect()->route('backend.taxonomies.edit', [$taxonomyType, $taxonomy]);
+        return redirect()->route('workshop.taxonomies.edit', [$taxonomyType, $taxonomy]);
     }
 
     /**
@@ -71,7 +71,7 @@ class TaxonomyController extends Controller
      */
     public function show(Request $request, TaxonomyType $taxonomyType, Taxonomy $taxonomy)
     {
-        return redirect()->route('backend.taxonomies.edit', [$taxonomyType, $taxonomy]);
+        return redirect()->route('workshop.taxonomies.edit', [$taxonomyType, $taxonomy]);
     }
 
     /**
@@ -84,7 +84,7 @@ class TaxonomyController extends Controller
      */
     public function edit(Request $request, TaxonomyType $taxonomyType, Taxonomy $taxonomy)
     {
-        return response()->view('backend.taxonomies.edit', compact('taxonomyType', 'taxonomy'));
+        return response()->view('workshop.taxonomies.edit', compact('taxonomyType', 'taxonomy'));
     }
 
     /**
@@ -104,7 +104,7 @@ class TaxonomyController extends Controller
             $taxonomy->publish();
         }
 
-        return redirect()->route('backend.taxonomies.edit', [$taxonomyType, $taxonomy]);
+        return redirect()->route('workshop.taxonomies.edit', [$taxonomyType, $taxonomy]);
     }
 
     /**
@@ -120,6 +120,6 @@ class TaxonomyController extends Controller
     {
         $taxonomy->deleteOrFail();
 
-        return redirect()->route('backend.taxonomies.index', [$taxonomyType]);
+        return redirect()->route('workshop.taxonomies.index', [$taxonomyType]);
     }
 }

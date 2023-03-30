@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class ConfigurationController extends Controller
      */
     public function general(Request $request)
     {
-        return view('backend.configuration.general', [
+        return view('workshop.configuration.general', [
             'fields' => $this->getFields(),
         ]);
     }
@@ -64,7 +64,7 @@ class ConfigurationController extends Controller
             Artisan::call('mason:theme:install');
         }
 
-        return redirect()->route('backend.configuration.general');
+        return redirect()->route('workshop.configuration.general');
     }
 
     /**

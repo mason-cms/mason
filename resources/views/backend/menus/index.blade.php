@@ -1,17 +1,17 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <section class="section">
         <form
             class="autosave"
-            action="{{ route('backend.menus.index') }}"
+            action="{{ route('workshop.menus.index') }}"
             method="GET"
         >
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
                         <h1 class="title is-1">
-                            <a href="{{ route('backend.menus.index') }}">
+                            <a href="{{ route('workshop.menus.index') }}">
                                 @icon(\App\Models\Menu::ICON)
                                 <span>@lang('menus.title')</span>
                             </a>
@@ -77,7 +77,7 @@
             @if ($menu->root_items->count() > 0)
                 <form
                     class="autosave"
-                    action="{{ route('backend.menus.update', [$menu]) }}"
+                    action="{{ route('workshop.menus.update', [$menu]) }}"
                     method="POST"
                 >
                     @method('PATCH')
@@ -87,17 +87,17 @@
                         <ul class="ui-sortable">
                             @foreach ($menu->root_items as $item)
                                 <li>
-                                    @include('backend.menus.partials.item')
+                                    @include('workshop.menus.partials.item')
                                 </li>
                             @endforeach
                         </ul>
                     </fieldset>
                 </form>
 
-                @include('backend.menus.items.partials.buttons.create')
+                @include('workshop.menus.items.partials.buttons.create')
             @else
                 <section class="section has-text-centered">
-                    @include('backend.menus.items.partials.buttons.create')
+                    @include('workshop.menus.items.partials.buttons.create')
                 </section>
             @endif
         @endisset

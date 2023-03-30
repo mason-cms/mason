@@ -1,9 +1,9 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.taxonomies.index', [$taxonomyType]) }}"
+        action="{{ route('workshop.taxonomies.index', [$taxonomyType]) }}"
         method="GET"
     >
         <div class="level">
@@ -11,7 +11,7 @@
                 <div class="level-item">
                     <div>
                         <h1 class="title is-1">
-                            <a href="{{ route('backend.taxonomies.index', [$taxonomyType]) }}">
+                            <a href="{{ route('workshop.taxonomies.index', [$taxonomyType]) }}">
                                 @isset($taxonomyType)
                                     @icon($taxonomyType->icon_class)
                                 @endisset
@@ -29,19 +29,19 @@
 
             <div class="level-right">
                 <div class="level-item">
-                    @include('backend.partials.search')
+                    @include('workshop.partials.search')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.taxonomies.partials.filters')
+                    @include('workshop.taxonomies.partials.filters')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.partials.paginator')
+                    @include('workshop.partials.paginator')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.taxonomies.partials.buttons.create', ['taxonomyType' => $taxonomyType])
+                    @include('workshop.taxonomies.partials.buttons.create', ['taxonomyType' => $taxonomyType])
                 </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
 
                             <tbody>
                                 @foreach ($taxonomies as $taxonomy)
-                                    @include('backend.taxonomies.partials.row', ['depth' => 0])
+                                    @include('workshop.taxonomies.partials.row', ['depth' => 0])
                                 @endforeach
                             </tbody>
                         </table>
@@ -85,7 +85,7 @@
                 </div>
             </div>
 
-            {{ $taxonomies->appends(request()->input())->links('backend.partials.pagination') }}
+            {{ $taxonomies->appends(request()->input())->links('workshop.partials.pagination') }}
         @else
             <div class="section is-medium has-text-centered">
                 <p class="block no-records">
@@ -93,7 +93,7 @@
                 </p>
 
                 <p class="block">
-                    @include('backend.taxonomies.partials.buttons.create', ['taxonomyType' => $taxonomyType])
+                    @include('workshop.taxonomies.partials.buttons.create', ['taxonomyType' => $taxonomyType])
                 </p>
             </div>
         @endif

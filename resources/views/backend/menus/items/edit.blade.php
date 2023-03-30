@@ -1,7 +1,7 @@
 <form
     id="edit-menu-item-form"
     class="modal"
-    action="{{ route('backend.menus.items.update', [$menu, $item]) }}"
+    action="{{ route('workshop.menus.items.update', [$menu, $item]) }}"
     method="POST"
 >
     @method('PATCH')
@@ -17,7 +17,7 @@
         </header>
 
         <section class="modal-card-body">
-            @include('backend.menus.items.partials.fields')
+            @include('workshop.menus.items.partials.fields')
         </section>
 
         <footer class="modal-card-foot">

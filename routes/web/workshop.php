@@ -1,19 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\BlockController;
-use App\Http\Controllers\Backend\ConfigurationController;
-use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Backend\EntryController;
-use App\Http\Controllers\Backend\UserController;
-use App\Http\Controllers\Backend\TaxonomyController;
-use App\Http\Controllers\Backend\MenuController;
-use App\Http\Controllers\Backend\MenuItemController;
-use App\Http\Controllers\Backend\SettingsController;
-use App\Http\Controllers\Backend\EntryTypeController;
-use App\Http\Controllers\Backend\TaxonomyTypeController;
-use App\Http\Controllers\Backend\LocaleController;
-use App\Http\Controllers\Backend\MediumController;
+use App\Http\Controllers\Workshop\BlockController;
+use App\Http\Controllers\Workshop\ConfigurationController;
+use App\Http\Controllers\Workshop\DashboardController;
+use App\Http\Controllers\Workshop\EntryController;
+use App\Http\Controllers\Workshop\UserController;
+use App\Http\Controllers\Workshop\TaxonomyController;
+use App\Http\Controllers\Workshop\MenuController;
+use App\Http\Controllers\Workshop\MenuItemController;
+use App\Http\Controllers\Workshop\SettingsController;
+use App\Http\Controllers\Workshop\EntryTypeController;
+use App\Http\Controllers\Workshop\TaxonomyTypeController;
+use App\Http\Controllers\Workshop\LocaleController;
+use App\Http\Controllers\Workshop\MediumController;
 
 Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 

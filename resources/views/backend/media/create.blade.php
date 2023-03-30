@@ -1,9 +1,9 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.medium.store') }}"
+        action="{{ route('workshop.medium.store') }}"
         method="POST"
         enctype="multipart/form-data"
     >
@@ -13,7 +13,7 @@
             <div class="level-left">
                 <div class="level-item">
                     <h1 class="title is-1">
-                        <a href="{{ route('backend.medium.index') }}">
+                        <a href="{{ route('workshop.medium.index') }}">
                             @icon('fa-arrow-left-long')
                             <span>@lang('media.title')</span>
                         </a>

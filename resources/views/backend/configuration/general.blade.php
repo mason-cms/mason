@@ -1,8 +1,8 @@
-@extends('backend.configuration.layout')
+@extends('workshop.configuration.layout')
 
 @section('main')
     <form
-        action="{{ route('backend.configuration.update') }}"
+        action="{{ route('workshop.configuration.update') }}"
         method="POST"
     >
         @method('PATCH')
@@ -102,7 +102,7 @@
                         <div class="buttons">
                             <a
                                 class="button is-info"
-                                href="{{ route('backend.configuration.app.update') }}"
+                                href="{{ route('workshop.configuration.app.update') }}"
                             >
                                 @icon('fa-rotate')
                                 <span>@lang('configuration.general.actions.updateApp.label')</span>
@@ -110,7 +110,7 @@
 
                             <a
                                 class="button is-info {{ ! config('site.theme') ? 'is-disabled' : '' }}"
-                                href="{{ config('site.theme') ? route('backend.configuration.theme.update') : '' }}"
+                                href="{{ config('site.theme') ? route('workshop.configuration.theme.update') : '' }}"
                             >
                                 @icon('fa-rotate')
                                 <span>@lang('configuration.general.actions.updateTheme.label')</span>

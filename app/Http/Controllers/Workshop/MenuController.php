@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Locale;
@@ -25,7 +25,7 @@ class MenuController extends Controller
             ])->first();
         }
 
-        return response()->view('backend.menus.index', [
+        return response()->view('workshop.menus.index', [
             'request' => $request,
             'site' => $site = site(false),
             'menuLocations' => $site->theme()->menuLocations(),

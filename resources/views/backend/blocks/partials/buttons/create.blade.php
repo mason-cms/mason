@@ -1,6 +1,6 @@
 <a
     class="button is-success"
-    href="{{ route('backend.blocks.create', [
+    href="{{ route('workshop.blocks.create', [
         'location' => $location ?? null,
         'locale_id' => $localeId ?? null,
     ]) }}"

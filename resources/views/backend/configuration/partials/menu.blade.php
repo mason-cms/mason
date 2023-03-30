@@ -11,7 +11,7 @@
     <ul class="menu-list">
         <li>
             <a
-                href="{{ route($routeName = 'backend.configuration.general') }}"
+                href="{{ route($routeName = 'workshop.configuration.general') }}"
                 class="{{ $routeName === $currentRouteName ? 'is-active' : '' }}"
             >
                 @lang('configuration.general.title')
@@ -20,7 +20,7 @@
 
         <li>
             <a
-                href="{{ route($routeName = 'backend.configuration.setting.index') }}"
+                href="{{ route($routeName = 'workshop.configuration.setting.index') }}"
                 class="{{ $routeName === $currentRouteName ? 'is-active' : '' }}"
             >
                 @lang('settings.title')
@@ -29,7 +29,7 @@
 
         <li>
             <a
-                href="{{ route($routeName = 'backend.configuration.locale.index') }}"
+                href="{{ route($routeName = 'workshop.configuration.locale.index') }}"
                 class="{{ $routeName === $currentRouteName ? 'is-active' : '' }}"
             >
                 @lang('locales.title')
@@ -38,7 +38,7 @@
 
         <li>
             <a
-                href="{{ route($routeName = 'backend.configuration.entry-type.index') }}"
+                href="{{ route($routeName = 'workshop.configuration.entry-type.index') }}"
                 class="{{ $routeName === $currentRouteName ? 'is-active' : '' }}"
             >
                 @lang('entryTypes.title')
@@ -47,7 +47,7 @@
 
         <li>
             <a
-                href="{{ route($routeName = 'backend.configuration.taxonomy-type.index') }}"
+                href="{{ route($routeName = 'workshop.configuration.taxonomy-type.index') }}"
                 class="{{ $routeName === $currentRouteName ? 'is-active' : '' }}"
             >
                 @lang('taxonomyTypes.title')

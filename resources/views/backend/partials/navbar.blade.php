@@ -9,7 +9,7 @@
     <div class="navbar-brand">
         <a
             class="navbar-item"
-            href="{{ route('backend.dashboard') }}"
+            href="{{ route('workshop.dashboard') }}"
         >
             <strong>Mason</strong><span class="has-text-success">&times;</span>CMS
         </a>
@@ -33,7 +33,7 @@
     >
         <div class="navbar-start">
             <a
-                href="{{ $routeUri = route('backend.dashboard') }}"
+                href="{{ $routeUri = route('workshop.dashboard') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
                 @icon(\App\Http\Controllers\Backend\DashboardController::ICON, 'has-text-success')
@@ -49,7 +49,7 @@
                 <div class="navbar-dropdown">
                     @foreach (\App\Models\EntryType::all() as $entryType)
                         <a
-                            href="{{ $routeUri = route('backend.entries.index', [$entryType]) }}"
+                            href="{{ $routeUri = route('workshop.entries.index', [$entryType]) }}"
                             class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
                         >
                             @isset($entryType->icon_class)
@@ -71,7 +71,7 @@
                 <div class="navbar-dropdown">
                     @foreach (\App\Models\TaxonomyType::all() as $taxonomyType)
                         <a
-                            href="{{ $routeUri = route('backend.taxonomies.index', [$taxonomyType]) }}"
+                            href="{{ $routeUri = route('workshop.taxonomies.index', [$taxonomyType]) }}"
                             class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
                         >
                             @isset($taxonomyType->icon_class)
@@ -85,7 +85,7 @@
             </div>
 
             <a
-                href="{{ $routeUri = route('backend.medium.index') }}"
+                href="{{ $routeUri = route('workshop.medium.index') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
                 @icon(\App\Models\Medium::ICON, 'has-text-success')
@@ -93,7 +93,7 @@
             </a>
 
             <a
-                href="{{ $routeUri = route('backend.menus.index') }}"
+                href="{{ $routeUri = route('workshop.menus.index') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
                 @icon(\App\Models\Menu::ICON, 'has-text-success')
@@ -101,7 +101,7 @@
             </a>
 
             <a
-                href="{{ $routeUri = route('backend.blocks.index') }}"
+                href="{{ $routeUri = route('workshop.blocks.index') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
                 @icon(\App\Models\Block::ICON, 'has-text-success')
@@ -109,7 +109,7 @@
             </a>
 
             <a
-                href="{{ $routeUri = route('backend.users.index') }}"
+                href="{{ $routeUri = route('workshop.users.index') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
                 @icon(\App\Models\User::ICON, 'has-text-success')
@@ -117,7 +117,7 @@
             </a>
 
             <a
-                href="{{ $routeUri = route('backend.configuration.general') }}"
+                href="{{ $routeUri = route('workshop.configuration.general') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
                 @icon(\App\Http\Controllers\Backend\ConfigurationController::ICON, 'has-text-success')

@@ -1,9 +1,9 @@
-@extends('backend.layout')
+@extends('workshop.layout')
 
 @section('content')
     <form
         class="section"
-        action="{{ route('backend.entries.index', [$entryType]) }}"
+        action="{{ route('workshop.entries.index', [$entryType]) }}"
         method="GET"
     >
         <div class="level">
@@ -11,7 +11,7 @@
                 <div class="level-item">
                     <div>
                         <h1 class="title is-1">
-                            <a href="{{ route('backend.entries.index', [$entryType]) }}">
+                            <a href="{{ route('workshop.entries.index', [$entryType]) }}">
                                 @isset($entryType)
                                     @icon($entryType->icon_class)
                                 @endisset
@@ -29,19 +29,19 @@
 
             <div class="level-right">
                 <div class="level-item">
-                    @include('backend.partials.search')
+                    @include('workshop.partials.search')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.entries.partials.filters')
+                    @include('workshop.entries.partials.filters')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.partials.paginator')
+                    @include('workshop.partials.paginator')
                 </div>
 
                 <div class="level-item">
-                    @include('backend.entries.partials.buttons.create', ['entryType' => $entryType])
+                    @include('workshop.entries.partials.buttons.create', ['entryType' => $entryType])
                 </div>
             </div>
         </div>
@@ -52,14 +52,14 @@
             <div class="columns is-multiline is-card-grid">
                 @foreach ($entries as $entry)
                     <div class="column is-4 is-3-desktop">
-                        @include('backend.entries.partials.card')
+                        @include('workshop.entries.partials.card')
                     </div>
                 @endforeach
             </div>
 
             <hr />
 
-            {{ $entries->appends(request()->input())->links('backend.partials.pagination') }}
+            {{ $entries->appends(request()->input())->links('workshop.partials.pagination') }}
         @else
             <div class="section is-medium has-text-centered">
                 <p class="block no-records">
@@ -67,7 +67,7 @@
                 </p>
 
                 <p class="block">
-                    @include('backend.entries.partials.buttons.create', ['entryType' => $entryType])
+                    @include('workshop.entries.partials.buttons.create', ['entryType' => $entryType])
                 </p>
             </div>
         @endif
