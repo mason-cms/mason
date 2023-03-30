@@ -28,7 +28,6 @@ $(document).ready(function () {
                     $input.val(ckEditor.getData());
 
                     ckEditor.model.document.on('change:data', function () {
-                        console.log('change');
                         $input.val(ckEditor.getData());
                     });
                 }

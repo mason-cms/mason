@@ -33,8 +33,6 @@ $(document).ready(function () {
         editor.setValue($this.html(), -1);
 
         if ($input && $input.length > 0) {
-            console.log($input);
-
             $input.val(editor.session.getValue());
 
             editor.session.on('change', function() {
