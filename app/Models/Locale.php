@@ -107,7 +107,7 @@ class Locale extends Model
     {
         return $this->is_default
             ? route('home')
-            : route('locale.home', [$this]);
+            : route('locale.home', ['locale' => $this->name]);
     }
 
     /**
