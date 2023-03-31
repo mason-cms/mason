@@ -7,7 +7,7 @@ $(document).ready(function () {
     $('.ace-editor').each(function () {
         let $this = $(this).hide(),
             base64Html = $this.html(),
-            html = atob(base64Html),
+            html = base64Decode(base64Html),
             editorMode = $this.data('editor-mode'),
             editorMaxLines = $this.data('editor-max-lines') || $this.attr('rows') || 30,
             input = $this.data('input'),
@@ -39,7 +39,7 @@ $(document).ready(function () {
 
             editor.session.on('change', function() {
                 html = editor.session.getValue();
-                base64Html = btoa(html);
+                base64Html = base64Encode(html);
                 $input.val(base64Html);
             });
         }

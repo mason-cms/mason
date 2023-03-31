@@ -185,3 +185,13 @@ $(document)
             }
         }
     });
+
+window.base64Encode = function (string)
+{
+    return window.btoa(unescape(encodeURIComponent(string)));
+}
+
+window.base64Decode = function (string)
+{
+    return decodeURIComponent(escape(window.atob(string)));
+}

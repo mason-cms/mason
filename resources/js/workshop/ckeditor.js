@@ -7,7 +7,7 @@ $(document).ready(function () {
     $('.ck-editor').each(function () {
         let $ckEditor = $(this),
             base64Html = $ckEditor.html(),
-            html = atob(base64Html),
+            html = base64Decode(base64Html),
             input = $ckEditor.data('input'),
             $input = typeof input === 'string' ? $(input) : null;
 
@@ -33,7 +33,7 @@ $(document).ready(function () {
 
                     ckEditor.model.document.on('change:data', function () {
                         html = ckEditor.getData();
-                        base64Html = btoa(html);
+                        base64Html = base64Encode(html);
                         $input.val(base64Html);
                     });
                 }
