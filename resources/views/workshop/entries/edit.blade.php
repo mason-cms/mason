@@ -6,6 +6,7 @@
         action="{{ route('workshop.entries.update', [$entry->type, $entry]) }}"
         method="POST"
         enctype="multipart/form-data"
+        novalidate
     >
         @method('PATCH')
         @csrf

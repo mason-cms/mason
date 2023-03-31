@@ -9,7 +9,8 @@ $(document).ready(function () {
             editorMode = $this.data('editor-mode'),
             editorMaxLines = $this.data('editor-max-lines') || $this.attr('rows') || 30,
             input = $this.data('input'),
-            $input = typeof input === 'string' ? $(input) : null;
+            $input = typeof input === 'string' ? $(input) : null,
+            $form = $this.parents('form').first();
 
         if (! editorMode) {
             if ($this.hasClass('is-code') || $this.hasClass('is-html')) {
@@ -37,6 +38,13 @@ $(document).ready(function () {
 
             editor.session.on('change', function() {
                 $input.val(editor.session.getValue());
+            });
+        }
+
+        if ($form && $form.length > 0) {
+            $form.on('submit', function () {
+                $this.remove();
+                $editor.remove();
             });
         }
     });
