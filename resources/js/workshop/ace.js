@@ -6,11 +6,12 @@
 $(document).ready(function () {
     $('.ace-editor').each(function () {
         let $this = $(this).hide(),
+            base64Html = $this.html(),
+            html = atob(base64Html),
             editorMode = $this.data('editor-mode'),
             editorMaxLines = $this.data('editor-max-lines') || $this.attr('rows') || 30,
             input = $this.data('input'),
-            $input = typeof input === 'string' ? $(input) : null,
-            $form = $this.parents('form').first();
+            $input = typeof input === 'string' ? $(input) : null;
 
         if (! editorMode) {
             if ($this.hasClass('is-code') || $this.hasClass('is-html')) {
@@ -31,20 +32,15 @@ $(document).ready(function () {
             useWorker: false
         });
 
-        editor.setValue($this.html(), -1);
+        editor.setValue(html, -1);
 
         if ($input && $input.length > 0) {
-            $input.val(editor.session.getValue());
+            $input.val(base64Html);
 
             editor.session.on('change', function() {
-                $input.val(editor.session.getValue());
-            });
-        }
-
-        if ($form && $form.length > 0) {
-            $form.on('submit', function () {
-                $this.remove();
-                $editor.remove();
+                html = editor.session.getValue();
+                base64Html = btoa(html);
+                $input.val(base64Html);
             });
         }
     });

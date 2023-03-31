@@ -32,6 +32,7 @@ class Entry extends Model
         'locale_id',
         'title',
         'content',
+        'base64_content',
         'editor_mode',
         'summary',
         'author_id',
@@ -227,6 +228,11 @@ class Entry extends Model
      * Accessors & Mutators
      * ==================================================
      */
+
+    public function setBase64ContentAttribute($value): void
+    {
+        $this->content = base64_decode($value);
+    }
 
     public function getTextAttribute(): ?string
     {

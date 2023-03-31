@@ -6,6 +6,8 @@
 $(document).ready(function () {
     $('.ck-editor').each(function () {
         let $ckEditor = $(this),
+            base64Html = $ckEditor.html(),
+            html = atob(base64Html),
             input = $ckEditor.data('input'),
             $input = typeof input === 'string' ? $(input) : null;
 
@@ -24,11 +26,15 @@ $(document).ready(function () {
                 }
             })
             .then(function (ckEditor) {
+                ckEditor.setData(html);
+
                 if ($input && $input.length > 0) {
-                    $input.val(ckEditor.getData());
+                    $input.val(base64Html);
 
                     ckEditor.model.document.on('change:data', function () {
-                        $input.val(ckEditor.getData());
+                        html = ckEditor.getData();
+                        base64Html = btoa(html);
+                        $input.val(base64Html);
                     });
                 }
             })

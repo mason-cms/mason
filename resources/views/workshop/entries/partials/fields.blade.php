@@ -49,16 +49,16 @@
                     <div class="control">
                         <div
                             id="entry-content-editor"
-                            class="textarea {{ isset($entry->editor_mode) ? $entry->editor_mode->cssClass() : '' }}"
+                            class="{{ isset($entry->editor_mode) ? $entry->editor_mode->cssClass() : '' }}"
                             rows="40"
                             data-input="#entry-content-input"
                             data-media-upload="{{ route('workshop.medium.store', ['medium' => ['parent_id' => $entry->getKey(), 'parent_type' => get_class($entry)]]) }}"
-                        >{!! $entry->content !!}</div>
+                        >{!! base64_encode($entry->content) !!}</div>
 
                         <input
                             id="entry-content-input"
                             type="hidden"
-                            name="entry[content]"
+                            name="entry[base64_content]"
                         />
                     </div>
                 </div>
