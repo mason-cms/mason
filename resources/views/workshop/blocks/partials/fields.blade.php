@@ -17,13 +17,18 @@
 
                 <div class="field">
                     <div class="control">
-                        <textarea
+                        <div
                             id="block-content"
                             class="textarea {{ isset($block->editor_mode) ? $block->editor_mode->cssClass() : '' }}"
-                            name="block[content]"
-                            rows="20"
+                            data-input="#block-content-input"
                             data-media-upload="{{ route('workshop.medium.store', ['medium' => ['parent_id' => $block->getKey(), 'parent_type' => get_class($block)]]) }}"
-                        >{!! $block->content !!}</textarea>
+                        >{!! base64_encode($block->content) !!}</div>
+
+                        <input
+                            id="block-content-input"
+                            type="hidden"
+                            name="block[base64_content]"
+                        />
                     </div>
                 </div>
 

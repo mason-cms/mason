@@ -22,6 +22,7 @@ class Block extends Model
         'locale_id',
         'title',
         'content',
+        'base64_content',
         'editor_mode',
         'rank',
     ];
@@ -131,6 +132,11 @@ class Block extends Model
      * Accessors & Mutators
      * ==================================================
      */
+
+    public function setBase64ContentAttribute($value): void
+    {
+        $this->content = base64_decode($value);
+    }
 
     public function getlocationInfoAttribute(): ?object
     {
