@@ -166,7 +166,8 @@ class Entry extends Model
     public function scopeSearch(Builder $query, string $term): Builder
     {
         return $query
-            ->where('title', 'LIKE', "%{$term}%")
+            ->where('name', 'LIKE', "%{$term}%")
+            ->orWhere('title', 'LIKE', "%{$term}%")
             ->orWhere('content', 'LIKE', "%{$term}%")
             ->orWhere('summary', 'LIKE', "%{$term}%");
     }
