@@ -206,18 +206,37 @@
                 <div class="field">
                     <label
                         class="label"
-                        for="entry-cover-file"
+                        for="entry-cover"
                     >
                         @lang('entries.attributes.cover')
                     </label>
 
-                    <div class="control">
-                        @isset($entry->cover)
-                            <figure class="image block">
-                                <img src="{{ $entry->cover->url }}" />
-                            </figure>
-                        @endisset
+                    @isset($entry->cover)
+                        <figure class="image block">
+                            <img src="{{ $entry->cover->url }}" />
+                        </figure>
+                    @endisset
 
+                    <div class="control block">
+                        <div class="select is-fullwidth">
+                            <select
+                                id="entry-cover"
+                                name="entry[cover_id]"
+                                autocomplete="off"
+                            >
+                                <option></option>
+
+                                @foreach (\App\Models\Medium::images()->get() as $imageMedium)
+                                    <option
+                                        value="{{ $imageMedium->getKey() }}"
+                                        {{ isset($entry->cover) && $entry->cover->is($imageMedium) ? 'selected' : '' }}
+                                    >{{ $imageMedium }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control block">
                         <div class="file is-small">
                             <label class="file-label">
                                 <input
