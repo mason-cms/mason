@@ -244,6 +244,10 @@ class Theme
         foreach ($settings as &$setting) {
             $value = Setting::get($setting->name);
 
+            if (! isset($value) && property_exists($setting, 'default')) {
+                $value = $setting->default;
+            }
+
             if (isset($setting->type)) {
                 switch ($setting->type) {
                     case 'file':
