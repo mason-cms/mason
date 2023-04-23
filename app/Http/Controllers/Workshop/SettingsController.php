@@ -27,21 +27,23 @@ class SettingsController extends Controller
     {
         $requestInput = $request->all();
 
-        $settings = site(false)->theme()->settings();
+        if (isset($requestInput['settings']) && is_array($requestInput['settings']) && count($requestInput['settings']) > 0) {
+            $settings = site(false)->theme()->settings();
 
-        foreach ($settings as $setting) {
-            if (isset($setting->name) && array_key_exists($setting->name, $requestInput['settings'])) {
-                $value = $requestInput['settings'][$setting->name];
+            foreach ($settings as $setting) {
+                if (isset($setting->name) && array_key_exists($setting->name, $requestInput['settings'])) {
+                    $value = $requestInput['settings'][$setting->name];
 
-                if ($value instanceof UploadedFile) {
-                    if ($key = Storage::putFileAs('/', $value, $value->getClientOriginalName(), 'public')) {
-                        $value = $key;
-                    } else {
-                        $value = null;
+                    if ($value instanceof UploadedFile) {
+                        if ($key = Storage::putFileAs('/', $value, $value->getClientOriginalName(), 'public')) {
+                            $value = $key;
+                        } else {
+                            $value = null;
+                        }
                     }
-                }
 
-                Setting::set($setting->name, $value);
+                    Setting::set($setting->name, $value);
+                }
             }
         }
 
