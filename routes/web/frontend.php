@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Schema;
 
 $alphanum = '[0-9A-Za-z\-]{3,255}';
 
-$entryTypes = EntryType::all();
+$entryTypes = Schema::hasTable('entry_types') ? EntryType::all() : collect();
 $entryTypeNames = $entryTypes->pluck('name')->join('|');
 
-$taxonomyTypes = TaxonomyType::all();
+$taxonomyTypes = Schema::hasTable('taxonomy_types') ? TaxonomyType::all() : collect();
 $taxonomyTypeNames = $taxonomyTypes->pluck('name')->join('|');
 
 Route::any('/', [FrontEndController::class, 'home'])
