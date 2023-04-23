@@ -94,10 +94,10 @@ class Site
         return Locale::query();
     }
 
-    public function home(Locale $locale = null)
+    public function path(Locale $locale = null): ?string
     {
         $locale ??= $this->locale;
-        return $locale->home();
+        return $locale?->path();
     }
 
     public function langPath(): ?string
@@ -144,9 +144,21 @@ class Site
 
     public function entry(string $name, mixed $locale = null, mixed $type = null): ?Entry
     {
-        return $this->entries($type, $locale ?? $this->locale)
+        return $this->entries(type: $type, locale: $locale)
             ->byName($name)
             ->first();
+    }
+
+    public function home(mixed $locale = null, mixed $type = null): ?Entry
+    {
+        return $this->entries(type: $type, locale: $locale)
+            ->home()
+            ->first();
+    }
+
+    public function homePage(mixed $locale = null): ?Entry
+    {
+        return $this->home(locale: $locale, type: 'page');
     }
 
     public function entryTypes(): Builder
@@ -190,7 +202,7 @@ class Site
 
     public function taxonomy(string $name, mixed $locale = null, mixed $type = null): ?Taxonomy
     {
-        return $this->taxonomies($type, $locale ?? $this->locale)
+        return $this->taxonomies(type: $type, locale: $locale)
             ->byName($name)
             ->first();
     }

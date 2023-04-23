@@ -103,7 +103,7 @@ class Locale extends Model
         return "{$this->title}";
     }
 
-    public function home(): string
+    public function path(): string
     {
         return $this->is_default
             ? route('home')
