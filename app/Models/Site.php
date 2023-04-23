@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
 class Site
@@ -276,5 +277,10 @@ class Site
     public function users(): Builder
     {
         return User::query();
+    }
+
+    public function storageUrl(string $path): string
+    {
+        return Storage::url($path);
     }
 }
