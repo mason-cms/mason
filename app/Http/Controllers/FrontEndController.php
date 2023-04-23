@@ -32,24 +32,19 @@ class FrontEndController extends Controller
             $this->site->setLocale($localeName);
         }
 
+        $homePage = $this->site->homePage();
+
         $views = [
             "{$this->site->locale->name}/home",
             "home",
+            $homePage?->view(),
         ];
 
         foreach ($views as $view) {
-            if (view()->exists($view)) {
+            if (isset($view) && view()->exists($view)) {
                 return response()->view($view, [
                     'site' => $this->site,
-                ]);
-            }
-        }
-
-        if ($home = $this->site->entries()->home()->first()) {
-            if ($view = $home->view()) {
-                return response()->view($view, [
-                    'site' => $this->site,
-                    'entry' => $home,
+                    'entry' => $homePage,
                 ]);
             }
         }
