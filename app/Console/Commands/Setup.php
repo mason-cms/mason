@@ -44,6 +44,8 @@ class Setup extends Command
     {
         $this->clearCache();
         $this->setupDatabase();
+        $this->migrate();
+        $this->seed();
         $this->setupMail();
         $this->setupStorage();
         $this->setupApp();
@@ -53,9 +55,6 @@ class Setup extends Command
         $this->setupMode();
         $this->setupMisc();
         $this->clearCache();
-
-        $this->migrate();
-        $this->seed();
 
         if ($this->confirm("Create a root user?")) {
             if ($this->createRootUser()) {
