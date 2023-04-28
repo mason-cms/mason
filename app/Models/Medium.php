@@ -148,7 +148,7 @@ class Medium extends Model
                 $tmp = tempnam(sys_get_temp_dir(), 'imagick_');
 
                 if ($im->writeImage($tmp)) {
-                    $this->thumbnail_storage_key = Storage::putFileAs(
+                    $storageKey = Storage::putFileAs(
                         path: self::STORAGE_PATH,
                         file: $tmp,
                         name: $filename,
@@ -157,6 +157,12 @@ class Medium extends Model
 
                     $im->clear();
                     $im->destroy();
+
+                    if ($storageKey === false) {
+                        throw new \Exception("Cannot store file: {$tmp}");
+                    }
+
+                    $this->thumbnail_storage_key = $storageKey;
                 } else {
                     throw new \Exception("Cannot write image to: {$tmp}");
                 }
@@ -192,12 +198,18 @@ class Medium extends Model
             $this->calcImageSize($realPath);
         }
 
-        $this->storage_key = Storage::putFileAs(
+        $storageKey = Storage::putFileAs(
             static::STORAGE_PATH,
             $file,
             $filename,
             static::DEFAULT_VISIBILITY
         );
+
+        if ($storageKey === false) {
+            throw new \Exception("Cannot store file: {$file}");
+        }
+
+        $this->storage_key = $storageKey;
 
         try {
             $this->generateThumbnail($realPath);
