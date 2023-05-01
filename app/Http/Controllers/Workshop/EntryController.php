@@ -34,6 +34,7 @@ class EntryController extends Controller
         $entries = $query->paginate($perPage = $request->input('per_page') ?? 25);
 
         return response()->view('workshop.entries.index', [
+            'query' => $query,
             'entries' => $entries,
             'total' => $total,
             'perPage' => $perPage,
