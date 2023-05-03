@@ -6,11 +6,15 @@ use App\Enums\EditorMode;
 use App\Facades\Parser;
 use App\Traits\MenuItemable;
 use App\Traits\Metable;
+use App\Traits\Translatable;
+use App\Traits\Urlable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
@@ -19,7 +23,9 @@ class Entry extends Model
     use HasFactory,
         SoftDeletes,
         Metable,
-        MenuItemable;
+        MenuItemable,
+        Translatable,
+        Urlable;
 
     const ICON = 'fa-file';
 
@@ -30,6 +36,7 @@ class Entry extends Model
     protected $fillable = [
         'name',
         'locale_id',
+        'original_id',
         'title',
         'content',
         'base64_content',
@@ -110,11 +117,6 @@ class Entry extends Model
         return $query->whereIn('type_id', prepareValueForScope($entryType, EntryType::class));
     }
 
-    public function scopeByLocale(Builder $query, mixed $locale): Builder
-    {
-        return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
-    }
-
     public function scopeByAuthor(Builder $query, mixed $author): Builder
     {
         return $query->whereIn('author_id', prepareValueForScope($author, User::class));
@@ -183,13 +185,19 @@ class Entry extends Model
         return "{$this->title}";
     }
 
-    public function getUrl(bool $absolute = true): ?string
+    public function path(array $parameters = [], bool $absolute = true): ?string
     {
         if ($this->exists && $entry = $this) {
-            if (isset($this->locale) && ! $this->locale->is_default) {
-                return route('locale.entry', ['locale' => $this->locale->name, $entry], $absolute);
+            if (isset($this->locale)) {
+                if ($this->is_home) {
+                    return $this->locale->path($parameters, $absolute);
+                }
+
+                if (! $this->locale->is_default) {
+                    return route('locale.entry', array_merge($parameters, ['locale' => $this->locale->name, $entry]), $absolute);
+                }
             } else {
-                return route('entry', [$entry], $absolute);
+                return route('entry', array_merge($parameters, [$entry]), $absolute);
             }
         }
 
@@ -253,21 +261,6 @@ class Entry extends Model
         }
     }
 
-    public function getUrlAttribute(): ?string
-    {
-        return $this->getUrl(true);
-    }
-
-    public function getAbsoluteUrlAttribute(): ?string
-    {
-        return $this->getUrl(true);
-    }
-
-    public function getRelativeUrlAttribute(): ?string
-    {
-        return $this->getUrl(false);
-    }
-
     public function setCoverFileAttribute($file): void
     {
         $medium = new Medium(['file' => $file]);
@@ -308,11 +301,6 @@ class Entry extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(EntryType::class);
-    }
-
-    public function locale(): BelongsTo
-    {
-        return $this->belongsTo(Locale::class);
     }
 
     public function author(): BelongsTo

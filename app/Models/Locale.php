@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Urlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Locale extends Model
 {
     use HasFactory,
-        SoftDeletes;
+        SoftDeletes,
+        Urlable;
 
     protected $attributes = [
         'is_default' => false,
@@ -103,11 +105,11 @@ class Locale extends Model
         return "{$this->title}";
     }
 
-    public function path(): string
+    public function path(array $parameters = [], bool $absolute = true): string
     {
         return $this->is_default
-            ? route('home')
-            : route('locale.home', ['locale' => $this->name]);
+            ? route('home', $parameters, $absolute)
+            : route('locale.home', array_merge($parameters, ['locale' => $this->name]), $absolute);
     }
 
     /**

@@ -11,6 +11,8 @@ return [
         'id' => "ID",
         'name' => "Name",
         'locale' => "Language",
+        'original' => "Original",
+        'translations' => "Translations",
         'title' => "Title",
         'content' => "Content",
         'summary' => "Sommaire",
@@ -41,6 +43,10 @@ return [
 
         'edit' => [
             'label' => "Edit",
+        ],
+
+        'editOriginal' => [
+            'label' => "Edit original",
         ],
 
         'destroy' => [
