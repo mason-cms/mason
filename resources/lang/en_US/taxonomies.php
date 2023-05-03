@@ -14,6 +14,8 @@ return [
         'description' => "Description",
         'cover' => "Cover Image",
         'locale' => "Language",
+        'original' => "Original",
+        'translations' => "Translations",
         'parent' => "Parent",
         'created_at' => "Created on",
         'updated_at' => "Updated on",
@@ -31,6 +33,10 @@ return [
 
         'edit' => [
             'label' => "Edit",
+        ],
+
+        'editOriginal' => [
+            'label' => "Edit original",
         ],
 
         'destroy' => [

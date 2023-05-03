@@ -95,6 +95,11 @@ class Site
         return Locale::query();
     }
 
+    public function alternateLocales(): Builder
+    {
+        return $this->locales()->whereNot('id', $this->locale->getKey());
+    }
+
     public function path(Locale $locale = null): ?string
     {
         $locale ??= $this->locale;

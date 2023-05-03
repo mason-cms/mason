@@ -80,6 +80,68 @@
                         </div>
                     </div>
                 </div>
+
+                @isset($taxonomy->locale)
+                    @if ($taxonomy->locale->is_default)
+                        <div class="field">
+                            <label class="label">
+                                @lang('taxonomies.attributes.translations')
+                            </label>
+
+                            <ul>
+                                @foreach ($taxonomy->translations as $translation)
+                                    <li>
+                                        <a href="{{ route('workshop.taxonimies.edit', [$taxonomy->type, $taxonomy]) }}">
+                                            {{ $taxonomy }} ({{ $taxonomy->locale }})
+                                            @icon('fa-pencil')
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @else
+                        <div class="field">
+                            <label
+                                class="label"
+                                for="taxonomy-original"
+                            >
+                                @lang('taxonomies.attributes.original')
+                            </label>
+
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select
+                                        id="taxonomy-original"
+                                        name="taxonomy[original_id]"
+                                        autocomplete="off"
+                                        onchange="$('#taxonomy-edit-original').hide();"
+                                    >
+                                        <option></option>
+
+                                        @foreach (\App\Models\Taxonomy::originals()->get() as $originalTaxonomyOption)
+                                            <option
+                                                value="{{ $originalTaxonomyOption->getKey() }}"
+                                                {{ isset($taxonomy->original_instance) && $taxonomy->original_instance->is($originalTaxonomyOption) ? 'selected' : '' }}
+                                            >{{ $originalTaxonomyOption }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            @isset($taxonomy->original_instance)
+                                <p
+                                    id="taxonomy-edit-original"
+                                    class="help"
+                                >
+                                    <a href="{{ route('workshop.taxonomies.edit', [$taxonomy->original_instance->type, $taxonomy->original_instance]) }}">
+                                        @icon('fa-pencil')
+                                        @lang('taxonomies.actions.editOriginal.label')
+                                    </a>
+                                </p>
+                            @endisset
+                        </div>
+                    @endif
+                @endisset
             </div>
         </fieldset>
 

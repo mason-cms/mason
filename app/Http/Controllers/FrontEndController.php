@@ -45,6 +45,7 @@ class FrontEndController extends Controller
                 return response()->view($view, [
                     'site' => $this->site,
                     'entry' => $homePage,
+                    'translations' => $homePage?->translations,
                 ]);
             }
         }
@@ -77,6 +78,7 @@ class FrontEndController extends Controller
                 return response()->view($view, [
                     'site' => $this->site,
                     'entry' => $entry,
+                    'translations' => $entry->translations,
                 ]);
             }
         }
@@ -158,6 +160,7 @@ class FrontEndController extends Controller
                         'site' => $this->site,
                         'taxonomyType' => $this->site->taxonomyType($taxonomyTypeName),
                         'taxonomy' => $taxonomy,
+                        'translations' => $taxonomy->translations,
                         'entryType' => $entryType ?? null,
                         'entries' => $entries,
                     ]);

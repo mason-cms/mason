@@ -168,6 +168,68 @@
                         </div>
                     </div>
                 </div>
+
+                @isset($entry->locale)
+                    @if ($entry->locale->is_default)
+                        <div class="field">
+                            <label class="label">
+                                @lang('entries.attributes.translations')
+                            </label>
+
+                            <ul>
+                                @foreach ($entry->translations as $translation)
+                                    <li>
+                                        <a href="{{ route('workshop.entries.edit', [$translation->type, $translation]) }}">
+                                            {{ $translation }} ({{ $translation->locale }})
+                                            @icon('fa-pencil')
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @else
+                        <div class="field">
+                            <label
+                                class="label"
+                                for="entry-original"
+                            >
+                                @lang('entries.attributes.original')
+                            </label>
+
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select
+                                        id="entry-original"
+                                        name="entry[original_id]"
+                                        autocomplete="off"
+                                        onchange="$('#entry-edit-original').hide();"
+                                    >
+                                        <option></option>
+
+                                        @foreach (\App\Models\Entry::originals()->get() as $originalInstanceOption)
+                                            <option
+                                                value="{{ $originalInstanceOption->getKey() }}"
+                                                {{ isset($entry->original_instance) && $entry->original_instance->is($originalInstanceOption) ? 'selected' : '' }}
+                                            >{{ $originalInstanceOption }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            @isset($entry->original_instance)
+                                <p
+                                    id="entry-edit-original"
+                                    class="help"
+                                >
+                                    <a href="{{ route('workshop.entries.edit', [$entry->original_instance->type, $entry->original_instance]) }}">
+                                        @icon('fa-pencil')
+                                        @lang('entries.actions.editOriginal.label')
+                                    </a>
+                                </p>
+                            @endisset
+                        </div>
+                    @endif
+                @endisset
             </div>
         </fieldset>
 

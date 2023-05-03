@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Traits\Cancellable;
 use App\Traits\MenuItemable;
 use App\Traits\Metable;
+use App\Traits\Translatable;
+use App\Traits\Urlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,7 +26,9 @@ class Taxonomy extends Model
         SoftDeletes,
         Metable,
         Cancellable,
-        MenuItemable;
+        MenuItemable,
+        Translatable,
+        Urlable;
 
     const ICON = 'fa-tags';
 
@@ -117,7 +121,7 @@ class Taxonomy extends Model
         return "{$this->title}";
     }
 
-    public function getUrl(mixed $entryType = null, bool $absolute = true): ?string
+    public function path(mixed $entryType = null, array $parameters = [], bool $absolute = true): ?string
     {
         if ($this->exists()) {
             if ($entryType instanceof EntryType) {
@@ -125,18 +129,18 @@ class Taxonomy extends Model
             }
 
             if (isset($this->locale) && ! $this->locale->is_default) {
-                return route('locale.taxonomy', [
+                return route('locale.taxonomy', array_merge($parameters, [
                     'locale' => $this->locale->name,
                     'taxonomyType' => $this->type,
                     'taxonomy' => $this,
                     'entryType' => $entryType ?? null,
-                ], $absolute);
+                ]), $absolute);
             } else {
-                return route('taxonomy', [
+                return route('taxonomy', array_merge($parameters, [
                     'taxonomyType' => $this->type,
                     'taxonomy' => $this,
                     'entryType' => $entryType ?? null,
-                ], $absolute);
+                ]), $absolute);
             }
         }
 
@@ -194,21 +198,6 @@ class Taxonomy extends Model
      * Accessors & Mutators
      * ==================================================
      */
-
-    public function getUrlAttribute(): ?string
-    {
-        return $this->getUrl(null, true);
-    }
-
-    public function getAbsoluteUrlAttribute(): ?string
-    {
-        return $this->getUrl(null, true);
-    }
-
-    public function getRelativeUrlAttribute(): ?string
-    {
-        return $this->getUrl(null, false);
-    }
 
     public function setCoverFileAttribute(File|UploadedFile $file): void
     {
