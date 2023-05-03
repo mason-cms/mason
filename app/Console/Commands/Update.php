@@ -12,7 +12,7 @@ class Update extends Command
      *
      * @var string
      */
-    protected $signature = 'mason:update {--branch=origin/master} {--deploy}';
+    protected $signature = 'mason:update {--branch=origin/master} {--deploy} {--quick}';
 
     /**
      * The console command description.
@@ -52,7 +52,11 @@ class Update extends Command
         // Artisan::call('mason:theme:install', [], $this->getOutput());
 
         if ($this->option('deploy')) {
-            Artisan::call('mason:deploy', [], $this->getOutput());
+            Artisan::call(
+                command: 'mason:deploy' . ( $this->option('quick') ? ' --quick' : '' ),
+                parameters: [],
+                outputBuffer: $this->getOutput(),
+            );
         }
 
         $this->info("Mason update completed.");
