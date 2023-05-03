@@ -73,19 +73,19 @@ class Entry extends Model
     {
         parent::boot();
 
-        static::creating(function (Entry $entry) {
+        static::creating(function (self $entry) {
             $entry->editor_mode ??= isset($entry->type)
                 ? $entry->type->default_editor_mode
                 : EditorMode::WYSIWYG;
         });
 
-        static::saving(function (Entry $entry) {
+        static::saving(function (self $entry) {
             $entry->name ??= Str::slug($entry->title);
         });
 
-        static::saved(function (Entry $entry) {
+        static::saved(function (self $entry) {
             if ($entry->is_home) {
-                $conflicts = Entry::home()->byLocale($entry->locale)->not($entry)->get();
+                $conflicts = self::home()->byLocale($entry->locale)->not($entry)->get();
 
                 foreach ($conflicts as $conflict) {
                     $conflict->update(['is_home' => false]);
@@ -122,7 +122,7 @@ class Entry extends Model
         return $query->whereIn('author_id', prepareValueForScope($author, User::class));
     }
 
-    public function scopeNot(Builder $query, Entry $entry): Builder
+    public function scopeNot(Builder $query, self $entry): Builder
     {
         return $query->where($entry->getKeyName(), '!=', $entry->getKey());
     }
@@ -141,6 +141,21 @@ class Entry extends Model
         }
 
         throw new \Exception("Invalid status: {$status}");
+    }
+
+    public function scopeDrafts(Builder $query): Builder
+    {
+        return $query->byStatus(self::STATUS_DRAFT);
+    }
+
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->byStatus(self::STATUS_PUBLISHED);
+    }
+
+    public function scopeScheduled(Builder $query): Builder
+    {
+        return $query->byStatus(self::STATUS_SCHEDULED);
     }
 
     public function scopeHome(Builder $query, bool $isHome = true): Builder
@@ -259,6 +274,21 @@ class Entry extends Model
         } else {
             return static::STATUS_DRAFT;
         }
+    }
+
+    public function getIsDraftAttribute()
+    {
+        return isset($this->status) && $this->status === self::STATUS_DRAFT;
+    }
+
+    public function getIsPublishedAttribute()
+    {
+        return isset($this->status) && $this->status === self::STATUS_PUBLISHED;
+    }
+
+    public function getIsScheduledAttribute()
+    {
+        return isset($this->status) && $this->status === self::STATUS_SCHEDULED;
     }
 
     public function setCoverFileAttribute($file): void
