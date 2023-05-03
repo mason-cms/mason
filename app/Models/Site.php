@@ -137,12 +137,16 @@ class Site
         return $this->lang[$key] ?? $key;
     }
 
-    public function entries(mixed $type = null, mixed $locale = null): Builder
+    public function entries(mixed $type = null, mixed $locale = null, string $status = Entry::STATUS_PUBLISHED): Builder
     {
         $query = Entry::byLocale($locale ?? $this->locale);
 
         if (isset($type)) {
             $query->byType($type);
+        }
+
+        if (isset($status)) {
+            $query->byStatus($status);
         }
 
         return $query;
