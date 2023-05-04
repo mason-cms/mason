@@ -108,8 +108,18 @@ class Locale extends Model
     public function path(array $parameters = [], bool $absolute = true): string
     {
         return $this->is_default
-            ? route('home', $parameters, $absolute)
-            : route('locale.home', array_merge($parameters, ['locale' => $this->name]), $absolute);
+            ? route(
+                name: 'home',
+                parameters: $parameters,
+                absolute: $absolute,
+            )
+            : route(
+                name: 'locale.home',
+                parameters: array_merge($parameters, [
+                    'locale' => $this->name,
+                ]),
+                absolute: $absolute,
+            );
     }
 
     /**

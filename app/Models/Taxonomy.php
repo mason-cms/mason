@@ -123,28 +123,32 @@ class Taxonomy extends Model
 
     public function path(mixed $entryType = null, array $parameters = [], bool $absolute = true): ?string
     {
-        if ($this->exists()) {
-            if ($entryType instanceof EntryType) {
-                $entryType = $entryType->name;
-            }
+        if ($entryType instanceof EntryType) {
+            $entryType = $entryType->name;
+        }
 
-            if (isset($this->locale) && ! $this->locale->is_default) {
-                return route('locale.taxonomy', array_merge($parameters, [
+        if (isset($this->locale) && ! $this->locale->is_default) {
+            return route(
+                name: 'locale.taxonomy',
+                parameters: array_merge($parameters, [
                     'locale' => $this->locale->name,
                     'taxonomyType' => $this->type,
                     'taxonomy' => $this,
                     'entryType' => $entryType ?? null,
-                ]), $absolute);
-            } else {
-                return route('taxonomy', array_merge($parameters, [
+                ]),
+                absolute: $absolute,
+            );
+        } else {
+            return route(
+                name: 'taxonomy',
+                parameters: array_merge($parameters, [
                     'taxonomyType' => $this->type,
                     'taxonomy' => $this,
                     'entryType' => $entryType ?? null,
-                ]), $absolute);
-            }
+                ]),
+                absolute: $absolute,
+            );
         }
-
-        return null;
     }
 
     public function getAllChildren(): Collection

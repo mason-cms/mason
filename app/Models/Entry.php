@@ -202,21 +202,33 @@ class Entry extends Model
 
     public function path(array $parameters = [], bool $absolute = true): ?string
     {
-        if ($this->exists && $entry = $this) {
-            if (isset($this->locale)) {
-                if ($this->is_home) {
-                    return $this->locale->path($parameters, $absolute);
-                }
+        if (isset($this->locale)) {
+            if ($this->is_home) {
+                return $this->locale->path(
+                    parameter: $parameters,
+                    absolute: $absolute,
+                );
+            }
 
-                if (! $this->locale->is_default) {
-                    return route('locale.entry', array_merge($parameters, ['locale' => $this->locale->name, $entry]), $absolute);
-                }
-            } else {
-                return route('entry', array_merge($parameters, [$entry]), $absolute);
+            if (! $this->locale->is_default) {
+                return route(
+                    name: 'locale.entry',
+                    parameters: array_merge($parameters, [
+                        'locale' => $this->locale->name,
+                        'entry' => $this,
+                    ]),
+                    absolute: $absolute,
+                );
             }
         }
 
-        return null;
+        return route(
+            name: 'entry',
+            parameters: array_merge($parameters, [
+                'entry' => $this,
+            ]),
+            absolute: $absolute,
+        );
     }
 
     public function publish(): bool
