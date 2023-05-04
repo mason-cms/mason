@@ -205,7 +205,7 @@ class Entry extends Model
         if (isset($this->locale)) {
             if ($this->is_home) {
                 return $this->locale->path(
-                    parameter: $parameters,
+                    parameters: $parameters,
                     absolute: $absolute,
                 );
             }
