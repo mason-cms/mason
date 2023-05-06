@@ -215,7 +215,7 @@ class Entry extends Model
                     name: 'locale.entry',
                     parameters: array_merge($parameters, [
                         'locale' => $this->locale->name,
-                        'entry' => $this,
+                        $this,
                     ]),
                     absolute: $absolute,
                 );
@@ -225,7 +225,7 @@ class Entry extends Model
         return route(
             name: 'entry',
             parameters: array_merge($parameters, [
-                'entry' => $this,
+                $this,
             ]),
             absolute: $absolute,
         );
