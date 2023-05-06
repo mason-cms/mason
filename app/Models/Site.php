@@ -259,30 +259,6 @@ class Site
         return $query;
     }
 
-    public function settings(string $name = null): Builder
-    {
-        $query = Setting::query();
-
-        if (isset($name)) {
-            $query->byName($name);
-        }
-
-        return $query;
-    }
-
-    public function setting(string $name, bool $returnValue = true): mixed
-    {
-        $setting = $this->settings()->byname($name)->first();
-
-        if (isset($setting)) {
-            return $returnValue
-                ? $setting->value
-                : $setting;
-        }
-
-        return null;
-    }
-
     public function users(): Builder
     {
         return User::query();
