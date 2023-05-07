@@ -11,6 +11,7 @@ class Theme
 {
     protected static $instance;
 
+    public $booted = false;
     public $name;
     public $package;
     public $vendor;
@@ -45,6 +46,8 @@ class Theme
         if (file_exists($bootFile = $this->path('boot.php'))) {
             require_once $bootFile;
         }
+
+        $this->booted = true;
     }
 
     public function name(): ?string
