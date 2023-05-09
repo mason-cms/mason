@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Resolvable;
 use App\Traits\Urlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +14,13 @@ class Locale extends Model
 {
     use HasFactory,
         SoftDeletes,
-        Urlable;
+        Urlable,
+        Resolvable;
+
+    protected $resolvable = [
+        'id',
+        'name',
+    ];
 
     protected $attributes = [
         'is_default' => false,

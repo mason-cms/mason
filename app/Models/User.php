@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\Cancellable;
 use App\Traits\Metable;
+use App\Traits\Resolvable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,7 +20,8 @@ class User extends Authenticatable
         Notifiable,
         SoftDeletes,
         Cancellable,
-        Metable;
+        Metable,
+        Resolvable;
 
     const ICON = 'fa-user-group';
 

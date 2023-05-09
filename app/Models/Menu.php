@@ -58,7 +58,7 @@ class Menu extends Model
 
     public static function scopeByLocale(Builder $query, mixed $locale): Builder
     {
-        return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
+        return $query->whereIn('locale_id', Locale::resolveAll($locale)->pluck('id'));
     }
 
     /**

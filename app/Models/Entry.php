@@ -6,6 +6,7 @@ use App\Enums\EditorMode;
 use App\Facades\Parser;
 use App\Traits\MenuItemable;
 use App\Traits\Metable;
+use App\Traits\Resolvable;
 use App\Traits\Translatable;
 use App\Traits\Urlable;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,13 +26,19 @@ class Entry extends Model
         Metable,
         MenuItemable,
         Translatable,
-        Urlable;
+        Urlable,
+        Resolvable;
 
     const ICON = 'fa-file';
 
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
     const STATUS_SCHEDULED = 'scheduled';
+
+    protected array $resolvable = [
+        'id',
+        'name',
+    ];
 
     protected $fillable = [
         'name',
@@ -114,12 +121,13 @@ class Entry extends Model
 
     public function scopeByType(Builder $query, mixed $entryType): Builder
     {
-        return $query->whereIn('type_id', prepareValueForScope($entryType, EntryType::class));
+        ;
+        return $query->whereIn('type_id', EntryType::resolveAll($entryType)->pluck('id'));
     }
 
     public function scopeByAuthor(Builder $query, mixed $author): Builder
     {
-        return $query->whereIn('author_id', prepareValueForScope($author, User::class));
+        return $query->whereIn('author_id', User::resolveAll($author)->pluck('id'));
     }
 
     public function scopeNot(Builder $query, self $entry): Builder
