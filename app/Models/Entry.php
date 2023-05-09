@@ -130,6 +130,8 @@ class Entry extends Model
             );
         }
 
+        $query->orderBy('is_home', 'desc');
+
         return $query->whereIn('type_id', $entryTypes->pluck('id'));
     }
 

@@ -135,6 +135,7 @@ class EntryType extends Model
     {
         return $this
             ->hasMany(Entry::class, 'type_id')
+            ->orderBy('is_home', 'desc')
             ->orderBy(
                 column: $this->default_order_column ?? self::DEFAULT_ORDER_COLUMN,
                 direction: $this->default_order_direction ?? self::DEFAULT_ORDER_DIRECTION
