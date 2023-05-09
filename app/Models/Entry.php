@@ -121,7 +121,6 @@ class Entry extends Model
 
     public function scopeByType(Builder $query, mixed $entryType): Builder
     {
-        ;
         return $query->whereIn('type_id', EntryType::resolveAll($entryType)->pluck('id'));
     }
 
