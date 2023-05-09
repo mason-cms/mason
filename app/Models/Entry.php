@@ -121,7 +121,16 @@ class Entry extends Model
 
     public function scopeByType(Builder $query, mixed $entryType): Builder
     {
-        return $query->whereIn('type_id', EntryType::resolveAll($entryType)->pluck('id'));
+        $entryTypes = EntryType::resolveAll($entryType);
+
+        foreach ($entryTypes as $entryType) {
+            $query->orderBy(
+                column: $entryType->default_order_column ?? EntryType::DEFAULT_ORDER_COLUMN,
+                direction: $entryType->default_order_direction ?? EntryType::DEFAULT_ORDER_DIRECTION
+            );
+        }
+
+        return $query->whereIn('type_id', $entryTypes->pluck('id'));
     }
 
     public function scopeByAuthor(Builder $query, mixed $author): Builder
