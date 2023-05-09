@@ -73,6 +73,12 @@ class Entry extends Model
     {
         parent::boot();
 
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder
+                ->orderBy('published_at', 'desc')
+                ->orderBy('created_at', 'desc');
+        });
+
         static::creating(function (self $entry) {
             $entry->editor_mode ??= isset($entry->type)
                 ? $entry->type->default_editor_mode
