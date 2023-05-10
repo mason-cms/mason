@@ -1,45 +1,59 @@
 <?php
 
-function setEnv(array $data = [], bool $forceQuote = false): array
+function writeEnv(array $data = [], bool $forceQuote = false, string $path = null): array
 {
+    $path ??= base_path('.env');
+
+    if (! file_exists($path)) {
+        throw new \Exception("'{$path}' does not exist");
+    }
+
+    if (! is_writable($path)) {
+        throw new \Exception("'{$path}' is not writable");
+    }
+
     $updated = [];
 
-    if (file_exists($path = base_path('.env'))) {
-        foreach ($data as $key => $value) {
-            if (is_bool($value)) {
-                $value = $value ? "true" : "false";
-            } else {
-                $needQuotes = str_contains($value, " ")
-                    && ! str_starts_with($value, '"')
-                    && ! str_ends_with($value, '"');
+    foreach ($data as $key => $value) {
+        if (is_bool($value)) {
+            $value = $value ? "true" : "false";
+        } else {
+            $hasQuotes = str_starts_with($value, '"') && str_ends_with($value, '"');
+
+            if (! $hasQuotes) {
+                $needQuotes = strlen($value) > 0 && str_contains($value, " ");
 
                 if ($forceQuote || $needQuotes) {
-                    $value = quote($value);
+                    $value = "\"{$value}\"";
                 }
             }
+        }
 
-            $oldContents = file_get_contents($path);
+        $oldContents = file_get_contents($path);
 
-            $oldValue = env($key);
+        if ($oldContents === false) {
+            throw new \Exception("Cannot get content from '{$path}'");
+        }
 
-            if (is_bool($oldValue)) {
-                $oldValue = $oldValue ? "true" : "false";
-            }
+        $oldValue = env($key);
 
+        if (is_bool($oldValue)) {
+            $oldValue = $oldValue ? "true" : "false";
+        }
+
+        $oldLine = "{$key}={$oldValue}";
+
+        if (! str_contains($oldContents, $oldLine)) {
+            $oldValue = quote($oldValue);
             $oldLine = "{$key}={$oldValue}";
+        }
 
-            if (! str_contains($oldContents, $oldLine)) {
-                $oldValue = quote($oldValue);
-                $oldLine = "{$key}={$oldValue}";
-            }
+        if (str_contains($oldContents, $oldLine)) {
+            $newLine = "{$key}={$value}";
+            $newContents = str_replace($oldLine, $newLine, $oldContents);
 
-            if (str_contains($oldContents, $oldLine)) {
-                $newLine = "{$key}={$value}";
-                $newContents = str_replace($oldLine, $newLine, $oldContents);
-
-                if (file_put_contents($path, $newContents) !== false) {
-                    $updated[$key] = $value;
-                }
+            if (file_put_contents($path, $newContents) !== false) {
+                $updated[$key] = $value;
             }
         }
     }

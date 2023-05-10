@@ -21,13 +21,6 @@ function icon(string $iClass, string $sClass = '', string $iStyle = 'fa-solid'):
     return "<span class=\"icon {$sClass}\">{$i}</span>";
 }
 
-function quote(?string $string): string
-{
-    return isset($string) && strlen($string) > 0
-        ? "\"{$string}\""
-        : "";
-}
-
 function run(string $command): ?string
 {
     if (! function_exists('exec')) {
