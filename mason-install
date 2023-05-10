@@ -1,7 +1,12 @@
 #!/usr/bin/env php
 <?php
 
+echo "Welcome to Mason CMS" . PHP_EOL;
+echo "This CLI tool will help you first configure your Mason site." . PHP_EOL;
+
 if (! file_exists('.env')) {
+    echo "No .env file found" . PHP_EOL;
+
     if (file_exists('.env.example')) {
         echo "Creating .env file from .env.example" . PHP_EOL;
 
@@ -15,14 +20,19 @@ if (! file_exists('.env')) {
     }
 }
 
+echo "Installing composer dependencies" . PHP_EOL;
 passthru("composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev");
 
+echo "Installing npm packages" . PHP_EOL;
 passthru("npm install");
 
+echo "Generating Laravel app key" . PHP_EOL;
 passthru("php artisan key:generate --force");
 
+echo "Running Mason setup" . PHP_EOL;
 passthru("php artisan mason:setup");
 
+echo "Deploying Mason" . PHP_EOL;
 passthru("php artisan mason:deploy");
 
 return 0;
