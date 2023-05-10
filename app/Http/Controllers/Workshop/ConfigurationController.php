@@ -56,7 +56,7 @@ class ConfigurationController extends Controller
             }
         }
 
-        setEnv($env);
+        writeEnv($env);
 
         $newTheme = env('SITE_THEME');
 
