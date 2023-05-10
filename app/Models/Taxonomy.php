@@ -81,7 +81,7 @@ class Taxonomy extends Model
 
     public function scopeByType(Builder $query, mixed $taxonomyType): Builder
     {
-        return $query->whereIn('type_id', prepareValueForScope($taxonomyType, TaxonomyType::class));
+        return $query->whereIn('type_id', TaxonomyType::resolveAll($taxonomyType)->pluck('id'));
     }
 
     public function scopeTopLevel(Builder $query): Builder
@@ -91,7 +91,7 @@ class Taxonomy extends Model
 
     public function scopeByLocale(Builder $query, mixed $locale): Builder
     {
-        return $query->whereIn('locale_id', prepareValueForScope($locale, Locale::class));
+        return $query->whereIn('locale_id', Locale::resolveAll($locale)->pluck('id'));
     }
 
     public function scopeFilter(Builder $query, array $filters): Builder

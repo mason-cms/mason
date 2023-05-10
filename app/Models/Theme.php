@@ -11,6 +11,7 @@ class Theme
 {
     protected static $instance;
 
+    public $booted = false;
     public $name;
     public $package;
     public $vendor;
@@ -45,6 +46,8 @@ class Theme
         if (file_exists($bootFile = $this->path('boot.php'))) {
             require_once $bootFile;
         }
+
+        $this->booted = true;
     }
 
     public function name(): ?string
@@ -175,6 +178,9 @@ class Theme
             "cd {$path}",
             "git checkout {$branch}",
             "git pull",
+            "composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev",
+            "npm install",
+            "npm run production",
         ]));
 
         $this->createSymlink();
@@ -207,6 +213,9 @@ class Theme
             "git branch backup-{$datetime}",
             "git checkout {$branch}",
             "git pull",
+            "composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev",
+            "npm install",
+            "npm run production",
         ]));
 
         $this->createSymlink();

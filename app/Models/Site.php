@@ -13,6 +13,7 @@ class Site
 {
     protected static $instance;
 
+    public $booted = false;
     public $name;
     public $description;
     public $theme;
@@ -30,12 +31,12 @@ class Site
         $this->description = config('site.description');
         $this->theme = theme(config('site.theme'));
 
-        if ($boot) {
+        if (! $this->booted && $boot) {
             $this->boot();
         }
     }
 
-    public function boot(): void
+    public function boot(bool $bootTheme = true): void
     {
         if ($defaultLocale = Locale::getDefault()) {
             $this->setLocale($defaultLocale);
@@ -43,7 +44,9 @@ class Site
 
         $this->loadLang();
 
-        if (isset($this->theme)) {
+        $this->booted = true;
+
+        if ($bootTheme && isset($this->theme) && ! $this->theme->booted) {
             $this->theme->boot();
         }
     }
@@ -257,30 +260,6 @@ class Site
         }
 
         return $query;
-    }
-
-    public function settings(string $name = null): Builder
-    {
-        $query = Setting::query();
-
-        if (isset($name)) {
-            $query->byName($name);
-        }
-
-        return $query;
-    }
-
-    public function setting(string $name, bool $returnValue = true): mixed
-    {
-        $setting = $this->settings()->byname($name)->first();
-
-        if (isset($setting)) {
-            return $returnValue
-                ? $setting->value
-                : $setting;
-        }
-
-        return null;
     }
 
     public function users(): Builder

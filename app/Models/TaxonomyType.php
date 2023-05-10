@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Resolvable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,13 @@ use Illuminate\Support\Collection;
 class TaxonomyType extends Model
 {
     use HasFactory,
-        SoftDeletes;
+        SoftDeletes,
+        Resolvable;
+
+    protected $resolvable = [
+        'id',
+        'name',
+    ];
 
     protected $fillable = [
         'name',

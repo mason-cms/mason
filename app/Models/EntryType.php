@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EditorMode;
+use App\Traits\Resolvable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,8 @@ use Illuminate\Support\Collection;
 class EntryType extends Model
 {
     use HasFactory,
-        SoftDeletes;
+        SoftDeletes,
+        Resolvable;
 
     const ORDER_COLUMNS = [
         'id',
@@ -30,6 +32,11 @@ class EntryType extends Model
 
     const DEFAULT_ORDER_COLUMN = 'created_at';
     const DEFAULT_ORDER_DIRECTION = 'desc';
+
+    protected $resolvable = [
+        'id',
+        'name',
+    ];
 
     protected $fillable = [
         'name',
@@ -128,6 +135,7 @@ class EntryType extends Model
     {
         return $this
             ->hasMany(Entry::class, 'type_id')
+            ->orderBy('is_home', 'desc')
             ->orderBy(
                 column: $this->default_order_column ?? self::DEFAULT_ORDER_COLUMN,
                 direction: $this->default_order_direction ?? self::DEFAULT_ORDER_DIRECTION
