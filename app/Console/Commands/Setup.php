@@ -73,7 +73,7 @@ class Setup extends Command
     {
         $this->info("Database setup...");
 
-        setEnv([
+        writeEnv([
             'DB_CONNECTION' => $this->ask("Database connection", env('DB_CONNECTION')),
             'DB_HOST' => $this->ask("Database host", env('DB_HOST')),
             'DB_PORT' => $this->ask("Database port", env('DB_PORT')),
@@ -87,7 +87,7 @@ class Setup extends Command
     {
         $this->info("Mail setup...");
 
-        setEnv([
+        writeEnv([
             'MAIL_MAILER' => $this->ask("Mailer", env('MAIL_MAILER')),
             'MAIL_HOST' => $this->ask("Mail host", env('MAIL_HOST')),
             'MAIL_PORT' => $this->ask("Mail port", env('MAIL_PORT')),
@@ -104,10 +104,11 @@ class Setup extends Command
         $this->info("Storage setup...");
 
         if ($filesystemDisk = $this->ask("Which filesystem driver do you want to use?", env('FILESYSTEM_DISK'))) {
-            setEnv(['FILESYSTEM_DISK' => $filesystemDisk]);
+            writeEnv(['FILESYSTEM_DISK' => $filesystemDisk]);
 
             switch ($filesystemDisk) {
                 case 'local':
+                case 'public':
                     $this->info("Creating storage symlink...");
                     Artisan::call('storage:link', [], $this->getOutput());
                     break;
@@ -119,7 +120,7 @@ class Setup extends Command
     {
         $this->info("App setup...");
 
-        setEnv([
+        writeEnv([
             'APP_URL' => $this->ask("What will be the URL of your site (include http(s))?", env('APP_URL')),
             'APP_TIMEZONE' => $this->ask("Please enter your timezone (choose from: https://www.php.net/manual/en/timezones.php)", env('APP_TIMEZONE')),
         ]);
@@ -129,23 +130,23 @@ class Setup extends Command
     {
         $this->info("Site setup...");
 
-        setEnv([
+        writeEnv([
             'SITE_NAME' => $this->ask("What will be the name of your site?", env('SITE_NAME')),
             'SITE_DESCRIPTION' => $this->ask("Short description of your site", env('SITE_DESCRIPTION')),
             'SITE_THEME' => $this->ask("Which theme do you want to use for your site?", env('SITE_THEME')),
         ]);
 
-        setEnv([
+        writeEnv([
             'SITE_ALLOW_USER_REGISTRATION' => $this->confirm("Do you want to allow user registration?", env('SITE_ALLOW_USER_REGISTRATION', false)),
         ]);
 
         if (env('SITE_ALLOW_USER_REGISTRATION')) {
-            setEnv([
+            writeEnv([
                 'SITE_RESTRICT_USER_EMAIL_DOMAIN' => $this->confirm("Do you want to put a restriction on the users' email domain (eg: myorganization.com)?", env('SITE_RESTRICT_USER_EMAIL_DOMAIN', false)),
             ]);
 
             if (env('SITE_RESTRICT_USER_EMAIL_DOMAIN')) {
-                setEnv([
+                writeEnv([
                     'SITE_ALLOWED_USER_EMAIL_DOMAINS' => $this->ask("Please enter allowed domains (separated by a coma)", env('SITE_ALLOWED_USER_EMAIL_DOMAINS')),
                 ]);
             }
@@ -166,12 +167,12 @@ class Setup extends Command
     protected function setupMode()
     {
         if ($this->confirm("Is this site in production?", env('APP_ENV') === 'production')) {
-            setEnv([
+            writeEnv([
                 'APP_ENV' => 'production',
                 'APP_DEBUG' => 'false',
             ]);
         } else {
-            setEnv([
+            writeEnv([
                 'APP_ENV' => 'local',
                 'APP_DEBUG' => 'true',
             ]);
@@ -180,7 +181,7 @@ class Setup extends Command
 
     protected function setupMisc()
     {
-        setEnv([
+        writeEnv([
             'FONTAWESOME_KIT' => $this->ask("Please enter your FontAwesome kit ID", env('FONTAWESOME_KIT')),
             'SENTRY_LARAVEL_DSN' => $this->ask("If you wish to use Sentry for error monitoring, please enter your Sentry DSN", env('SENTRY_LARAVEL_DSN'))
         ]);
