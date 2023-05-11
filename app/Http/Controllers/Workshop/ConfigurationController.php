@@ -75,7 +75,7 @@ class ConfigurationController extends Controller
      */
     public function updateApp(Request $request)
     {
-        $result = Artisan::call('mason:update --deploy');
+        $result = Artisan::call('mason:update', ['--deploy' => true]);
 
         return redirect()->back()->with([
             'updateSuccess' => $success = ($result === Command::SUCCESS),
