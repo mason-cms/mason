@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\EntryType;
 use App\Models\Locale;
+use App\Models\Redirection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class FrontEndController extends Controller
@@ -169,5 +171,11 @@ class FrontEndController extends Controller
         }
 
         abort(404);
+    }
+
+    public function redirect(Request $request, Redirection $redirection): RedirectResponse
+    {
+        $redirection->hits()->create();
+        return $redirection->go();
     }
 }

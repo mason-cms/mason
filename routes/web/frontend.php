@@ -3,69 +3,122 @@
 use App\Http\Controllers\FrontEndController;
 use App\Models\EntryType;
 use App\Models\Locale;
+use App\Models\Redirection;
 use App\Models\TaxonomyType;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Schema;
 
 $alphanum = '[0-9A-Za-z\-]{3,255}';
 
-$entryTypes = Schema::hasTable('entry_types') ? EntryType::all() : collect();
-$entryTypeNames = $entryTypes->pluck('name')->join('|');
+try {
+    $locales = Locale::all();
+    $localeNames = $locales->count() > 0
+        ? $locales->pluck('name')->join('|')
+        : null;
+} catch (\Exception $e) {
+    $localeNames = null;
+}
 
-$taxonomyTypes = Schema::hasTable('taxonomy_types') ? TaxonomyType::all() : collect();
-$taxonomyTypeNames = $taxonomyTypes->pluck('name')->join('|');
+try {
+    $taxonomyTypes = TaxonomyType::all();
+    $taxonomyTypeNames = $taxonomyTypes->count() > 0
+        ? $taxonomyTypes->pluck('name')->join('|')
+        : null;
+} catch (\Exception $e) {
+    $taxonomyTypeNames = null;
+}
+
+try {
+    $entryTypes = EntryType::all();
+    $entryTypeNames = $entryTypes->count() > 0
+        ? $entryTypes->pluck('name')->join('|')
+        : null;
+} catch (\Exception $e) {
+    $entryTypeNames = null;
+}
+
+try {
+    $redirections = Redirection::active()->get();
+    $redirectionSources = $redirections->count() > 0
+        ? $redirections->pluck('source')->join('|')
+        : null;
+} catch (\Exception $e) {
+    $redirectionSources = null;
+}
 
 Route::any('/', [FrontEndController::class, 'home'])
     ->name('home');
 
-Route::any('/{taxonomyType:name}/{taxonomy:name}/{entryType:name?}', [FrontEndController::class, 'taxonomy'])
-    ->where([
+if (isset($redirectionSources)) {
+    Route::any(
+        uri: '/{redirection:source}',
+        action: [FrontEndController::class, 'redirect'],
+    )->where([
+        'redirection' => $redirectionSources,
+    ]);
+}
+
+if (isset($taxonomyTypeNames, $entryTypeNames)) {
+    Route::any(
+        uri: '/{taxonomyType:name}/{taxonomy:name}/{entryType:name?}',
+        action: [FrontEndController::class, 'taxonomy'],
+    )->where([
         'taxonomyType' => $taxonomyTypeNames,
         'taxonomy' => $alphanum,
         'entryType' => $entryTypeNames,
-    ])
-    ->name('taxonomy');
+    ])->name('taxonomy');
+}
 
-Route::any('/{entryType:name}', [FrontEndController::class, 'entryType'])
-    ->where([
+if (isset($entryTypeNames)) {
+    Route::any(
+        uri: '/{entryType:name}',
+        action: [FrontEndController::class, 'entryType'],
+    )->where([
         'entryType' => $entryTypeNames,
-    ])
-    ->name('entryType');
+    ])->name('entryType');
+}
 
-Route::any('/{entry:name}', [FrontEndController::class, 'entry'])
-    ->where([
-        'entry' => $alphanum,
-    ])
-    ->name('entry');
+Route::any(
+    uri: '/{entry:name}',
+    action: [FrontEndController::class, 'entry'],
+)->where([
+    'entry' => $alphanum,
+])->name('entry');
 
-if (Schema::hasTable('locales')) {
-    $locales = Locale::all();
-    $localeNames = $locales->pluck('name')->join('|');
+if (isset($localeNames)) {
+    Route::any(
+        uri: '/{locale:name}',
+        action: [FrontEndController::class, 'home'],
+    )->where([
+        'locale' => $localeNames,
+    ])->name('locale.home');
 
-    Route::any('/{locale:name}', [FrontEndController::class, 'home'])
-        ->where(['locale' => $localeNames])
-        ->name('locale.home');
-
-    Route::any('/{locale:name}/{taxonomyType:name}/{taxonomy:name}/{entryType:name?}', [FrontEndController::class, 'taxonomy'])
-        ->where([
+    if (isset($taxonomyTypeNames, $entryTypeNames)) {
+        Route::any(
+            uri: '/{locale:name}/{taxonomyType:name}/{taxonomy:name}/{entryType:name?}',
+            action: [FrontEndController::class, 'taxonomy'],
+        )->where([
             'locale' => $localeNames,
             'taxonomy' => $alphanum,
             'taxonomyType' => $taxonomyTypeNames,
             'entryType' => $entryTypeNames,
-        ])
-        ->name('locale.taxonomy');
+        ])->name('locale.taxonomy');
+    }
 
-    Route::any('/{locale:name}/{entryType:name}', [FrontEndController::class, 'entryType'])
-        ->where([
+    if (isset($entryTypeNames)) {
+        Route::any(
+            uri: '/{locale:name}/{entryType:name}',
+            action: [FrontEndController::class, 'entryType'],
+        )->where([
             'locale' => $localeNames,
             'entryType' => $entryTypeNames,
-        ])
-        ->name('locale.entryType');
+        ])->name('locale.entryType');
+    }
 
-    Route::any('/{locale:name}/{entry:name}', [FrontEndController::class, 'entry'])
-        ->where([
-            'locale' => $localeNames,
-            'entry' => $alphanum,
-        ])
-        ->name('locale.entry');
+    Route::any(
+        uri: '/{locale:name}/{entry:name}',
+        action: [FrontEndController::class, 'entry'],
+    )->where([
+        'locale' => $localeNames,
+        'entry' => $alphanum,
+    ])->name('locale.entry');
 }

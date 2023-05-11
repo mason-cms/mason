@@ -14,6 +14,7 @@ use App\Http\Controllers\Workshop\EntryTypeController;
 use App\Http\Controllers\Workshop\TaxonomyTypeController;
 use App\Http\Controllers\Workshop\LocaleController;
 use App\Http\Controllers\Workshop\MediumController;
+use App\Http\Controllers\Workshop\RedirectionController;
 
 Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 
@@ -84,4 +85,5 @@ Route::prefix('/configuration')->name('configuration.')->group(function () {
     Route::resource('locale', LocaleController::class);
     Route::resource('entry-type', EntryTypeController::class);
     Route::resource('taxonomy-type', TaxonomyTypeController::class);
+    Route::resource('redirection', RedirectionController::class);
 });
