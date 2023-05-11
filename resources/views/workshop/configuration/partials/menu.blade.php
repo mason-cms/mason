@@ -53,5 +53,14 @@
                 @lang('taxonomyTypes.title')
             </a>
         </li>
+
+        <li>
+            <a
+                href="{{ route($routeName = 'workshop.configuration.redirection.index') }}"
+                class="{{ $routeName === $currentRouteName ? 'is-active' : '' }}"
+            >
+                @lang('redirections.title')
+            </a>
+        </li>
     </ul>
 </nav>
