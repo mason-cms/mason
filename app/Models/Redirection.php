@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Artisan;
 
 class Redirection extends Model
 {
@@ -29,6 +30,15 @@ class Redirection extends Model
         'http_response_code' => self::DEFAULT_HTTP_RESPONSE_CODE,
         'is_active' => true,
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::saving(function (self $redirection) {
+            Artisan::call('route:clear');
+        });
+    }
 
     public function scopeActive(Builder $query, bool $isActive = true): Builder
     {
