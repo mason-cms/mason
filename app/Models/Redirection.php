@@ -38,6 +38,10 @@ class Redirection extends Model
         static::saving(function (self $redirection) {
             Artisan::call('route:clear');
         });
+
+        static::deleting(function (self $redirection) {
+            Artisan::call('route:clear');
+        });
     }
 
     public function scopeActive(Builder $query, bool $isActive = true): Builder
