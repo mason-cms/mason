@@ -82,7 +82,17 @@
                                                 rows="3"
                                             >{!! $setting->value !!}</textarea>
                                         @elseif ($setting->type === 'file')
-                                            <div class="file {{ isset($setting->value) ? 'has-name' : '' }}">
+                                            @isset($setting->value)
+                                                <figure class="image block file-preview">
+                                                    <img
+                                                        src="{{ $setting->value }}"
+                                                        loading="lazy"
+                                                        alt=""
+                                                    />
+                                                </figure>
+                                            @endisset
+
+                                            <div class="file is-fullwidth {{ isset($setting->value) ? 'has-name' : '' }}">
                                                 <label class="file-label">
                                                     <input
                                                         class="file-input"
@@ -90,13 +100,20 @@
                                                         name="settings[{{ $setting->name }}]"
                                                     />
 
-                                                    <span class="file-cta">
+                                                    <div class="file-cta">
                                                         <span class="file-icon">@i('fa-upload')</span>
                                                         <span class="file-label">@lang('settings.fields.file.cta')</span>
-                                                    </span>
+                                                    </div>
 
                                                     @isset($setting->value)
-                                                        <span class="file-name">{{ $setting->value }}</span>
+                                                        <div class="file-name">{{ $setting->value }}</div>
+
+                                                        <div class="control">
+                                                            <a class="button is-danger file-clear">
+                                                                @icon('fa-trash-can')
+                                                                <span>{{ __("Delete") }}</span>
+                                                            </a>
+                                                        </div>
                                                     @endisset
                                                 </label>
                                             </div>

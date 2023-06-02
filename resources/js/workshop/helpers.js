@@ -65,6 +65,19 @@ $(document)
             $fileName.text('');
         }
     })
+    .on('click', '.file .file-clear', function (e) {
+        e.preventDefault();
+
+        let $fileClear = $(this),
+            $file = $fileClear.parents('.file').first(),
+            $fileInput = $file.find('.file-input').first(),
+            $fileName = $file.find('.file-name').first(),
+            $filePreview = $file.siblings('.file-preview').first();
+
+        $fileInput.val('');
+        $fileName.text('');
+        $filePreview.remove();
+    })
     .on('click', '[data-confirm]', function () {
         return window.confirm($(this).data('confirm'));
     })
