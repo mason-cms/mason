@@ -31,8 +31,8 @@ class SettingsController extends Controller
             $settings = site(false)->theme()->settings();
 
             foreach ($settings as $setting) {
-                if (isset($setting->name) && array_key_exists($setting->name, $requestInput['settings'])) {
-                    $value = $requestInput['settings'][$setting->name];
+                if (isset($setting->name)) {
+                    $value = $requestInput['settings'][$setting->name] ?? null;
 
                     if ($value instanceof UploadedFile) {
                         if ($key = Storage::putFileAs('/', $value, $value->getClientOriginalName(), 'public')) {

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EntryType;
 use App\Models\Locale;
 use App\Models\Redirection;
 use Illuminate\Http\RedirectResponse;
