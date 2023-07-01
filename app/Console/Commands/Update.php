@@ -53,8 +53,10 @@ class Update extends Command
 
         if ($this->option('deploy')) {
             Artisan::call(
-                command: 'mason:deploy' . ( $this->option('quick') ? ' --quick' : '' ),
-                parameters: [],
+                command: 'mason:deploy',
+                parameters: [
+                    '--quick' => $this->option('quick'),
+                ],
                 outputBuffer: $this->getOutput(),
             );
         }
