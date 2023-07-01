@@ -150,7 +150,7 @@ class FrontEndController extends Controller
         }
 
         if (isset($taxonomyTypeName) && $taxonomyType = $this->site->taxonomyType(name: $taxonomyTypeName)) {
-            if (isset($taxonomyName) && $taxonomy = $this->site->taxonomy(name: $taxonomyName, type: $taxonomyType)->first()) {
+            if (isset($taxonomyName) && $taxonomy = $this->site->taxonomy(name: $taxonomyName, type: $taxonomyType)) {
                 $entries = $taxonomy->entries();
 
                 if (isset($entryTypeName) && $entryType = $this->site->entryType($entryTypeName)) {
