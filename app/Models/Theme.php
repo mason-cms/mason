@@ -251,21 +251,7 @@ class Theme
         $settings = $this->info('settings') ?? [];
 
         foreach ($settings as &$setting) {
-            $value = Setting::get($setting->name);
-
-            if (! isset($value) && property_exists($setting, 'default')) {
-                $value = $setting->default;
-            }
-
-            if (isset($setting->type)) {
-                switch ($setting->type) {
-                    case 'file':
-                        $value = isset($value) ? Storage::url($value) : null;
-                        break;
-                }
-            }
-
-            $setting->value = $value;
+            $setting->value = Setting::get($setting->name) ?? $setting->default ?? null;
         }
 
         $this->settings = collect($settings);
