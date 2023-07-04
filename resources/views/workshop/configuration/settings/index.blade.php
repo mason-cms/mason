@@ -85,14 +85,23 @@
                                             @isset($setting->value)
                                                 <figure class="image block file-preview">
                                                     <img
-                                                        src="{{ $setting->value }}"
+                                                        src="{{ storageUrl($setting->value) }}"
                                                         loading="lazy"
                                                         alt=""
+                                                        style="width: auto; height: auto; max-width: 600px; max-height: 140px;"
                                                     />
                                                 </figure>
                                             @endisset
 
                                             <div class="file is-fullwidth {{ isset($setting->value) ? 'has-name' : '' }}">
+                                                @isset($setting->value)
+                                                    <input
+                                                        type="hidden"
+                                                        name="settings[{{ $setting->name }}]"
+                                                        value="{{ $setting->value }}"
+                                                    />
+                                                @endisset
+
                                                 <label class="file-label">
                                                     <input
                                                         class="file-input"
