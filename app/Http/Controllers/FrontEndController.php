@@ -6,6 +6,8 @@ use App\Models\Locale;
 use App\Models\Redirection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class FrontEndController extends Controller
 {
@@ -176,5 +178,44 @@ class FrontEndController extends Controller
     {
         $redirection->hits()->create();
         return $redirection->go();
+    }
+
+    public function upload(Request $request)
+    {
+        $fingerprint = $request->fingerprint();
+        $files = $request->allFiles();
+        $uploaded = [];
+
+        foreach ($files as $fileGroup) {
+            foreach ($fileGroup as $file) {
+                if ($file instanceof UploadedFile) {
+                    try {
+                        $storageKey = $file->storeAs(
+                            path: "upload/{$fingerprint}",
+                            name: $filename = $file->getClientOriginalName(),
+                            options: [
+                                'visibility' => $request->input('visibility') ?? 'public',
+                            ],
+                        );
+
+                        if (isset($storageKey)) {
+                            $url = Storage::url($storageKey);
+
+                            if (isset($url)) {
+                                $uploaded[] = [
+                                    'name' => $filename,
+                                    'storageKey' => $storageKey,
+                                    'url' => $url,
+                                ];
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        \Sentry\captureException($e);
+                    }
+                }
+            }
+        }
+
+        return response()->json($uploaded);
     }
 }
