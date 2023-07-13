@@ -196,9 +196,7 @@ class FrontEndController extends Controller
                         if ($file->isValid()) {
                             $storageKey = $file->store(
                                 "upload/{$fingerprint}",
-                                [
-                                    'visibility' => 'public',
-                                ],
+                                'public'
                             );
 
                             if (isset($storageKey) && $storageKey !== false) {
