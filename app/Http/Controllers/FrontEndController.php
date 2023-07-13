@@ -182,37 +182,42 @@ class FrontEndController extends Controller
 
     public function upload(Request $request)
     {
-        $fingerprint = $request->fingerprint();
-        $files = $request->allFiles();
         $uploaded = [];
+        
+        try {
+            $fingerprint = $request->fingerprint();
+            $files = $request->allFiles();
 
-        foreach ($files as $fileGroup) {
-            foreach ($fileGroup as $file) {
-                if ($file instanceof UploadedFile) {
-                    try {
-                        $storageKey = Storage::putFileAs(
-                            "upload/{$fingerprint}",
-                            $file,
-                            $filename = $file->getClientOriginalName(),
-                            $request->input('visibility') ?? 'public'
-                        );
+            foreach ($files as $fileGroup) {
+                foreach ($fileGroup as $file) {
+                    if ($file instanceof UploadedFile) {
+                        try {
+                            $storageKey = Storage::putFileAs(
+                                "upload/{$fingerprint}",
+                                $file,
+                                $filename = $file->getClientOriginalName(),
+                                $request->input('visibility') ?? 'public'
+                            );
 
-                        if (isset($storageKey) && $storageKey !== false) {
-                            $url = Storage::url($storageKey);
+                            if (isset($storageKey) && $storageKey !== false) {
+                                $url = Storage::url($storageKey);
 
-                            if (isset($url)) {
-                                $uploaded[] = [
-                                    'name' => $filename,
-                                    'storageKey' => $storageKey,
-                                    'url' => $url,
-                                ];
+                                if (isset($url)) {
+                                    $uploaded[] = [
+                                        'name' => $filename,
+                                        'storageKey' => $storageKey,
+                                        'url' => $url,
+                                    ];
+                                }
                             }
+                        } catch (\Exception $e) {
+                            \Sentry\captureException($e);
                         }
-                    } catch (\Exception $e) {
-                        \Sentry\captureException($e);
                     }
                 }
             }
+        } catch (\Exception $e) {
+            \Sentry\captureException($e);
         }
 
         return response()->json($uploaded);
