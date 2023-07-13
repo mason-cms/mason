@@ -131,9 +131,15 @@ class Site
         return $this->lang;
     }
 
-    public function trans($key): ?string
+    public function trans(string $key, array $replace = []): ?string
     {
-        return $this->lang[$key] ?? $key;
+        $text = $this->lang[$key] ?? $key;
+
+        foreach ($replace as $k => $v) {
+            $text = str_replace(":{$k}", $v, $text);
+        }
+
+        return $text;
     }
 
     public function entries(mixed $type = null, mixed $locale = null, string $status = Entry::STATUS_PUBLISHED): Builder
