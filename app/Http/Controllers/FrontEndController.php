@@ -196,7 +196,7 @@ class FrontEndController extends Controller
                             $filename = $file->getClientOriginalName();
 
                             $storageKey = $file->storePubliclyAs(
-                                "upload/{$uuid}",
+                                "upload",
                                 $filename
                             );
 
