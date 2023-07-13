@@ -36,7 +36,7 @@ class Site
         }
     }
 
-    public function boot(bool $bootTheme = true): void
+    public function boot(): void
     {
         if ($defaultLocale = Locale::getDefault()) {
             $this->setLocale($defaultLocale);
@@ -45,10 +45,6 @@ class Site
         $this->loadLang();
 
         $this->booted = true;
-
-        if ($bootTheme && isset($this->theme) && ! $this->theme->booted) {
-            $this->theme->boot();
-        }
     }
 
     public function name(): ?string
@@ -100,7 +96,7 @@ class Site
 
     public function alternateLocales(): Builder
     {
-        return $this->locales()->whereNot('id', $this->locale->getKey());
+        return $this->locales()->where('id', '!=', $this->locale->getKey());
     }
 
     public function path(Locale $locale = null): ?string
