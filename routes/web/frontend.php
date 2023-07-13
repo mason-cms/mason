@@ -48,11 +48,6 @@ try {
 Route::any('/', [FrontEndController::class, 'home'])
     ->name('home');
 
-Route::post(
-    uri: '/upload',
-    action: [FrontEndController::class, 'upload'],
-)->name('upload');
-
 if (isset($redirectionSources)) {
     Route::any(
         uri: '/{redirection:source}',
@@ -96,11 +91,6 @@ if (isset($localeNames)) {
     )->where([
         'locale' => $localeNames,
     ])->name('locale.home');
-
-    Route::post(
-        uri: '/{locale:name}/upload',
-        action: [FrontEndController::class, 'upload'],
-    )->name('locale.upload');
 
     if (isset($taxonomyTypeNames, $entryTypeNames)) {
         Route::any(
