@@ -195,10 +195,9 @@ class FrontEndController extends Controller
                         if ($file->isValid()) {
                             $filename = $file->getClientOriginalName();
 
-                            $storageKey = Storage::putFileAs(
-                                "upload/{$uuid}",
-                                $file,
-                                $filename,
+                            $storageKey = Storage::put(
+                                "upload/{$uuid}/{$filename}",
+                                $file->getContent(),
                                 'public'
                             );
 
