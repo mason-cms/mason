@@ -126,7 +126,7 @@ class Site
         $this->lang = Arr::dot($lang);
     }
 
-    public function lang(): ?string
+    public function lang(): array
     {
         return $this->lang;
     }

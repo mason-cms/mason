@@ -37,17 +37,19 @@ class Theme
         $this->project = $packageParts[1] ?? null;
     }
 
-    public function boot(): void
+    public function boot(bool $force = false): void
     {
-        $viewPaths = config('view.paths');
-        $viewPaths[] = $this->path("resources/views");
-        config(['view.paths' => array_unique($viewPaths)]);
+        if (! $this->booted || $force) {
+            $viewPaths = config('view.paths');
+            $viewPaths[] = $this->path("resources/views");
+            config(['view.paths' => array_unique($viewPaths)]);
 
-        if (file_exists($bootFile = $this->path('boot.php'))) {
-            require_once $bootFile;
+            if (file_exists($bootFile = $this->path('boot.php'))) {
+                require_once $bootFile;
+            }
+
+            $this->booted = true;
         }
-
-        $this->booted = true;
     }
 
     public function name(): ?string
