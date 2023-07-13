@@ -194,11 +194,13 @@ class FrontEndController extends Controller
                 try {
                     if ($file instanceof UploadedFile) {
                         if ($file->isValid()) {
-                            $storageKey = $file->storePublicly(
+                            $storageKey = Storage::putFile(
                                 "upload/{$uuid}",
+                                $file,
+                                'public',
                             );
 
-                            if (isset($storageKey) && $storageKey !== false) {
+                            if (isset($storageKey)) {
                                 $url = Storage::url($storageKey);
 
                                 if (isset($url)) {
