@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class FrontEndController extends Controller
 {
@@ -192,20 +194,17 @@ class FrontEndController extends Controller
                 try {
                     if ($file instanceof UploadedFile) {
                         if ($file->isValid()) {
-                            $storageKey = Storage::putFileAs(
+                            $storageKey = $file->store(
                                 "upload/{$fingerprint}",
-                                $file,
-                                $filename = $file->getClientOriginalName(),
+                                $request->input('visibility') ?? 'public',
                             );
-
-                            dd($storageKey);
 
                             if (isset($storageKey) && $storageKey !== false) {
                                 $url = Storage::url($storageKey);
 
                                 if (isset($url)) {
                                     $uploaded[] = [
-                                        'name' => $filename,
+                                        'name' => $file->getClientOriginalName(),
                                         'storageKey' => $storageKey,
                                         'url' => $url,
                                     ];
@@ -213,7 +212,7 @@ class FrontEndController extends Controller
                                     throw new \Exception("Cannot get URL for: {$storageKey}");
                                 }
                             } else {
-                                throw new \Exception("Cannot store file: {$filename}");
+                                throw new \Exception("Cannot store file: " . print_r($file, true));
                             }
                         } else {
                             throw new \Exception("Invalid file: " . print_r($file, true));
