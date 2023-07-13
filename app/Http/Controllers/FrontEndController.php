@@ -183,7 +183,7 @@ class FrontEndController extends Controller
     public function upload(Request $request)
     {
         $uploaded = [];
-        
+
         try {
             $fingerprint = $request->fingerprint();
             $files = $request->allFiles();
