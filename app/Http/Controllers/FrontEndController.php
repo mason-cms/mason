@@ -197,7 +197,6 @@ class FrontEndController extends Controller
 
                             $storageKey = $file->storePubliclyAs(
                                 "upload/{$uuid}",
-                                $file,
                                 $filename
                             );
 
