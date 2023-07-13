@@ -6,9 +6,6 @@ use App\Models\Locale;
 use App\Models\Redirection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Ramsey\Uuid\Uuid;
 
 class FrontEndController extends Controller
 {
