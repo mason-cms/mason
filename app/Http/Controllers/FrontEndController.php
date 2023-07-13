@@ -195,9 +195,11 @@ class FrontEndController extends Controller
                             $uuid = Uuid::uuid4();
                             $filename = $file->getClientOriginalName();
 
-                            $storageKey = $file->storePubliclyAs(
+                            $storageKey = Storage::putFileAs(
                                 "upload",
-                                $filename
+                                $file,
+                                $filename,
+                                'public'
                             );
 
                             if (isset($storageKey)) {
