@@ -192,9 +192,10 @@ class FrontEndController extends Controller
                 if ($file instanceof UploadedFile) {
                     try {
                         if ($file->isValid()) {
+                            $filepath = $file->getRealPath();
                             $uuid = Uuid::uuid4();
 
-                            dd($file->getRealPath(), file_exists($file->getRealPath()));
+                            dd($filepath, file_exists($filepath), is_readable($filepath));
 
                             $storageKey = Storage::putFileAs(
                                 "upload/{$uuid}",
