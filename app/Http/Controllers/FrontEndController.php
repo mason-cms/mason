@@ -190,7 +190,7 @@ class FrontEndController extends Controller
         foreach ($files as $fileGroup) {
             foreach ($fileGroup as $file) {
                 try {
-                    if ($file instanceof UploadedFile) {dd($file);
+                    if ($file instanceof UploadedFile) {
                         $storageKey = Storage::putFileAs(
                             "upload/{$fingerprint}",
                             $file,
