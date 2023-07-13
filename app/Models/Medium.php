@@ -199,10 +199,10 @@ class Medium extends Model
         }
 
         $storageKey = Storage::putFileAs(
-            static::STORAGE_PATH,
-            $file,
-            $filename,
-            static::DEFAULT_VISIBILITY
+            path: static::STORAGE_PATH,
+            file: $file,
+            name: $filename,
+            options: static::DEFAULT_VISIBILITY,
         );
 
         if ($storageKey === false) {
