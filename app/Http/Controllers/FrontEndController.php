@@ -190,15 +190,15 @@ class FrontEndController extends Controller
         foreach ($files as $fileGroup) {
             foreach ($fileGroup as $file) {
                 try {
-                    if ($file instanceof UploadedFile) {
-                        dd($file);
-                        
+                    if ($file instanceof UploadedFile) {dd($file);
                         $storageKey = Storage::putFileAs(
                             "upload/{$fingerprint}",
                             $file,
                             $filename = $file->getClientOriginalName(),
                             $request->input('visibility') ?? 'public'
                         );
+
+                        dd($storageKey);
 
                         if (isset($storageKey) && $storageKey !== false) {
                             $url = Storage::url($storageKey);
