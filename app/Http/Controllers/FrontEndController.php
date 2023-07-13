@@ -191,6 +191,8 @@ class FrontEndController extends Controller
             foreach ($fileGroup as $file) {
                 try {
                     if ($file->isValid()) {
+                        dd($file);
+
                         $uuid = Uuid::uuid4();
 
                         $storageKey = Storage::putFileAs(
