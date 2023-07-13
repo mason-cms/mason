@@ -55,6 +55,7 @@ class Deploy extends Command
         Artisan::call('migrate --force', [], $this->getOutput());
 
         $this->info("Clearing compiled...");
+        Artisan::call('cache:clear', [], $this->getOutput());
         Artisan::call('clear-compiled', [], $this->getOutput());
 
         $this->info("Clearing route cache...");
