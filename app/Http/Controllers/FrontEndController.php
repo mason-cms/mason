@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Locale;
 use App\Models\Redirection;
+use Illuminate\Http\File;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 
 class FrontEndController extends Controller
@@ -185,39 +187,48 @@ class FrontEndController extends Controller
     {
         $uploaded = [];
 
-        $files = $request->allFiles();
-        $uuid = Uuid::uuid4();
+        $requestData = $request->all();
 
-        foreach ($files as $fileGroup) {
-            foreach ($fileGroup as $file) {
-                if ($file instanceof UploadedFile) {
+        if (isset($requestData['files'])) {
+            $uuid = Uuid::uuid4();
+
+            foreach ($requestData['files'] as $file) {
+                if (isset($file['name'], $file['base64'])) {
                     try {
-                        if ($file->isValid()) {
-                            $filename = $file->getClientOriginalName();
+                        $storageKey = "upload/{$uuid}/{$file['name']}";
 
-                            $storageKey = Storage::put(
-                                "upload/{$uuid}/{$filename}",
-                                $file->getContent(),
-                                'public'
-                            );
+                        if (str_starts_with($file['base64'], 'data:')) {
+                            $data = explode(';', $file['base64'], 2);
+                            $tmp1 = explode(':', $data[0], 2);
+                            $tmp1 = explode('/', $tmp1[1], 2);
+                            $tmp2 = explode(',', $data[1], 2);
+                            $base64 = $tmp2[1];
+                        } else {
+                            $base64 = $file['base64'];
+                        }
 
-                            if (isset($storageKey)) {
-                                $url = Storage::url($storageKey);
+                        $content = base64_decode($base64);
 
-                                if (isset($url)) {
-                                    $uploaded[] = [
-                                        'name' => $filename,
-                                        'storageKey' => $storageKey,
-                                        'url' => $url,
-                                    ];
-                                } else {
-                                    throw new \Exception("Cannot get URL for: {$storageKey}");
-                                }
+                        $success = Storage::put(
+                            $storageKey,
+                            $content,
+                            'public'
+                        );
+
+                        if ($success) {
+                            $url = Storage::url($storageKey);
+
+                            if (isset($url)) {
+                                $uploaded[] = [
+                                    'name' => $file['name'],
+                                    'storageKey' => $storageKey,
+                                    'url' => $url,
+                                ];
                             } else {
-                                throw new \Exception("Cannot store file: " . print_r($file, true));
+                                throw new \Exception("Cannot get URL for: {$storageKey}");
                             }
                         } else {
-                            throw new \Exception("Invalid file: " . print_r($file, true));
+                            throw new \Exception("Cannot store file: " . print_r($file, true));
                         }
                     } catch (\Exception $e) {
                         \Sentry\captureException($e);
