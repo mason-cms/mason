@@ -24,5 +24,6 @@ Route::middleware('guest')
 Route::middleware('auth')
     ->group(base_path('routes/web/auth.php'));
 
-Route::prefix('/')
+Route::middleware(['theme.boot'])
+    ->prefix('/')
     ->group(base_path('routes/web/frontend.php'));
