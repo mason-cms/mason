@@ -215,8 +215,6 @@ class Theme
             "git stash",
             "git pull",
             "composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev",
-            "npm install",
-            "npm run production",
         ]));
 
         $this->createSymlink();
