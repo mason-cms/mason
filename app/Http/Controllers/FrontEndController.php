@@ -186,17 +186,17 @@ class FrontEndController extends Controller
         $uploaded = [];
 
         $files = $request->allFiles();
+        $uuid = Uuid::uuid4();
 
         foreach ($files as $fileGroup) {
             foreach ($fileGroup as $file) {
                 if ($file instanceof UploadedFile) {
                     try {
                         if ($file->isValid()) {
-                            $uuid = Uuid::uuid4();
                             $filename = $file->getClientOriginalName();
 
                             $storageKey = Storage::putFileAs(
-                                "upload",
+                                "upload/{$uuid}",
                                 $file,
                                 $filename,
                                 'public'
