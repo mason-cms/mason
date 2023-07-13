@@ -191,28 +191,32 @@ class FrontEndController extends Controller
             foreach ($fileGroup as $file) {
                 try {
                     if ($file instanceof UploadedFile) {
-                        $storageKey = Storage::putFileAs(
-                            "upload/{$fingerprint}",
-                            $file,
-                            $filename = $file->getClientOriginalName(),
-                        );
+                        if ($file->isValid()) {
+                            $storageKey = Storage::putFileAs(
+                                "upload/{$fingerprint}",
+                                $file,
+                                $filename = $file->getClientOriginalName(),
+                            );
 
-                        dd($storageKey);
+                            dd($storageKey);
 
-                        if (isset($storageKey) && $storageKey !== false) {
-                            $url = Storage::url($storageKey);
+                            if (isset($storageKey) && $storageKey !== false) {
+                                $url = Storage::url($storageKey);
 
-                            if (isset($url)) {
-                                $uploaded[] = [
-                                    'name' => $filename,
-                                    'storageKey' => $storageKey,
-                                    'url' => $url,
-                                ];
+                                if (isset($url)) {
+                                    $uploaded[] = [
+                                        'name' => $filename,
+                                        'storageKey' => $storageKey,
+                                        'url' => $url,
+                                    ];
+                                } else {
+                                    throw new \Exception("Cannot get URL for: {$storageKey}");
+                                }
                             } else {
-                                throw new \Exception("Cannot get URL for: {$storageKey}");
+                                throw new \Exception("Cannot store file: {$filename}");
                             }
                         } else {
-                            throw new \Exception("Cannot store file: {$filename}");
+                            throw new \Exception("Invalid file: " . print_r($file, true));
                         }
                     } else {
                         throw new \Exception("Unexpected file: " . print_r($file, true));
