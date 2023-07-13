@@ -183,8 +183,6 @@ class FrontEndController extends Controller
 
     public function upload(Request $request)
     {
-        ini_set('memory_limit', '-1');
-        
         $uploaded = [];
 
         $files = $request->allFiles();
