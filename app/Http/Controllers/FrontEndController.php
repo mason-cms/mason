@@ -189,39 +189,41 @@ class FrontEndController extends Controller
 
         foreach ($files as $fileGroup) {
             foreach ($fileGroup as $file) {
-                try {
-                    if ($file->isValid()) {
-                        dd($file);
+                if ($file instanceof UploadedFile) {
+                    try {
+                        if ($file->isValid()) {
+                            $uuid = Uuid::uuid4();
 
-                        $uuid = Uuid::uuid4();
+                            dd($file->getRealPath(), file_exists($file->getRealPath()));
 
-                        $storageKey = Storage::putFileAs(
-                            "upload/{$uuid}",
-                            $file,
-                            $filename = $file->getClientOriginalName(),
-                            'public'
-                        );
+                            $storageKey = Storage::putFileAs(
+                                "upload/{$uuid}",
+                                $file,
+                                $filename = $file->getClientOriginalName(),
+                                'public'
+                            );
 
-                        if (isset($storageKey)) {
-                            $url = Storage::url($storageKey);
+                            if (isset($storageKey)) {
+                                $url = Storage::url($storageKey);
 
-                            if (isset($url)) {
-                                $uploaded[] = [
-                                    'name' => $filename,
-                                    'storageKey' => $storageKey,
-                                    'url' => $url,
-                                ];
+                                if (isset($url)) {
+                                    $uploaded[] = [
+                                        'name' => $filename,
+                                        'storageKey' => $storageKey,
+                                        'url' => $url,
+                                    ];
+                                } else {
+                                    throw new \Exception("Cannot get URL for: {$storageKey}");
+                                }
                             } else {
-                                throw new \Exception("Cannot get URL for: {$storageKey}");
+                                throw new \Exception("Cannot store file: " . print_r($file, true));
                             }
                         } else {
-                            throw new \Exception("Cannot store file: " . print_r($file, true));
+                            throw new \Exception("Invalid file: " . print_r($file, true));
                         }
-                    } else {
-                        throw new \Exception("Invalid file: " . print_r($file, true));
+                    } catch (\Exception $e) {
+                        \Sentry\captureException($e);
                     }
-                } catch (\Exception $e) {
-                    \Sentry\captureException($e);
                 }
             }
         }
