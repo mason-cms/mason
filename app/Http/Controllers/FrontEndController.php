@@ -8,7 +8,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Ramsey\Uuid\Uuid;
 
 class FrontEndController extends Controller
@@ -186,7 +185,6 @@ class FrontEndController extends Controller
     {
         $uploaded = [];
 
-        $uuid = Uuid::uuid4();
         $files = $request->allFiles();
 
         foreach ($files as $fileGroup) {
@@ -194,6 +192,8 @@ class FrontEndController extends Controller
                 try {
                     if ($file instanceof UploadedFile) {
                         if ($file->isValid()) {
+                            $uuid = Uuid::uuid4();
+                            
                             $storageKey = Storage::putFile(
                                 "upload/{$uuid}",
                                 $file,
