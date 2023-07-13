@@ -192,11 +192,12 @@ class FrontEndController extends Controller
                 try {
                     if ($file instanceof UploadedFile) {
                         $storageKey = Storage::putFileAs(
-                            "upload",
+                            "upload/{$fingerprint}",
                             $file,
                             $filename = $file->getClientOriginalName(),
-                            $request->input('visibility') ?? 'public'
                         );
+
+                        dd($storageKey);
 
                         if (isset($storageKey) && $storageKey !== false) {
                             $url = Storage::url($storageKey);
