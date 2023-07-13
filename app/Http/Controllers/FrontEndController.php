@@ -187,12 +187,12 @@ class FrontEndController extends Controller
         $fingerprint = $request->fingerprint();
         $files = $request->allFiles();
 
-        dd($fingerprint, $files);
-
         foreach ($files as $fileGroup) {
             foreach ($fileGroup as $file) {
                 try {
                     if ($file instanceof UploadedFile) {
+                        dd($file);
+                        
                         $storageKey = Storage::putFileAs(
                             "upload/{$fingerprint}",
                             $file,
