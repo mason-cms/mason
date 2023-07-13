@@ -186,7 +186,7 @@ class FrontEndController extends Controller
     {
         $uploaded = [];
 
-        $fingerprint = $request->fingerprint();
+        $uuid = Uuid::uuid4();
         $files = $request->allFiles();
 
         foreach ($files as $fileGroup) {
@@ -195,7 +195,7 @@ class FrontEndController extends Controller
                     if ($file instanceof UploadedFile) {
                         if ($file->isValid()) {
                             $storageKey = $file->store(
-                                "upload/{$fingerprint}",
+                                "upload/{$uuid}",
                                 'public'
                             );
 
