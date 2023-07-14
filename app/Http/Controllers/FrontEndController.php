@@ -14,6 +14,10 @@ class FrontEndController extends Controller
     public function __construct()
     {
         $this->site = site();
+    }
+
+    protected function boot()
+    {
         $this->site->theme()->boot();
     }
 
@@ -26,6 +30,8 @@ class FrontEndController extends Controller
      */
     public function home(Request $request, ...$params)
     {
+        $this->boot();
+
         $homePage = $this->site->homePage();
 
         $views = [
@@ -56,6 +62,8 @@ class FrontEndController extends Controller
      */
     public function entry(Request $request, ...$params)
     {
+        $this->boot();
+
         if (isset($params[0]) && Locale::exists($params[0])) {
             $entryName = $params[1] ?? null;
         } else {
@@ -84,6 +92,8 @@ class FrontEndController extends Controller
      */
     public function entryType(Request $request, ...$params)
     {
+        $this->boot();
+
         if (isset($params[0]) && Locale::exists($params[0])) {
             $entryTypeName = $params[1] ?? null;
         } else {
@@ -112,6 +122,8 @@ class FrontEndController extends Controller
      */
     public function taxonomy(Request $request, ...$params)
     {
+        $this->boot();
+
         if (isset($params[0]) && Locale::exists($params[0])) {
             $taxonomyTypeName = $params[1] ?? null;
             $taxonomyName = $params[2] ?? null;
@@ -148,7 +160,10 @@ class FrontEndController extends Controller
 
     public function redirect(Request $request, Redirection $redirection): RedirectResponse
     {
+        $this->boot();
+
         $redirection->hits()->create();
+
         return $redirection->go();
     }
 }
