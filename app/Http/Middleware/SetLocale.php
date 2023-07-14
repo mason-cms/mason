@@ -20,19 +20,20 @@ class SetLocale
         $path = $request->path();
         $parts = explode("/", $path);
 
-        $locale = $defaultLocale = Locale::getDefault();
+        $defaultLocale = Locale::getDefault();
+        $localeNames = Locale::all()->pluck('name');
 
-        if (isset($parts[0]) && $l = Locale::findByName($parts[0])) {
-            if ($l->is($defaultLocale)) {
+        if (isset($parts[0]) && $localeNames->contains($parts[0])) {
+            $locale = Locale::findByName($parts[0]);
+
+            if ($locale->is($defaultLocale)) {
                 unset($parts[0]);
                 $cleanPath = implode("/", $parts);
                 return redirect()->to("/$cleanPath");
-            } else {
-                $locale = $l;
             }
         }
 
-        site()->setLocale($locale);
+        site()->setLocale($locale ?? $defaultLocale);
 
         return $next($request);
     }
