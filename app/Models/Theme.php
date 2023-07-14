@@ -35,15 +35,15 @@ class Theme
         $packageParts = explode('/', $this->package, 2);
         $this->vendor = $packageParts[0] ?? null;
         $this->project = $packageParts[1] ?? null;
+
+        $viewPaths = config('view.paths');
+        $viewPaths[] = $this->path("resources/views");
+        config(['view.paths' => array_unique($viewPaths)]);
     }
 
     public function boot(bool $force = false): void
     {
         if (! $this->booted || $force) {
-            $viewPaths = config('view.paths');
-            $viewPaths[] = $this->path("resources/views");
-            config(['view.paths' => array_unique($viewPaths)]);
-
             if (file_exists($bootFile = $this->path('boot.php'))) {
                 require_once $bootFile;
             }
