@@ -36,15 +36,15 @@ class Site
         }
     }
 
-    public function boot(): void
+    public function boot(bool $force = false): void
     {
-        if ($defaultLocale = Locale::getDefault()) {
-            $this->setLocale($defaultLocale);
+        if (! $this->booted || $force) {
+            if ($defaultLocale = Locale::getDefault()) {
+                $this->setLocale($defaultLocale);
+            }
+
+            $this->booted = true;
         }
-
-        $this->loadLang();
-
-        $this->booted = true;
     }
 
     public function name(): ?string
@@ -86,6 +86,8 @@ class Site
             }
 
             Carbon::setLocale($locale->system_name);
+
+            $this->loadLang();
         }
     }
 

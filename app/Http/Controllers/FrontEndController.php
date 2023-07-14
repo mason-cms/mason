@@ -24,16 +24,8 @@ class FrontEndController extends Controller
      * @param  string  $localeName
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function home(Request $request, string $localeName = null)
+    public function home(Request $request, ...$params)
     {
-        if (isset($localeName)) {
-            if (Locale::isDefault($localeName)) {
-                return redirect()->route('home');
-            }
-
-            $this->site->setLocale($localeName);
-        }
-
         $homePage = $this->site->homePage();
 
         $views = [
@@ -65,12 +57,7 @@ class FrontEndController extends Controller
     public function entry(Request $request, ...$params)
     {
         if (isset($params[0]) && Locale::exists($params[0])) {
-            $this->site->setLocale($localeName = $params[0]);
             $entryName = $params[1] ?? null;
-
-            if (Locale::isDefault($localeName)) {
-                return redirect()->route('entry', ['entry' => $entryName]);
-            }
         } else {
             $entryName = $params[0] ?? null;
         }
@@ -98,12 +85,7 @@ class FrontEndController extends Controller
     public function entryType(Request $request, ...$params)
     {
         if (isset($params[0]) && Locale::exists($params[0])) {
-            $this->site->setLocale($localeName = $params[0]);
             $entryTypeName = $params[1] ?? null;
-
-            if (Locale::isDefault($localeName)) {
-                return redirect()->to('entryType', ['entryType' => $entryTypeName]);
-            }
         } else {
             $entryTypeName = $params[0] ?? null;
         }
@@ -131,18 +113,9 @@ class FrontEndController extends Controller
     public function taxonomy(Request $request, ...$params)
     {
         if (isset($params[0]) && Locale::exists($params[0])) {
-            $this->site->setLocale($localeName = $params[0]);
             $taxonomyTypeName = $params[1] ?? null;
             $taxonomyName = $params[2] ?? null;
             $entryTypeName = $params[3] ?? null;
-
-            if (Locale::isDefault($localeName)) {
-                return redirect()->route('taxonomy', [
-                    'taxonomyType' => $taxonomyTypeName,
-                    'taxonomy' => $taxonomyName,
-                    'entryType' => $entryTypeName,
-                ]);
-            }
         } else {
             $taxonomyTypeName = $params[0] ?? null;
             $taxonomyName = $params[1] ?? null;
