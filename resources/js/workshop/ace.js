@@ -11,7 +11,8 @@ $(document).ready(function () {
             editorMode = $this.data('editor-mode'),
             editorMaxLines = $this.data('editor-max-lines') || $this.attr('rows') || 30,
             input = $this.data('input'),
-            $input = typeof input === 'string' ? $(input) : null;
+            $input = input ? $(input) : null,
+            $form = $input ? $input.parents('form').first() : null;
 
         if (! editorMode) {
             if ($this.hasClass('is-code') || $this.hasClass('is-html')) {
@@ -19,6 +20,10 @@ $(document).ready(function () {
             } else if ($this.hasClass('is-markdown')) {
                 editorMode = "ace/mode/markdown";
             }
+        }
+
+        if ($input) {
+            $input.val(base64);
         }
 
         let $editor = $('<div />')
@@ -34,13 +39,12 @@ $(document).ready(function () {
 
         editor.setValue(html, -1);
 
-        if ($input && $input.length > 0) {
-            $input.val(base64);
-
-            editor.session.on('change', function() {
+        if ($form && $input) {
+            $form.on('submit', function () {
                 html = editor.session.getValue();
                 base64 = base64Encode(html);
                 $input.val(base64);
+                return true;
             });
         }
     });
