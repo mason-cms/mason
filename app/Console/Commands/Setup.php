@@ -79,7 +79,7 @@ class Setup extends Command
             'DB_PORT' => $this->ask("Database port", env('DB_PORT')),
             'DB_DATABASE' => $this->ask("Database name", env('DB_DATABASE')),
             'DB_USERNAME' => $this->ask("Database username", env('DB_USERNAME')),
-            'DB_PASSWORD' => quote($this->ask("Database password", env('DB_PASSWORD'))),
+            'DB_PASSWORD' => $this->ask("Database password", env('DB_PASSWORD')),
         ]);
     }
 
@@ -92,7 +92,7 @@ class Setup extends Command
             'MAIL_HOST' => $this->ask("Mail host", env('MAIL_HOST')),
             'MAIL_PORT' => $this->ask("Mail port", env('MAIL_PORT')),
             'MAIL_USERNAME' => $this->ask("Mail username", env('MAIL_USERNAME')),
-            'MAIL_PASSWORD' => quote($this->ask("Mail password", env('MAIL_PASSWORD'))),
+            'MAIL_PASSWORD' => $this->ask("Mail password", env('MAIL_PASSWORD')),
             'MAIL_ENCRYPTION' => $this->ask("Mail encryption", env('MAIL_ENCRYPTION')),
             'MAIL_FROM_ADDRESS' => $this->ask("Mail from address", env('MAIL_FROM_ADDRESS')),
             'MAIL_FROM_NAME' => $this->ask("Mail from name", env('MAIL_FROM_NAME')),
