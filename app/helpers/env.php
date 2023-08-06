@@ -44,7 +44,6 @@ function writeEnv(array $data = [], bool $forceQuote = false, string $path = nul
         $oldLine = "{$key}={$oldValue}";
 
         if (! str_contains($oldContents, $oldLine)) {
-            $oldValue = quote($oldValue);
             $oldLine = "{$key}={$oldValue}";
         }
 
