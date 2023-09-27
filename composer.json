@@ -1,12 +1,12 @@
 {
-    "name": "limestonesoftware/mason",
+    "name": "optimumweb/mason",
     "type": "project",
     "description": "The Mason CMS",
     "keywords": ["framework", "laravel", "cms", "mason"],
     "authors": [
         {
             "name": "Jonathan Roy",
-            "email": "jonathan@limestone.dev",
+            "email": "jroy@optimumweb.ca",
             "role": "developer"
         }
     ],
