@@ -5,6 +5,9 @@ use App\Http\Controllers\Workshop\BlockController;
 use App\Http\Controllers\Workshop\ConfigurationController;
 use App\Http\Controllers\Workshop\DashboardController;
 use App\Http\Controllers\Workshop\EntryController;
+use App\Http\Controllers\Workshop\FormController;
+use App\Http\Controllers\Workshop\FormFieldController;
+use App\Http\Controllers\FormSubmissionController;
 use App\Http\Controllers\Workshop\UserController;
 use App\Http\Controllers\Workshop\TaxonomyController;
 use App\Http\Controllers\Workshop\MenuController;
@@ -59,6 +62,35 @@ Route::prefix('/blocks')->name('blocks.')->group(function () {
     Route::get('/{block}/edit', [BlockController::class, 'edit'])->name('edit');
     Route::patch('/{block}', [BlockController::class, 'update'])->name('update');
     Route::get('/{block}/destroy', [BlockController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('/forms')->name('forms.')->group(function () {
+    Route::get('/', [FormController::class, 'index'])->name('index');
+    Route::get('/create', [FormController::class, 'create'])->name('create');
+    Route::post('/', [FormController::class, 'store'])->name('store');
+
+    Route::prefix('/{form}')->group(function () {
+        Route::get('/', [FormController::class, 'show'])->name('show');
+        Route::get('/edit', [FormController::class, 'edit'])->name('edit');
+        Route::patch('/', [FormController::class, 'update'])->name('update');
+        Route::get('/destroy', [FormController::class, 'destroy'])->name('destroy');
+
+        Route::prefix('/fields')->name('fields.')->group(function () {
+            Route::get('/', [FormFieldController::class, 'index'])->name('index');
+            Route::get('/create', [FormFieldController::class, 'create'])->name('create');
+            Route::post('/', [FormFieldController::class, 'store'])->name('store');
+
+            Route::prefix('/{field}')->group(function () {
+                Route::get('/edit', [FormFieldController::class, 'edit'])->name('edit');
+                Route::patch('/', [FormFieldController::class, 'update'])->name('update');
+                Route::get('/destroy', [FormFieldController::class, 'destroy'])->name('destroy');
+            });
+        });
+
+        Route::prefix('/submissions')->name('submissions.')->group(function () {
+            Route::get('/', [FormSubmissionController::class, 'index'])->name('index');
+        });
+    });
 });
 
 Route::prefix('/users')->name('users.')->group(function () {

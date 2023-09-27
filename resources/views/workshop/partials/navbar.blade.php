@@ -109,6 +109,14 @@
             </a>
 
             <a
+                href="{{ $routeUri = route('workshop.forms.index') }}"
+                class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
+            >
+                @icon(\App\Models\Form::ICON, 'has-text-success')
+                <span>@lang('forms.title')</span>
+            </a>
+
+            <a
                 href="{{ $routeUri = route('workshop.users.index') }}"
                 class="navbar-item {{ $routeUri === $requestUri ? 'is-active' : '' }}"
             >
