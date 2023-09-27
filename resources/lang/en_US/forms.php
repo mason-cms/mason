@@ -48,4 +48,76 @@ return [
             'label' => "Cancel",
         ],
     ],
+
+    'fields' => [
+        'title' => "Fields",
+        'singular' => "Field",
+        'plural' => "Fields",
+
+        'attributes' => [
+            'name' => "Name",
+            'type' => "Type",
+            'label' => "Label",
+            'description' => "Description",
+            'rank' => "Rank",
+            'created_at' => "Created on",
+            'updated_at' => "Updated on",
+            'deleted_at' => "Deleted on",
+        ],
+
+        'types' => [
+            'text' => "Text",
+            'number' => "Number",
+            'email' => "Email",
+        ],
+
+        'actions' => [
+            'create' => [
+                'label' => "New Field",
+            ],
+
+            'view' => [
+                'label' => "View",
+            ],
+
+            'edit' => [
+                'title' => "Edit Field",
+                'label' => "Edit",
+            ],
+
+            'destroy' => [
+                'label' => "Delete",
+            ],
+
+            'save' => [
+                'label' => "Save",
+            ],
+        ],
+    ],
+
+    'submissions' => [
+        'title' => "Submissions",
+        'singular' => "Submission",
+        'plural' => "Submissions",
+
+        'attributes' => [
+            'created_at' => "Created on",
+            'updated_at' => "Updated on",
+            'deleted_at' => "Deleted on",
+        ],
+
+        'actions' => [
+            'view' => [
+                'label' => "View",
+            ],
+
+            'destroy' => [
+                'label' => "Delete",
+            ],
+
+            'save' => [
+                'label' => "Save",
+            ],
+        ],
+    ],
 ];

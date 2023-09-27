@@ -1,4 +1,7 @@
-<div class="card block-{{ $block->getKey() }}">
+<div
+    id="block-{{ $block->getKey() }}"
+    class="card"
+>
     <div class="card-content">
         <div class="block">
             <h3 class="title is-3">
