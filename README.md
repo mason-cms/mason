@@ -6,7 +6,7 @@ A Content Management System (CMS) built with PHP Laravel
 
 1. Clone the repository
 
-`git clone https://github.com/LimestoneSoftware/mason.git`
+`git clone https://github.com/optimumweb/mason.git`
 
 2. Create a `.env` file from `.env.example`
 
@@ -32,7 +32,7 @@ Look for the following variables:
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within Mason, please send an e-mail to Jonathan Roy via [jonathan@limestone.dev](mailto:jonathan@limestone.dev). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within Mason, please send an e-mail to Jonathan Roy via [jroy@optimumweb.ca](mailto:jroy@optimumweb.ca). All security vulnerabilities will be promptly addressed.
 
 ## License
 
