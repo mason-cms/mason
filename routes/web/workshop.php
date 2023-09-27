@@ -1,23 +1,23 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Workshop\BlockController;
 use App\Http\Controllers\Workshop\ConfigurationController;
 use App\Http\Controllers\Workshop\DashboardController;
 use App\Http\Controllers\Workshop\EntryController;
+use App\Http\Controllers\Workshop\EntryTypeController;
 use App\Http\Controllers\Workshop\FormController;
 use App\Http\Controllers\Workshop\FormFieldController;
-use App\Http\Controllers\FormSubmissionController;
-use App\Http\Controllers\Workshop\UserController;
-use App\Http\Controllers\Workshop\TaxonomyController;
-use App\Http\Controllers\Workshop\MenuController;
-use App\Http\Controllers\Workshop\MenuItemController;
-use App\Http\Controllers\Workshop\SettingsController;
-use App\Http\Controllers\Workshop\EntryTypeController;
-use App\Http\Controllers\Workshop\TaxonomyTypeController;
+use App\Http\Controllers\Workshop\FormSubmissionController;
 use App\Http\Controllers\Workshop\LocaleController;
 use App\Http\Controllers\Workshop\MediumController;
+use App\Http\Controllers\Workshop\MenuController;
+use App\Http\Controllers\Workshop\MenuItemController;
 use App\Http\Controllers\Workshop\RedirectionController;
+use App\Http\Controllers\Workshop\SettingsController;
+use App\Http\Controllers\Workshop\TaxonomyController;
+use App\Http\Controllers\Workshop\TaxonomyTypeController;
+use App\Http\Controllers\Workshop\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
 

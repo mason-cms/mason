@@ -6,18 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Entry;
 use App\Models\EntryType;
 use App\Models\Locale;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class EntryController extends Controller
 {
-    /**
-     * List Entries
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EntryType  $entryType
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request, EntryType $entryType)
+    public function index(Request $request, EntryType $entryType): Response
     {
         $query = $entryType->entries();
 
@@ -31,10 +26,8 @@ class EntryController extends Controller
 
         $total = $query->count();
 
-        $entries = $query->paginate($perPage = $request->input('per_page') ?? 25);
-
         return response()->view('workshop.entries.index', [
-            'entries' => $entries,
+            'entries' => $query->paginate($perPage = $request->input('per_page') ?? 25),
             'total' => $total,
             'perPage' => $perPage,
             'entryType' => $entryType,
@@ -43,14 +36,7 @@ class EntryController extends Controller
         ]);
     }
 
-    /**
-     * Create Entry
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EntryType  $entryType
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function create(Request $request, EntryType $entryType)
+    public function create(Request $request, EntryType $entryType): RedirectResponse
     {
         $entry = $entryType->entries()->make();
         $entry->locale()->associate(Locale::getDefault());
@@ -60,41 +46,20 @@ class EntryController extends Controller
         return redirect()->route('workshop.entries.edit', [$entryType, $entry]);
     }
 
-    /**
-     * Show Entry
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EntryType  $entryType
-     * @param  \App\Models\Entry  $entry
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function show(Request $request, EntryType $entryType, Entry $entry)
+    public function show(Request $request, EntryType $entryType, Entry $entry): RedirectResponse
     {
         return redirect()->route('workshop.entries.edit', [$entryType, $entry]);
     }
 
-    /**
-     * Edit Entry
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EntryType  $entryType
-     * @param  \App\Models\Entry  $entry
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, EntryType $entryType, Entry $entry)
+    public function edit(Request $request, EntryType $entryType, Entry $entry): Response
     {
-        return response()->view('workshop.entries.edit', compact('entryType', 'entry'));
+        return response()->view('workshop.entries.edit', [
+            'entryType' => $entryType,
+            'entry' => $entry,
+        ]);
     }
 
-    /**
-     * Update Entry
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EntryType  $entryType
-     * @param  \App\Models\Entry  $entry
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, EntryType $entryType, Entry $entry)
+    public function update(Request $request, EntryType $entryType, Entry $entry): RedirectResponse
     {
         $entry->updateOrFail($request->all()['entry'] ?? []);
 
@@ -105,15 +70,7 @@ class EntryController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Delete Entry
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EntryType  $entryType
-     * @param  \App\Models\Entry  $entry
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy(Request $request, EntryType $entryType, Entry $entry)
+    public function destroy(Request $request, EntryType $entryType, Entry $entry): RedirectResponse
     {
         $entry->deleteOrFail();
 

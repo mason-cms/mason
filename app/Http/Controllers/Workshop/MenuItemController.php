@@ -5,76 +5,43 @@ namespace App\Http\Controllers\Workshop;
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use App\Models\MenuItem;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class MenuItemController extends Controller
 {
-    /**
-     * Create Menu Item
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Menu  $menu
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function create(Request $request, Menu $menu)
+    public function create(Request $request, Menu $menu): RedirectResponse
     {
-        $item = new MenuItem($request->all()['item'] ?? []);
-        $item->menu()->associate($menu);
+        $item = $menu->items()->make($request->all()['item'] ?? []);
+
         $item->saveOrFail();
 
         return redirect()->back();
     }
 
-    /**
-     * Show Menu Item
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Menu  $menu
-     * @param  \App\Models\MenuItem  $item
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function show(Request $request, Menu $menu, MenuItem $item)
+    public function show(Request $request, Menu $menu, MenuItem $item): RedirectResponse
     {
         return redirect()->route('workshop.menus.items.edit', [$menu, $item]);
     }
 
-    /**
-     * Edit Menu Item
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Menu  $menu
-     * @param  \App\Models\MenuItem  $item
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, Menu $menu, MenuItem $item)
+    public function edit(Request $request, Menu $menu, MenuItem $item): Response
     {
-        return response()->view('workshop.menus.items.edit', compact('menu', 'item'));
+        return response()->view('workshop.menus.items.edit', [
+            'request' => $request,
+            'menu' => $menu,
+            'item' => $item,
+        ]);
     }
 
-    /**
-     * Update Menu Item
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Menu  $menu
-     * @param  \App\Models\MenuItem  $item
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, Menu $menu, MenuItem $item)
+    public function update(Request $request, Menu $menu, MenuItem $item): RedirectResponse
     {
         $item->updateOrFail($request->all()['item'] ?? []);
 
         return redirect()->back();
     }
 
-    /**
-     * Destroy Menu Item
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Menu  $menu
-     * @param  \App\Models\MenuItem  $item
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy(Request $request, Menu $menu, MenuItem $item)
+    public function destroy(Request $request, Menu $menu, MenuItem $item): RedirectResponse
     {
         $item->deleteOrFail();
 

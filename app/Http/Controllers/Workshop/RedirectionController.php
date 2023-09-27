@@ -4,17 +4,13 @@ namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Redirection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class RedirectionController extends Controller
 {
-    /**
-     * List Redirections
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $query = Redirection::query();
 
@@ -31,27 +27,15 @@ class RedirectionController extends Controller
         ]);
     }
 
-    /**
-     * Create Redirection
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
-        $redirection = new Redirection($request->all()['redirection'] ?? []);
-
-        return response()->view('workshop.configuration.redirections.create', compact('redirection'));
+        return response()->view('workshop.configuration.redirections.create', [
+            'request' => $request,
+            'redirection' => new Redirection($request->all()['redirection'] ?? []),
+        ]);
     }
 
-    /**
-     * Store Redirection
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $redirection = new Redirection($request->all()['redirection'] ?? []);
 
@@ -60,41 +44,22 @@ class RedirectionController extends Controller
         return redirect()->route('workshop.configuration.redirection.index');
     }
 
-    /**
-     * Edit Redirection
-     *
-     * @param Request $request
-     * @param Redirection $redirection
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, Redirection $redirection)
+    public function edit(Request $request, Redirection $redirection): Response
     {
-        return response()->view('workshop.configuration.redirections.edit', compact('redirection'));
+        return response()->view('workshop.configuration.redirections.edit', [
+            'request' => $request,
+            'redirection' => $redirection,
+        ]);
     }
 
-    /**
-     * Update Redirection
-     *
-     * @param Request $request
-     * @param Redirection $redirection
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, Redirection $redirection)
+    public function update(Request $request, Redirection $redirection): RedirectResponse
     {
         $redirection->updateOrFail($request->all()['redirection'] ?? []);
 
         return redirect()->route('workshop.configuration.redirection.index');
     }
 
-    /**
-     * Delete Redirection
-     *
-     * @param Request $request
-     * @param Redirection $redirection
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function destroy(Request $request, Redirection $redirection)
+    public function destroy(Request $request, Redirection $redirection): RedirectResponse
     {
         $redirection->deleteOrFail();
 

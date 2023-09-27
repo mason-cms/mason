@@ -4,17 +4,13 @@ namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\TaxonomyType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TaxonomyTypeController extends Controller
 {
-    /**
-     * List Taxonomy Types
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $query = TaxonomyType::query();
 
@@ -27,6 +23,7 @@ class TaxonomyTypeController extends Controller
         }
 
         return response()->view('workshop.configuration.taxonomy-types.index', [
+            'request' => $request,
             'taxonomyTypes' => $query->paginate($perPage = $request->input('per_page') ?? 25),
             'total' => $query->count(),
             'perPage' => $perPage,
@@ -35,27 +32,15 @@ class TaxonomyTypeController extends Controller
         ]);
     }
 
-    /**
-     * Create Taxonomy Type
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
-        $taxonomyType = new TaxonomyType($request->all()['taxonomy_type'] ?? []);
-
-        return response()->view('workshop.configuration.taxonomy-types.create', compact('taxonomyType'));
+        return response()->view('workshop.configuration.taxonomy-types.create', [
+            'request' => $request,
+            'taxonomyType' => new TaxonomyType($request->all()['taxonomy_type'] ?? []),
+        ]);
     }
 
-    /**
-     * Store Taxonomy Type
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $taxonomyType = new TaxonomyType($request->all()['taxonomy_type'] ?? []);
 
@@ -64,53 +49,27 @@ class TaxonomyTypeController extends Controller
         return redirect()->route('workshop.configuration.taxonomy-type.show', [$taxonomyType]);
     }
 
-    /**
-     * Show Taxonomy Type
-     *
-     * @param Request $request
-     * @param TaxonomyType $taxonomyType
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function show(Request $request, TaxonomyType $taxonomyType)
+    public function show(Request $request, TaxonomyType $taxonomyType): RedirectResponse
     {
         return redirect()->route('workshop.configuration.taxonomy-type.edit', [$taxonomyType]);
     }
 
-    /**
-     * Edit Taxonomy Type
-     *
-     * @param Request $request
-     * @param TaxonomyType $taxonomyType
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, TaxonomyType $taxonomyType)
+    public function edit(Request $request, TaxonomyType $taxonomyType): Response
     {
-        return response()->view('workshop.configuration.taxonomy-types.edit', compact('taxonomyType'));
+        return response()->view('workshop.configuration.taxonomy-types.edit', [
+            'request' => $request,
+            'taxonomyType' => $taxonomyType,
+        ]);
     }
 
-    /**
-     * Update Taxonomy Type
-     *
-     * @param Request $request
-     * @param TaxonomyType $taxonomyType
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, TaxonomyType $taxonomyType)
+    public function update(Request $request, TaxonomyType $taxonomyType): RedirectResponse
     {
         $taxonomyType->updateOrFail($request->all()['taxonomy_type'] ?? []);
 
         return redirect()->route('workshop.configuration.taxonomy-type.index');
     }
 
-    /**
-     * Delete Taxonomy Type
-     *
-     * @param Request $request
-     * @param TaxonomyType $taxonomyType
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function destroy(Request $request, TaxonomyType $taxonomyType)
+    public function destroy(Request $request, TaxonomyType $taxonomyType): RedirectResponse
     {
         $taxonomyType->deleteOrFail();
 

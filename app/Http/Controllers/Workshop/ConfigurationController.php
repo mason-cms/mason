@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Command\Command;
 
@@ -11,26 +13,14 @@ class ConfigurationController extends Controller
 {
     const ICON = 'fa-screwdriver-wrench';
 
-    /**
-     * General
-     *
-     * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function general(Request $request)
+    public function general(Request $request): Response
     {
-        return view('workshop.configuration.general', [
+        return response()->view('workshop.configuration.general', [
             'fields' => $this->getFields(),
         ]);
     }
 
-    /**
-     * Update Configuration
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $configuration = $request->all()['configuration'] ?? [];
 
@@ -67,13 +57,7 @@ class ConfigurationController extends Controller
         return redirect()->route('workshop.configuration.general');
     }
 
-    /**
-     * Update App
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function updateApp(Request $request)
+    public function updateApp(Request $request): RedirectResponse
     {
         $result = Artisan::call('mason:update', ['--deploy' => true]);
 
@@ -85,13 +69,7 @@ class ConfigurationController extends Controller
         ]);
     }
 
-    /**
-     * Update Theme
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function updateTheme(Request $request)
+    public function updateTheme(Request $request): RedirectResponse
     {
         $result = Artisan::call('mason:theme:update');
 
@@ -103,7 +81,7 @@ class ConfigurationController extends Controller
         ]);
     }
 
-    protected function getFields()
+    protected function getFields(): array
     {
         return [
             [
