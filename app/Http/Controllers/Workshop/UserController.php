@@ -4,17 +4,13 @@ namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
-    /**
-     * List Users
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $query = User::query();
 
@@ -26,40 +22,25 @@ class UserController extends Controller
             $query->filter($filters);
         }
 
-        $total = $query->count();
-
-        $users = $query->paginate($perPage = $request->input('per_page') ?? 25);
-
         return response()->view('workshop.users.index', [
-            'users' => $users,
-            'total' => $total,
+            'request' => $request,
+            'users' => $query->paginate($perPage = $request->input('per_page') ?? 25),
+            'total' => $query->count(),
             'perPage' => $perPage,
             'filters' => $filters ?? null,
             'search' => $search ?? null,
         ]);
     }
 
-    /**
-     * Create User
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
-        $user = new User;
-
-        return response()->view('workshop.users.create', compact('user'));
+        return response()->view('workshop.users.create', [
+            'request' => $request,
+            'user' => new User($request->all()['user'] ?? []),
+        ]);
     }
 
-    /**
-     * Store User
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $user = new User($request->all()['user'] ?? []);
 
@@ -68,54 +49,27 @@ class UserController extends Controller
         return redirect()->route('workshop.users.index');
     }
 
-    /**
-     * Show User
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function show(Request $request, User $user)
+    public function show(Request $request, User $user): RedirectResponse
     {
         return redirect()->route('workshop.users.edit', [$user]);
     }
 
-    /**
-     * Edit User
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, User $user)
+    public function edit(Request $request, User $user): Response
     {
-        return response()->view('workshop.users.edit', compact('user'));
+        return response()->view('workshop.users.edit', [
+            'request' => $request,
+            'user' => $user,
+        ]);
     }
 
-    /**
-     * Update User
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
         $user->updateOrFail($request->all()['user'] ?? []);
 
         return redirect()->back();
     }
 
-    /**
-     * Destroy User
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function destroy(Request $request, User $user)
+    public function destroy(Request $request, User $user): RedirectResponse
     {
         $user->deleteOrFail();
 

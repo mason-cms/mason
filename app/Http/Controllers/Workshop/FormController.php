@@ -25,11 +25,9 @@ class FormController extends Controller
 
         $total = $query->count();
 
-        $forms = $query->paginate($perPage = $request->input('per_page') ?? 25);
-
         return response()->view('workshop.forms.index', [
             'request' => $request,
-            'forms' => $forms,
+            'forms' => $query->paginate($perPage = $request->input('per_page') ?? 25),
             'locales' => Locale::all(),
             'total' => $total,
             'perPage' => $perPage,

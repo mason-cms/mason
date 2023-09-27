@@ -6,17 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Locale;
 use App\Models\Menu;
 use App\Models\MenuItem;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class MenuController extends Controller
 {
-    /**
-     * Display menu.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         if (isset($request->location, $request->locale_id)) {
             $menu = Menu::where([
@@ -35,14 +31,7 @@ class MenuController extends Controller
         ]);
     }
 
-    /**
-     * Update Menu
-     *
-     * @param Request $request
-     * @param Menu $menu
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, Menu $menu)
+    public function update(Request $request, Menu $menu): RedirectResponse
     {
         $requestInput = $request->all();
 
@@ -50,9 +39,8 @@ class MenuController extends Controller
             $rank = 0;
 
             foreach ($requestInput['menu']['items'] as $menuItemKey) {
-                if ($menuItem = MenuItem::find($menuItemKey)) {
-                    $menuItem->update(['rank' => $rank++]);
-                }
+                $item = $menu->items()->findOrFail($menuItemKey);
+                $item->updateOrFail(['rank' => $rank++]);
             }
         }
 

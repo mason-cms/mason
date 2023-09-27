@@ -4,17 +4,13 @@ namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\EntryType;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class EntryTypeController extends Controller
 {
-    /**
-     * List Entry Types
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $query = EntryType::query();
 
@@ -35,27 +31,14 @@ class EntryTypeController extends Controller
         ]);
     }
 
-    /**
-     * Create Entry Type
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
-        $entryType = new EntryType($request->all()['entry_type'] ?? []);
-
-        return response()->view('workshop.configuration.entry-types.create', compact('entryType'));
+        return response()->view('workshop.configuration.entry-types.create', [
+            'entryType' => new EntryType($request->all()['entry_type'] ?? []),
+        ]);
     }
 
-    /**
-     * Store Entry Type
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $entryType = new EntryType($request->all()['entry_type'] ?? []);
 
@@ -64,53 +47,26 @@ class EntryTypeController extends Controller
         return redirect()->route('workshop.configuration.entry-type.show', [$entryType]);
     }
 
-    /**
-     * Show Entry Type
-     *
-     * @param Request $request
-     * @param EntryType $entryType
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function show(Request $request, EntryType $entryType)
+    public function show(Request $request, EntryType $entryType): RedirectResponse
     {
         return redirect()->route('workshop.configuration.entry-type.edit', [$entryType]);
     }
 
-    /**
-     * Edit Entry Type
-     *
-     * @param Request $request
-     * @param EntryType $entryType
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, EntryType $entryType)
+    public function edit(Request $request, EntryType $entryType): Response
     {
-        return response()->view('workshop.configuration.entry-types.edit', compact('entryType'));
+        return response()->view('workshop.configuration.entry-types.edit', [
+            'entryType' => $entryType,
+        ]);
     }
 
-    /**
-     * Update Entry Type
-     *
-     * @param Request $request
-     * @param EntryType $entryType
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, EntryType $entryType)
+    public function update(Request $request, EntryType $entryType): RedirectResponse
     {
         $entryType->updateOrFail($request->all()['entry_type'] ?? []);
 
         return redirect()->route('workshop.configuration.entry-type.index');
     }
 
-    /**
-     * Delete Entry Type
-     *
-     * @param Request $request
-     * @param EntryType $entryType
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function destroy(Request $request, EntryType $entryType)
+    public function destroy(Request $request, EntryType $entryType): RedirectResponse
     {
         $entryType->deleteOrFail();
 

@@ -4,17 +4,13 @@ namespace App\Http\Controllers\Workshop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Locale;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class LocaleController extends Controller
 {
-    /**
-     * List Locales
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $query = Locale::query();
 
@@ -35,27 +31,14 @@ class LocaleController extends Controller
         ]);
     }
 
-    /**
-     * Create Locale
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
-        $locale = new Locale($request->all()['locale'] ?? []);
-
-        return response()->view('workshop.configuration.locales.create', compact('locale'));
+        return response()->view('workshop.configuration.locales.create', [
+            'locale' => new Locale($request->all()['locale'] ?? []),
+        ]);
     }
 
-    /**
-     * Store Locale
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $locale = new Locale($request->all()['locale'] ?? []);
 
@@ -64,53 +47,26 @@ class LocaleController extends Controller
         return redirect()->route('workshop.configuration.locale.show', [$locale]);
     }
 
-    /**
-     * Show Locale
-     *
-     * @param Request $request
-     * @param Locale $locale
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function show(Request $request, Locale $locale)
+    public function show(Request $request, Locale $locale): RedirectResponse
     {
         return redirect()->route('workshop.configuration.locale.edit', [$locale]);
     }
 
-    /**
-     * Edit Locale
-     *
-     * @param Request $request
-     * @param Locale $locale
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, Locale $locale)
+    public function edit(Request $request, Locale $locale): Response
     {
-        return response()->view('workshop.configuration.locales.edit', compact('locale'));
+        return response()->view('workshop.configuration.locales.edit', [
+            'locale' => $locale,
+        ]);
     }
 
-    /**
-     * Update Locale
-     *
-     * @param Request $request
-     * @param Locale $locale
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, Locale $locale)
+    public function update(Request $request, Locale $locale): RedirectResponse
     {
         $locale->updateOrFail($request->all()['locale'] ?? []);
 
         return redirect()->route('workshop.configuration.locale.index');
     }
 
-    /**
-     * Delete Locale
-     *
-     * @param Request $request
-     * @param Locale $locale
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Throwable
-     */
-    public function destroy(Request $request, Locale $locale)
+    public function destroy(Request $request, Locale $locale): RedirectResponse
     {
         $locale->deleteOrFail();
 

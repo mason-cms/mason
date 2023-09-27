@@ -3,18 +3,15 @@
 namespace App\Http\Controllers\Workshop;
 
 use App\Models\Medium;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class MediumController extends Controller
 {
-    /**
-     * List Media
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $query = Medium::query();
 
@@ -26,42 +23,24 @@ class MediumController extends Controller
             $query->filter($filters);
         }
 
-        $total = $query->count();
-
-        $media = $query->paginate($perPage = $request->input('per_page') ?? 25);
-
         return response()->view('workshop.media.index', [
-            'media' => $media,
-            'total' => $total,
+            'media' => $query->paginate($perPage = $request->input('per_page') ?? 25),
+            'total' => $query->count(),
             'perPage' => $perPage,
             'filters' => $filters ?? null,
             'search' => $search ?? null,
         ]);
     }
 
-    /**
-     * Create Medium
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function create(Request $request): Response
     {
-        $medium = new Medium($request->all()['medium'] ?? []);
-
         return response()->view('workshop.media.create', [
-            'medium' => $medium,
+            'request' => $request,
+            'medium' => new Medium($request->all()['medium'] ?? []),
         ]);
     }
 
-    /**
-     * Store Medium
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     * @throws \Throwable
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse|JsonResponse
     {
         $media = collect();
 
@@ -82,14 +61,7 @@ class MediumController extends Controller
         return redirect()->route('workshop.medium.index');
     }
 
-    /**
-     * Show Medium
-     *
-     * @param Request $request
-     * @param Medium $media
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse|void
-     */
-    public function show(Request $request, Medium $medium)
+    public function show(Request $request, Medium $medium): RedirectResponse|JsonResponse|null
     {
         if ($request->expectsJson()) {
             return response()->json($medium);
@@ -102,7 +74,7 @@ class MediumController extends Controller
         abort(404);
     }
 
-    public function destroy(Request $request, Medium $medium)
+    public function destroy(Request $request, Medium $medium): RedirectResponse
     {
         $medium->deleteOrFail();
 

@@ -6,6 +6,7 @@ use App\Models\Locale;
 use App\Models\Redirection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class FrontEndController extends Controller
 {
@@ -16,19 +17,12 @@ class FrontEndController extends Controller
         $this->site = site();
     }
 
-    protected function boot()
+    protected function boot(): void
     {
         $this->site->theme()->boot();
     }
 
-    /**
-     * Show the home page
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $localeName
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
-    public function home(Request $request, ...$params)
+    public function home(Request $request, ...$params): ?Response
     {
         $this->boot();
 
@@ -53,14 +47,7 @@ class FrontEndController extends Controller
         abort(404);
     }
 
-    /**
-     * Show a specified entry
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  $params
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse|void
-     */
-    public function entry(Request $request, ...$params)
+    public function entry(Request $request, ...$params): ?Response
     {
         $this->boot();
 
@@ -83,14 +70,7 @@ class FrontEndController extends Controller
         abort(404);
     }
 
-    /**
-     * List entries for an entry type
-     *
-     * @param Request $request
-     * @param ...$params
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|void
-     */
-    public function entryType(Request $request, ...$params)
+    public function entryType(Request $request, ...$params): ?Response
     {
         $this->boot();
 
@@ -113,14 +93,7 @@ class FrontEndController extends Controller
         abort(404);
     }
 
-    /**
-     * Show a specified taxonomy
-     *
-     * @param Request $request
-     * @param ...$params
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|void
-     */
-    public function taxonomy(Request $request, ...$params)
+    public function taxonomy(Request $request, ...$params): ?Response
     {
         $this->boot();
 
