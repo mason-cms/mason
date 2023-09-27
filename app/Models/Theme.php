@@ -35,19 +35,21 @@ class Theme
         $packageParts = explode('/', $this->package, 2);
         $this->vendor = $packageParts[0] ?? null;
         $this->project = $packageParts[1] ?? null;
-    }
 
-    public function boot(): void
-    {
         $viewPaths = config('view.paths');
         $viewPaths[] = $this->path("resources/views");
         config(['view.paths' => array_unique($viewPaths)]);
+    }
 
-        if (file_exists($bootFile = $this->path('boot.php'))) {
-            require_once $bootFile;
+    public function boot(bool $force = false): void
+    {
+        if (! $this->booted || $force) {
+            if (file_exists($bootFile = $this->path('boot.php'))) {
+                require_once $bootFile;
+            }
+
+            $this->booted = true;
         }
-
-        $this->booted = true;
     }
 
     public function name(): ?string
@@ -212,10 +214,9 @@ class Theme
             "git fetch --all",
             "git branch backup-{$datetime}",
             "git checkout {$branch}",
+            "git stash",
             "git pull",
             "composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev",
-            "npm install",
-            "npm run production",
         ]));
 
         $this->createSymlink();
@@ -251,21 +252,7 @@ class Theme
         $settings = $this->info('settings') ?? [];
 
         foreach ($settings as &$setting) {
-            $value = Setting::get($setting->name);
-
-            if (! isset($value) && property_exists($setting, 'default')) {
-                $value = $setting->default;
-            }
-
-            if (isset($setting->type)) {
-                switch ($setting->type) {
-                    case 'file':
-                        $value = isset($value) ? Storage::url($value) : null;
-                        break;
-                }
-            }
-
-            $setting->value = $value;
+            $setting->value = Setting::get($setting->name) ?? $setting->default ?? null;
         }
 
         $this->settings = collect($settings);

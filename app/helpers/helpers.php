@@ -10,6 +10,11 @@ function theme(string $name = null): \App\Models\Theme
     return \App\Models\Theme::getInstance($name);
 }
 
+function storageUrl(string $path): ?string
+{
+    return \Illuminate\Support\Facades\Storage::url($path);
+}
+
 function i(string $class, string $style = 'fa-solid'): string
 {
     return "<i class=\"{$style} {$class}\"></i>";

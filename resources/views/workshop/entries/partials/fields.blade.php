@@ -52,7 +52,8 @@
                             class="{{ isset($entry->editor_mode) ? $entry->editor_mode->cssClass() : '' }}"
                             data-input="#entry-content-input"
                             data-media-upload="{{ route('workshop.medium.store', ['medium' => ['parent_id' => $entry->getKey(), 'parent_type' => get_class($entry)]]) }}"
-                        >{!! base64_encode($entry->content) !!}</div>
+                            data-base64="{!! base64_encode($entry->content) !!}"
+                        ></div>
 
                         <input
                             id="entry-content-input"

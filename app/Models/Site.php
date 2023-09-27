@@ -36,18 +36,14 @@ class Site
         }
     }
 
-    public function boot(bool $bootTheme = true): void
+    public function boot(bool $force = false): void
     {
-        if ($defaultLocale = Locale::getDefault()) {
-            $this->setLocale($defaultLocale);
-        }
+        if (! $this->booted || $force) {
+            if ($defaultLocale = Locale::getDefault()) {
+                $this->setLocale($defaultLocale);
+            }
 
-        $this->loadLang();
-
-        $this->booted = true;
-
-        if ($bootTheme && isset($this->theme) && ! $this->theme->booted) {
-            $this->theme->boot();
+            $this->booted = true;
         }
     }
 
@@ -90,6 +86,8 @@ class Site
             }
 
             Carbon::setLocale($locale->system_name);
+
+            $this->loadLang();
         }
     }
 
@@ -100,7 +98,7 @@ class Site
 
     public function alternateLocales(): Builder
     {
-        return $this->locales()->whereNot('id', $this->locale->getKey());
+        return $this->locales()->where('id', '!=', $this->locale->getKey());
     }
 
     public function path(Locale $locale = null): ?string
@@ -130,14 +128,20 @@ class Site
         $this->lang = Arr::dot($lang);
     }
 
-    public function lang(): ?string
+    public function lang(): array
     {
         return $this->lang;
     }
 
-    public function trans($key): ?string
+    public function trans(string $key, array $replace = []): ?string
     {
-        return $this->lang[$key] ?? $key;
+        $text = $this->lang[$key] ?? $key;
+
+        foreach ($replace as $k => $v) {
+            $text = str_replace(":{$k}", $v, $text);
+        }
+
+        return $text;
     }
 
     public function entries(mixed $type = null, mixed $locale = null, string $status = Entry::STATUS_PUBLISHED): Builder

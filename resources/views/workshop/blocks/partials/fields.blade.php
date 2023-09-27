@@ -22,7 +22,8 @@
                             class="textarea {{ isset($block->editor_mode) ? $block->editor_mode->cssClass() : '' }}"
                             data-input="#block-content-input"
                             data-media-upload="{{ route('workshop.medium.store', ['medium' => ['parent_id' => $block->getKey(), 'parent_type' => get_class($block)]]) }}"
-                        >{!! base64_encode($block->content) !!}</div>
+                            data-base64="{!! base64_encode($block->content) !!}"
+                        ></div>
 
                         <input
                             id="block-content-input"
