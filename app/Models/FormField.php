@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class FormField extends Model
 {
@@ -21,15 +23,27 @@ class FormField extends Model
         'type',
         'label',
         'description',
+        'placeholder',
+        'default_value',
+        'class',
+        'rules',
+        'options',
+        'columns',
         'rank',
     ];
 
     protected $casts = [
         'type' => FormFieldType::class,
+        'is_required' => 'boolean',
+        'columns' => 'integer',
         'rank' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
+    ];
+
+    protected $attributes = [
+        'columns' => 12,
     ];
 
     /**
@@ -49,7 +63,7 @@ class FormField extends Model
         });
 
         static::creating(function (self $field) {
-            if (! isset($field->rank)) {
+            if (!isset($field->rank)) {
                 if (isset($field->form)) {
                     if ($lastField = $field->form->fields->last()) {
                         $field->rank = $lastField->rank + 1;
@@ -57,6 +71,127 @@ class FormField extends Model
                 }
             }
         });
+    }
+
+    /**
+     * ==================================================
+     * Scopes
+     * ==================================================
+     */
+
+    public function scopeByName(Builder $query, string $name): Builder
+    {
+        return $query
+            ->where('name', $name)
+            ->orWhere('name', "{$name}[]");
+    }
+
+    /**
+     * ==================================================
+     * Accessors & Mutators
+     * ==================================================
+     */
+
+    public function getDotnameAttribute(): string
+    {
+        $dotname = $this->name;
+        $dotname = Str::remove('[]', $dotname);
+        $dotname = Str::replace('[', '.', $dotname);
+        $dotname = Str::remove(']', $dotname);
+        return $dotname;
+    }
+
+    public function getRulekeyAttribute(): string
+    {
+        $rulekey = $this->name;
+        $rulekey = Str::replace('[]', '.*', $rulekey);
+        $rulekey = Str::replace('[', '.', $rulekey);
+        $rulekey = Str::remove(']', $rulekey);
+        return $rulekey;
+    }
+
+    public function getIsRequiredAttribute(): bool
+    {
+        return in_array('required', explode('|', $this->rules));
+    }
+
+    public function getIsMultipleAttribute(): bool
+    {
+        return str_ends_with($this->name, '[]');
+    }
+
+    public function getAcceptAttribute(): Collection
+    {
+        $accept = collect();
+
+        $rules = explode('|', $this->rules);
+
+        foreach ($rules as $rule) {
+            switch ($rule) {
+                case 'image':
+                    $accept->push("image/*");
+                    break;
+
+                default:
+                    if (str_starts_with($rule, 'mimes:')) {
+                        $rule = explode(':', $rule, 2);
+                        $mimes = explode(',', $rule[1]);
+
+                        foreach ($mimes as $mime) {
+                            switch ($mime) {
+                                case 'jpg':
+                                case 'jpeg':
+                                case 'png':
+                                case 'gif':
+                                    $accept->push("image/{$mime}");
+                                    break;
+
+                                case 'pdf':
+                                    $accept->push("application/{$mime}");
+                                    break;
+
+                                default:
+                                    if (str_contains($mime, '/')) {
+                                        $accept->push($mime);
+                                    }
+                            }
+                        }
+                    }
+            }
+        }
+
+        return $accept;
+    }
+
+    public function getHtmlOptionsAttribute(): Collection
+    {
+        $options = collect();
+
+        $lines = explode(PHP_EOL, $this->attributes['options']);
+        $lines = array_map('trim', $lines);
+
+        foreach ($lines as $line) {
+            if (
+                str_contains($line, ':')
+                && ! str_contains($line, ': ')
+                && ! str_starts_with($line, ':')
+                && ! str_ends_with($line, ':')
+            ) {
+                $line = explode(':', $line, 2);
+
+                $options->push([
+                    'value' => $line[0],
+                    'label' => $line[1],
+                ]);
+            } else {
+                $options->push([
+                    'value' => $line,
+                    'label' => $line,
+                ]);
+            }
+        }
+
+        return $options;
     }
 
     /**
@@ -85,11 +220,11 @@ class FormField extends Model
     {
         $views = [
             "{$this->form->locale->name}.forms.fields.{$this->name}",
-            "{$this->form->locale->name}.forms.fields.{$this->type}",
+            "{$this->form->locale->name}.forms.fields.{$this->type->value}",
             "{$this->form->locale->name}.forms.fields.default",
             "{$this->form->locale->name}.forms.field",
             "forms.fields.{$this->name}",
-            "forms.fields.{$this->type}",
+            "forms.fields.{$this->type->value}",
             "forms.fields.default",
             "forms.field",
         ];
@@ -103,12 +238,17 @@ class FormField extends Model
         return null;
     }
 
-    public function render(array $data = []): ?string
+    public function render(array $data = []): string
     {
         if ($view = $this->view()) {
-            return view($view, array_merge($data, ['formField' => $this]))->render();
+            return view($view, array_merge($data, ['field' => $this]))->render();
         }
 
-        return null;
+        return "";
+    }
+
+    public function old(string $default = null): mixed
+    {
+        return old($this->dotname, $default);
     }
 }

@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('type')->index();
             $table->string('label')->nullable();
             $table->text('description')->nullable();
+            $table->string('placeholder')->nullable();
+            $table->text('default_value')->nullable();
+            $table->string('class')->nullable();
+            $table->string('rules')->nullable();
+            $table->text('options')->nullable();
+            $table->tinyInteger('columns')->nullable();
             $table->integer('rank')->nullable();
             $table->timestamps();
             $table->softDeletes();

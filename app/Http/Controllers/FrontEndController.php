@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Form;
 use App\Models\Locale;
 use App\Models\Redirection;
 use Illuminate\Http\RedirectResponse;
@@ -129,6 +130,28 @@ class FrontEndController extends Controller
         }
 
         abort(404);
+    }
+
+    public function formSubmit(Request $request, Form $form): RedirectResponse
+    {
+        $this->boot();
+
+        $request->validate($form->rules);
+
+        $submission = $form->submissions()->make()->fill([
+            'input' => $request->all(),
+            'user_agent' => $request->userAgent(),
+            'user_ip' => $request->ip(),
+            'referrer_url' => $request->header('referer'),
+        ]);
+
+        $submission->saveOrFail();
+
+        $form->runActions($submission);
+
+        $success = $form->confirmation_message ?? __('forms.actions.submit.success');
+
+        return redirect()->back()->with('success', $success);
     }
 
     public function redirect(Request $request, Redirection $redirection): RedirectResponse
