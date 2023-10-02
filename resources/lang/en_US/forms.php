@@ -89,6 +89,7 @@ return [
             'number' => "Number",
             'email' => "Email",
             'tel' => "Phone Number",
+            'textarea' => "Textarea",
             'file' => "File",
             'select' => "Select",
             'checkboxes' => "Checkboxes",
