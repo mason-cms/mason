@@ -144,5 +144,80 @@
                 </div>
             </div>
         </fieldset>
+
+        <fieldset class="card block">
+            <div class="card-content">
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-grecaptcha-enabled"
+                    >
+                        @lang('forms.attributes.grecaptcha_enabled')
+                    </label>
+
+                    <div class="control">
+                        <label class="radio">
+                            <input
+                                name="form[grecaptcha_enabled]"
+                                type="radio"
+                                value="1"
+                                {{ isset($form->grecaptcha_enabled) && $form->grecaptcha_enabled === true ? 'checked' : '' }}
+                            /> @lang('general.yes')
+                        </label>
+
+                        <label class="radio">
+                            <input
+                                name="form[grecaptcha_enabled]"
+                                type="radio"
+                                value="0"
+                                {{ isset($form->grecaptcha_enabled) && $form->grecaptcha_enabled === false ? 'checked' : '' }}
+                            /> @lang('general.no')
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-grecaptcha-site-key"
+                    >
+                        @lang('forms.attributes.grecaptcha_site_key')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="form-grecaptcha-site-key"
+                            class="input"
+                            name="form[grecaptcha_site_key]"
+                            type="text"
+                            value="{!! $form->grecaptcha_site_key !!}"
+                            maxlength="255"
+                            {{ $form->grecaptcha_enabled ? 'required' : '' }}
+                        />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-grecaptcha-secret-key"
+                    >
+                        @lang('forms.attributes.grecaptcha_secret_key')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="form-grecaptcha-secret-key"
+                            class="input"
+                            name="form[grecaptcha_secret_key]"
+                            type="text"
+                            value="{!! $form->grecaptcha_secret_key !!}"
+                            maxlength="255"
+                            {{ $form->grecaptcha_enabled ? 'required' : '' }}
+                        />
+                    </div>
+                </div>
+            </div>
+        </fieldset>
     </div>
 </div>
