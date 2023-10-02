@@ -147,7 +147,9 @@ class FrontEndController extends Controller
 
         $submission->saveOrFail();
 
-        $form->runActions($submission);
+        $submission->verify();
+
+        $submission->runActions();
 
         $success = $form->confirmation_message ?? __('forms.actions.submit.success');
 

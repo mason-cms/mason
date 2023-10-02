@@ -27,12 +27,20 @@ class Form extends Model
         'confirmation_message',
         'send_to',
         'redirect_to',
+        'grecaptcha_enabled',
+        'grecaptcha_site_key',
+        'grecaptcha_secret_key',
     ];
 
     protected $casts = [
+        'grecaptcha_enabled' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
+    ];
+
+    protected $hidden = [
+        'grecaptcha_secret_key',
     ];
 
     /**
@@ -47,6 +55,11 @@ class Form extends Model
 
         static::saving(function (self $form) {
             $form->name ??= Str::slug($form->title);
+
+            // Prevent enabling Google reCAPTCHA without entering required keys
+            if (! isset($form->grecaptcha_site_key, $form->grecaptcha_secret_key)) {
+                $form->grecaptcha_enabled = false;
+            }
         });
 
         static::deleted(function (self $form) {
@@ -183,8 +196,10 @@ class Form extends Model
 
     public function runActions(FormSubmission $submission): void
     {
-        if (isset($this->send_to)) {
-            $submission->send($this->send_to);
+        if (! $submission->isSpam()) {
+            if (isset($this->send_to)) {
+                $submission->send($this->send_to);
+            }
         }
 
         if (isset($this->redirect_to)) {
