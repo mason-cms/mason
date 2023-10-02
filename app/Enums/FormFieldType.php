@@ -8,6 +8,7 @@ enum FormFieldType: string
     case NUMBER = 'number';
     case EMAIL = 'email';
     case TEL = 'tel';
+    case TEXTAREA = 'textarea';
     case FILE = 'file';
     case SELECT = 'select';
     case CHECKBOXES = 'checkboxes';
