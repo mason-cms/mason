@@ -45,8 +45,15 @@ try {
     $redirectionSources = null;
 }
 
-Route::any('/', [FrontEndController::class, 'home'])
-    ->name('home');
+Route::any(
+    uri: '/',
+    action: [FrontEndController::class, 'home']
+)->name('home');
+
+Route::post(
+    uri: '/form/{form:name}',
+    action: [FrontEndController::class, 'formSubmit'],
+)->name('form.submit');
 
 if (isset($redirectionSources)) {
     Route::any(
@@ -91,6 +98,11 @@ if (isset($localeNames)) {
     )->where([
         'locale' => $localeNames,
     ])->name('locale.home');
+
+    Route::post(
+        uri: '/{locale:name}/form/{form:name}',
+        action: [FrontEndController::class, 'formSubmit'],
+    )->name('locale.form.submit');
 
     if (isset($taxonomyTypeNames, $entryTypeNames)) {
         Route::any(

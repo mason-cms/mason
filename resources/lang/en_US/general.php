@@ -16,4 +16,5 @@ return [
     'yes' => "Yes",
     'no' => "No",
     'or' => "or",
+    'success' => "Success!",
 ];

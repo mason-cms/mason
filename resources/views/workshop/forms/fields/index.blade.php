@@ -36,12 +36,12 @@
 
         <hr />
 
-        <ul class="ui-sortable">
+        <div class="columns is-multiline ui-sortable">
             @foreach ($fields as $field)
-                <li class="block">
+                <div class="column is-{{ $field->columns }}">
                     @include('workshop.forms.fields.partials.item')
-                </li>
+                </div>
             @endforeach
-        </ul>
+        </div>
     </form>
 @endsection

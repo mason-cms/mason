@@ -20,6 +20,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('locale_id')->index();
             $table->integer('original_id')->nullable()->index();
+            $table->text('confirmation_message')->nullable();
+            $table->string('send_to')->nullable();
+            $table->string('redirect_to')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

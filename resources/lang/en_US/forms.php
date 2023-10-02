@@ -17,6 +17,9 @@ return [
         'locale' => "Language",
         'original' => "Original",
         'translations' => "Translations",
+        'confirmation_message' => "Confirmation message",
+        'send_to' => "Send to",
+        'redirect_to' => "Redirect to",
         'created_at' => "Created on",
         'updated_at' => "Updated on",
         'deleted_at' => "Deleted on",
@@ -34,6 +37,11 @@ return [
         'edit' => [
             'title' => "Edit Form",
             'label' => "Edit",
+        ],
+
+        'submit' => [
+            'label' => "Submit",
+            'success' => "Form has been submitted successfully.",
         ],
 
         'destroy' => [
@@ -59,16 +67,32 @@ return [
             'type' => "Type",
             'label' => "Label",
             'description' => "Description",
+            'placeholder' => "Placeholder",
+            'default_value' => "Default value",
+            'class' => "Class",
+            'rules' => "Rules",
+            'options' => "Options",
+            'columns' => "Columns",
             'rank' => "Rank",
             'created_at' => "Created on",
             'updated_at' => "Updated on",
             'deleted_at' => "Deleted on",
         ],
 
+        'help' => [
+            'rules' => "In the Laravel validation format",
+            'options' => "Enter one option per line in the value:label format",
+        ],
+
         'types' => [
             'text' => "Text",
             'number' => "Number",
             'email' => "Email",
+            'tel' => "Phone Number",
+            'file' => "File",
+            'select' => "Select",
+            'checkboxes' => "Checkboxes",
+            'radios' => "Radios",
         ],
 
         'actions' => [
@@ -101,6 +125,10 @@ return [
         'plural' => "Submissions",
 
         'attributes' => [
+            'input' => "Input",
+            'user_agent' => "Browser",
+            'user_ip' => "IP Address",
+            'referrer_url' => "Page",
             'created_at' => "Created on",
             'updated_at' => "Updated on",
             'deleted_at' => "Deleted on",

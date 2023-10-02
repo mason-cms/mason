@@ -7,6 +7,11 @@ enum FormFieldType: string
     case TEXT = 'text';
     case NUMBER = 'number';
     case EMAIL = 'email';
+    case TEL = 'tel';
+    case FILE = 'file';
+    case SELECT = 'select';
+    case CHECKBOXES = 'checkboxes';
+    case RADIOS = 'radios';
 
     public function label(): string
     {
