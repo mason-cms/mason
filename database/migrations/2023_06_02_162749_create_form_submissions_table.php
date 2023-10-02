@@ -16,8 +16,11 @@ return new class extends Migration
         Schema::create('form_submissions', function (Blueprint $table) {
             $table->id();
             $table->integer('form_id')->unsigned()->index();
-            $table->text('data')->nullable();
+            $table->text('input')->nullable();
             $table->integer('user_id')->unsigned()->nullable();
+            $table->text('user_agent')->nullable();
+            $table->string('user_ip')->nullable();
+            $table->text('referrer_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

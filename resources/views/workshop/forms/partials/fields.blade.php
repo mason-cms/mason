@@ -48,8 +48,66 @@
                             id="form-description"
                             class="textarea"
                             name="form[description]"
-                            rows="4"
+                            rows="2"
                         >{!! $form->description !!}</textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-confirmation-message"
+                    >
+                        @lang('forms.attributes.confirmation_message')
+                    </label>
+
+                    <div class="control">
+                        <textarea
+                            id="form-confirmation-message"
+                            class="textarea"
+                            name="form[confirmation_message]"
+                            rows="2"
+                        >{!! $form->confirmation_message !!}</textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-send-to"
+                    >
+                        @lang('forms.attributes.send_to')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="form-send-to"
+                            class="input"
+                            name="form[send_to]"
+                            type="text"
+                            value="{!! $form->send_to !!}"
+                            maxlength="255"
+                        />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-redirect-to"
+                    >
+                        @lang('forms.attributes.redirect_to')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="form-redirect-to"
+                            class="input"
+                            name="form[redirect_to]"
+                            type="text"
+                            value="{!! $form->redirect_to !!}"
+                            maxlength="255"
+                        />
                     </div>
                 </div>
             </div>

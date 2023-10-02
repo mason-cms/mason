@@ -8,3 +8,10 @@ function htmlInputDatetime(?\Illuminate\Support\Carbon $datetime)
 
     return null;
 }
+
+function htmlLink(string $url, string $text = null): string
+{
+    $text ??= $url;
+
+    return "<a href=\"{$url}\">{$text}</a>";
+}

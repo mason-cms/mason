@@ -24,6 +24,9 @@ class Form extends Model
         'name',
         'description',
         'locale_id',
+        'confirmation_message',
+        'send_to',
+        'redirect_to',
     ];
 
     protected $casts = [
@@ -71,6 +74,50 @@ class Form extends Model
         }
 
         return $query;
+    }
+
+    /**
+     * ==================================================
+     * Accessors & Mutators
+     * ==================================================
+     */
+
+    public function getActionAttribute(): string
+    {
+        if (isset($this->locale) && ! $this->locale->is_default) {
+            return route(
+                name: 'locale.form.submit',
+                parameters: [
+                    'locale' => $this->locale,
+                    'form' => $this,
+                ]
+            );
+        }
+
+        return route(
+            name: 'form.submit',
+            parameters: [
+                'form' => $this,
+            ]
+        );
+    }
+
+    public function getMethodAttribute(): string
+    {
+        return 'POST';
+    }
+
+    public function getRulesAttribute(): array
+    {
+        $rules = [];
+
+        $fields = $this->fields()->whereNotNull('rules')->get();
+
+        foreach ($fields as $field) {
+            $rules[$field->rulekey] = $field->rules;
+        }
+
+        return $rules;
     }
 
     /**
@@ -125,12 +172,23 @@ class Form extends Model
         return null;
     }
 
-    public function render(array $data = []): ?string
+    public function render(array $data = []): string
     {
         if ($view = $this->view()) {
             return view($view, array_merge($data, ['form' => $this]))->render();
         }
 
-        return null;
+        return "";
+    }
+
+    public function runActions(FormSubmission $submission): void
+    {
+        if (isset($this->send_to)) {
+            $submission->send($this->send_to);
+        }
+
+        if (isset($this->redirect_to)) {
+            redirect()->to($this->redirect_to)->send();
+        }
     }
 }

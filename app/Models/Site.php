@@ -266,6 +266,22 @@ class Site
         return $query;
     }
 
+    public function forms(mixed $locale = null): Builder
+    {
+        $query = Form::query();
+
+        if ($locale ??= $this->locale) {
+            $query->byLocale($locale);
+        }
+
+        return $query;
+    }
+
+    public function form(string $name): ?Form
+    {
+        return $this->forms()->where('name', $name)->first();
+    }
+
     public function users(): Builder
     {
         return User::query();
