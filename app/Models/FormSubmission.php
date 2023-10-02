@@ -28,6 +28,8 @@ class FormSubmission extends Model
     ];
 
     protected $casts = [
+        'grecaptcha_success' => 'boolean',
+        'grecaptcha_score' => 'float',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -59,6 +61,9 @@ class FormSubmission extends Model
     public function setInputAttribute(array $input = null)
     {
         if (isset($input)) {
+            // Check for Google reCAPTCHA token
+            $this->grecaptcha_token = $input['_grecaptcha_token'] ?? null;
+
             // Iterate over input and convert uploaded files to links
             foreach ($input as &$value) {
                 if (is_array($value)) {
@@ -139,6 +144,55 @@ class FormSubmission extends Model
         }
 
         return $data;
+    }
+
+    public function verify(): ?bool
+    {
+        if ($this->form->grecaptcha_enabled) {
+            if (! isset($this->grecaptcha_token)) {
+                throw new \Exception("No Google reCAPTCHA token for Form Submission");
+            }
+
+            $client = new \GuzzleHttp\Client([
+                'base_uri' => 'https://www.google.com/recaptcha/api/',
+            ]);
+
+            $response = $client->post('siteverify', [
+                'form_params' => [
+                    'secret' => $this->form->grecaptcha_secret_key,
+                    'response' => $this->grecaptcha_token,
+                    'remoteip' => $this->user_ip,
+                ],
+            ]);
+
+            $body = $response->getBody()->getContents();
+            $data = json_decode($body, true);
+
+            if (! isset($data['success'], $data['score'])) {
+                throw new \Exception("Could not verify token with Google reCAPTCHA service: no success nor score returned. Response: {$body}");
+            }
+
+            $this->grecaptcha_success = $data['success'] === true;
+            $this->grecaptcha_score = $data['score'];
+
+            return $this->saveOrFail();
+        }
+
+        return null;
+    }
+
+    public function isSpam(): bool
+    {
+        if (isset($this->grecaptcha_success) && $this->grecaptcha_success === false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function runActions(): void
+    {
+        $this->form->runActions($this);
     }
 
     public function send(string|array $to = null): SentMessage
