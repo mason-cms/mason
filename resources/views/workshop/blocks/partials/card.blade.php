@@ -4,11 +4,11 @@
 >
     <div class="card-content">
         <div class="block">
-            <h3 class="title is-3">
+            <h2 class="title is-2">
                 <a href="{{ route('workshop.blocks.edit', [$block]) }}">
                     {{ $block->title ?? __('blocks.untitled') }}
                 </a>
-            </h3>
+            </h2>
         </div>
 
         <div class="block block-meta">

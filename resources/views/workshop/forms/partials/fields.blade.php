@@ -70,46 +70,42 @@
                         >{!! $form->confirmation_message !!}</textarea>
                     </div>
                 </div>
+            </div>
+        </fieldset>
 
-                <div class="field">
-                    <label
-                        class="label"
-                        for="form-send-to"
-                    >
-                        @lang('forms.attributes.send_to')
-                    </label>
+        <hr />
 
-                    <div class="control">
-                        <input
-                            id="form-send-to"
-                            class="input"
-                            name="form[send_to]"
-                            type="text"
-                            value="{!! $form->send_to !!}"
-                            maxlength="255"
-                        />
+        <fieldset class="block">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h2 class="title is-2">
+                            @icon(\App\Models\FormField::ICON)
+                            <span>@lang('forms.fields.title')</span>
+                        </h2>
                     </div>
                 </div>
 
-                <div class="field">
-                    <label
-                        class="label"
-                        for="form-redirect-to"
-                    >
-                        @lang('forms.attributes.redirect_to')
-                    </label>
-
-                    <div class="control">
-                        <input
-                            id="form-redirect-to"
-                            class="input"
-                            name="form[redirect_to]"
-                            type="text"
-                            value="{!! $form->redirect_to !!}"
-                            maxlength="255"
-                        />
+                <div class="level-right">
+                    <div class="level-item">
+                        <a
+                            class="button is-success"
+                            href="{{ route('workshop.forms.fields.create', [$form]) }}"
+                            rel="open-modal"
+                        >
+                            @icon('fa-plus')
+                            <span>@lang('forms.fields.actions.create.label')</span>
+                        </a>
                     </div>
                 </div>
+            </div>
+
+            <div class="columns is-multiline ui-sortable">
+                @foreach ($form->fields as $field)
+                    <div class="column is-{{ $field->columns }}">
+                        @include('workshop.forms.fields.partials.item')
+                    </div>
+                @endforeach
             </div>
         </fieldset>
     </div>
@@ -140,6 +136,114 @@
                                 @endforeach
                             </select>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="card block">
+            <div class="card-content">
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-send-to"
+                    >
+                        @lang('forms.attributes.send_to')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="form-send-to"
+                            class="input"
+                            name="form[send_to]"
+                            type="text"
+                            value="{!! $form->send_to !!}"
+                            maxlength="255"
+                        />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-reply-to"
+                    >
+                        @lang('forms.attributes.reply_to')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="form-reply-to"
+                            class="input"
+                            name="form[reply_to]"
+                            type="text"
+                            value="{!! $form->reply_to !!}"
+                            maxlength="255"
+                            list="form-fields-datalist"
+                        />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-cc"
+                    >
+                        @lang('forms.attributes.cc')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="form-cc"
+                            class="input"
+                            name="form[cc]"
+                            type="text"
+                            value="{!! $form->cc !!}"
+                            maxlength="255"
+                            list="form-fields-datalist"
+                        />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-bcc"
+                    >
+                        @lang('forms.attributes.bcc')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="form-bcc"
+                            class="input"
+                            name="form[bcc]"
+                            type="text"
+                            value="{!! $form->bcc !!}"
+                            maxlength="255"
+                            list="form-fields-datalist"
+                        />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="form-redirect-to"
+                    >
+                        @lang('forms.attributes.redirect_to')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="form-redirect-to"
+                            class="input"
+                            name="form[redirect_to]"
+                            type="text"
+                            value="{!! $form->redirect_to !!}"
+                            placeholder="https://"
+                            maxlength="255"
+                        />
                     </div>
                 </div>
             </div>
@@ -221,3 +325,9 @@
         </fieldset>
     </div>
 </div>
+
+<datalist id="form-fields-datalist">
+    @foreach ($form->fields as $field)
+        <option value="{{ $field->name }}">{{ $field->label }}</option>
+    @endforeach
+</datalist>

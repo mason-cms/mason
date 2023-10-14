@@ -4,12 +4,22 @@
 >
     <div class="card-content">
         <div class="block">
-            <h3 class="title is-3">
+            <h2 class="title is-2">
                 <a href="{{ route('workshop.forms.edit', [$form]) }}">
                     {{ $form->title ?? __('forms.untitled') }}
                 </a>
-            </h3>
+            </h2>
+
+            <div class="subtitle is-family-code">
+                {{ $form->name }}
+            </div>
         </div>
+
+        @isset($form->description)
+            <div class="block">
+                {!! $form->description !!}
+            </div>
+        @endisset
 
         <div class="block form-meta">
             <div class="field is-grouped is-grouped-multiline">
@@ -33,14 +43,6 @@
         >
             @icon('fa-pencil')
             <span class="is-hidden-mobile">@lang('forms.actions.edit.label')</span>
-        </a>
-
-        <a
-            class="card-footer-item"
-            href="{{ route('workshop.forms.fields.index', [$form]) }}"
-        >
-            @icon(\App\Models\FormField::ICON)
-            <span class="is-hidden-mobile">@lang('forms.fields.title')</span>
         </a>
 
         <a

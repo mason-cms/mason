@@ -86,6 +86,11 @@ class FormField extends Model
             ->orWhere('name', "{$name}[]");
     }
 
+    public function scopeByType(Builder $query, FormFieldType $type): Builder
+    {
+        return $query->where('type', $type->value);
+    }
+
     /**
      * ==================================================
      * Accessors & Mutators

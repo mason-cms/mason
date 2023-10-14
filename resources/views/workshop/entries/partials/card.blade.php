@@ -26,7 +26,7 @@
                 </a>
             </h2>
 
-            <div class="subtitle entry-name">
+            <div class="subtitle is-family-code entry-name">
                 {{ $entry->relative_url }}
             </div>
         </div>
