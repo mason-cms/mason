@@ -72,20 +72,9 @@ Route::prefix('/forms')->name('forms.')->group(function () {
     Route::prefix('/{form}')->group(function () {
         Route::get('/', [FormController::class, 'show'])->name('show');
         Route::get('/edit', [FormController::class, 'edit'])->name('edit');
+        Route::get('/add-field', [FormController::class, 'addField'])->name('addField');
         Route::patch('/', [FormController::class, 'update'])->name('update');
         Route::get('/destroy', [FormController::class, 'destroy'])->name('destroy');
-
-        Route::prefix('/fields')->name('fields.')->group(function () {
-            Route::get('/', [FormFieldController::class, 'index'])->name('index');
-            Route::get('/create', [FormFieldController::class, 'create'])->name('create');
-            Route::post('/', [FormFieldController::class, 'store'])->name('store');
-
-            Route::prefix('/{field}')->group(function () {
-                Route::get('/edit', [FormFieldController::class, 'edit'])->name('edit');
-                Route::patch('/', [FormFieldController::class, 'update'])->name('update');
-                Route::get('/destroy', [FormFieldController::class, 'destroy'])->name('destroy');
-            });
-        });
 
         Route::prefix('/submissions')->name('submissions.')->group(function () {
             Route::get('/', [FormSubmissionController::class, 'index'])->name('index');

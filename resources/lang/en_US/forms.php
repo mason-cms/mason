@@ -45,6 +45,10 @@ return [
             'label' => "Edit",
         ],
 
+        'addField' => [
+            'label' => "Add Field",
+        ],
+
         'submit' => [
             'label' => "Submit",
             'success' => "Form has been submitted successfully.",

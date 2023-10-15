@@ -157,6 +157,47 @@ $(document)
 
         $href.toggleClass('is-hidden');
     })
+    .on('click', '[rel="hide"]', function (e) {
+        e.preventDefault();
+
+        let $this = $(this),
+            href = $this.attr('href'),
+            $href = $(href);
+
+        $href.hide();
+    })
+    .on('click', '[rel="show"]', function (e) {
+        e.preventDefault();
+
+        let $this = $(this),
+            href = $this.attr('href'),
+            $href = $(href);
+
+        $href.show();
+    })
+    .on('click', '[rel="remove"]', function (e) {
+        e.preventDefault();
+
+        let $this = $(this),
+            href = $this.attr('href'),
+            $href = $(href);
+
+        $href.remove();
+    })
+    .on('click', '[rel="append"]', function (e) {
+        e.preventDefault();
+
+        let $this = $(this),
+            href = $this.attr('href'),
+            target = $this.attr('target'),
+            $target = $(target);
+
+        $.ajax({
+            url: href
+        }).done(function (data) {
+            $target.append(data);
+        });
+    })
     .on('click', '[data-method]', function (e) {
         e.preventDefault();
 

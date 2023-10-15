@@ -17,9 +17,9 @@
 
                 <div class="field has-addons">
                     <div class="control">
-                        <button class="button is-static is-small">
-                            @lang('forms.attributes.name')
-                        </button>
+                        <button
+                            class="button is-static is-small"
+                        >@lang('forms.attributes.name')</button>
                     </div>
 
                     <div class="control is-expanded">
@@ -31,7 +31,7 @@
                             value="{!! $form->name !!}"
                             maxlength="255"
                             data-slug-from="#form-title"
-                        >
+                        />
                     </div>
                 </div>
 
@@ -39,9 +39,7 @@
                     <label
                         class="label"
                         for="form-description"
-                    >
-                        @lang('forms.attributes.description')
-                    </label>
+                    >@lang('forms.attributes.description')</label>
 
                     <div class="control">
                         <textarea
@@ -57,9 +55,7 @@
                     <label
                         class="label"
                         for="form-confirmation-message"
-                    >
-                        @lang('forms.attributes.confirmation_message')
-                    </label>
+                    >@lang('forms.attributes.confirmation_message')</label>
 
                     <div class="control">
                         <textarea
@@ -90,21 +86,23 @@
                     <div class="level-item">
                         <a
                             class="button is-success"
-                            href="{{ route('workshop.forms.fields.create', [$form]) }}"
-                            rel="open-modal"
+                            href="{{ route('workshop.forms.addField', [$form]) }}"
+                            rel="append"
+                            target="#form-fields"
                         >
                             @icon('fa-plus')
-                            <span>@lang('forms.fields.actions.create.label')</span>
+                            <span>@lang('forms.actions.addField.label')</span>
                         </a>
                     </div>
                 </div>
             </div>
 
-            <div class="columns is-multiline ui-sortable">
+            <div
+                id="form-fields"
+                class="columns is-multiline ui-sortable"
+            >
                 @foreach ($form->fields as $field)
-                    <div class="column is-{{ $field->columns }}">
-                        @include('workshop.forms.fields.partials.item')
-                    </div>
+                    @include('workshop.forms.partials.field')
                 @endforeach
             </div>
         </fieldset>
@@ -117,9 +115,7 @@
                     <label
                         class="label"
                         for="form-locale"
-                    >
-                        @lang('forms.attributes.locale')
-                    </label>
+                    >@lang('forms.attributes.locale')</label>
 
                     <div class="control">
                         <div class="select is-fullwidth">
@@ -147,9 +143,7 @@
                     <label
                         class="label"
                         for="form-send-to"
-                    >
-                        @lang('forms.attributes.send_to')
-                    </label>
+                    >@lang('forms.attributes.send_to')</label>
 
                     <div class="control">
                         <input
@@ -167,9 +161,7 @@
                     <label
                         class="label"
                         for="form-reply-to"
-                    >
-                        @lang('forms.attributes.reply_to')
-                    </label>
+                    >@lang('forms.attributes.reply_to')</label>
 
                     <div class="control">
                         <input
@@ -188,9 +180,7 @@
                     <label
                         class="label"
                         for="form-cc"
-                    >
-                        @lang('forms.attributes.cc')
-                    </label>
+                    >@lang('forms.attributes.cc')</label>
 
                     <div class="control">
                         <input
@@ -209,9 +199,7 @@
                     <label
                         class="label"
                         for="form-bcc"
-                    >
-                        @lang('forms.attributes.bcc')
-                    </label>
+                    >@lang('forms.attributes.bcc')</label>
 
                     <div class="control">
                         <input
@@ -230,9 +218,7 @@
                     <label
                         class="label"
                         for="form-redirect-to"
-                    >
-                        @lang('forms.attributes.redirect_to')
-                    </label>
+                    >@lang('forms.attributes.redirect_to')</label>
 
                     <div class="control">
                         <input
@@ -255,9 +241,7 @@
                     <label
                         class="label"
                         for="form-grecaptcha-enabled"
-                    >
-                        @lang('forms.attributes.grecaptcha_enabled')
-                    </label>
+                    >@lang('forms.attributes.grecaptcha_enabled')</label>
 
                     <div class="control">
                         <label class="radio">
@@ -284,9 +268,7 @@
                     <label
                         class="label"
                         for="form-grecaptcha-site-key"
-                    >
-                        @lang('forms.attributes.grecaptcha_site_key')
-                    </label>
+                    >@lang('forms.attributes.grecaptcha_site_key')</label>
 
                     <div class="control">
                         <input
@@ -305,9 +287,7 @@
                     <label
                         class="label"
                         for="form-grecaptcha-secret-key"
-                    >
-                        @lang('forms.attributes.grecaptcha_secret_key')
-                    </label>
+                    >@lang('forms.attributes.grecaptcha_secret_key')</label>
 
                     <div class="control">
                         <input

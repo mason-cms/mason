@@ -43,6 +43,7 @@ class FormField extends Model
     ];
 
     protected $attributes = [
+        'type' => FormFieldType::TEXT,
         'columns' => 12,
     ];
 

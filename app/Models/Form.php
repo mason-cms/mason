@@ -33,6 +33,7 @@ class Form extends Model
         'grecaptcha_enabled',
         'grecaptcha_site_key',
         'grecaptcha_secret_key',
+        'fields',
     ];
 
     protected $casts = [
@@ -134,6 +135,22 @@ class Form extends Model
         }
 
         return $rules;
+    }
+
+    public function setFieldsAttribute(array $fields = []): void
+    {
+        $fieldKeys = [];
+        $rank = 0;
+
+        foreach ($fields as $fieldKey => $fieldAttributes) {
+            if ($field = $this->fields()->find($fieldKey)) {
+                $fieldKeys[] = $fieldKey;
+                $fieldAttributes['rank'] = $rank++;
+                $field->updateOrFail($fieldAttributes);
+            }
+        }
+
+        $this->fields()->whereNotIn('id', $fieldKeys)->delete();
     }
 
     /**
