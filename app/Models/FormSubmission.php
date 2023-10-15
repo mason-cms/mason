@@ -152,13 +152,14 @@ class FormSubmission extends Model
 
         if (isset($value)) {
             $values = array_map('trim', explode(',', $value));
+            $input = $this->input;
 
             foreach ($values as $v) {
                 if (is_email($v)) {
                     $addresses[] = $v;
                 } elseif ($field = $this->form->fields()->byName($v)->first()) {
-                    if (isset($this->input[$field])) {
-                        $inputValue = $this->input[$field];
+                    if (isset($input) && array_key_exists($field, $input)) {
+                        $inputValue = $input[$field];
 
                         if (is_array($inputValue)) {
                             foreach ($inputValue as $iv) {
