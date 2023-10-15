@@ -43,6 +43,7 @@ class FormField extends Model
     ];
 
     protected $attributes = [
+        'type' => FormFieldType::TEXT,
         'columns' => 12,
     ];
 
@@ -84,6 +85,11 @@ class FormField extends Model
         return $query
             ->where('name', $name)
             ->orWhere('name', "{$name}[]");
+    }
+
+    public function scopeByType(Builder $query, FormFieldType $type): Builder
+    {
+        return $query->where('type', $type->value);
     }
 
     /**

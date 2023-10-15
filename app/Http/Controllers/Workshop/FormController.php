@@ -62,20 +62,22 @@ class FormController extends Controller
         ]);
     }
 
+    public function addField(Request $request, Form $form): Response
+    {
+        $requestInput = $request->all();
+
+        return response()->view('workshop.forms.addField', [
+            'request' => $request,
+            'form' => $form,
+            'field' => $form->fields()->create($requestInput['field'] ?? []),
+        ]);
+    }
+
     public function update(Request $request, Form $form): RedirectResponse
     {
         $requestInput = $request->all();
 
         $form->updateOrFail($requestInput['form'] ?? []);
-
-        if (isset($requestInput['form']['fields'])) {
-            $rank = 0;
-
-            foreach ($requestInput['form']['fields'] as $fieldId) {
-                $field = $form->fields()->findOrFail($fieldId);
-                $field->updateOrFail(['rank' => $rank++]);
-            }
-        }
 
         return redirect()->back();
     }
