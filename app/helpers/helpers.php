@@ -42,3 +42,11 @@ function run(string $command): ?string
         ? implode(PHP_EOL, $output)
         : $output;
 }
+
+function is_email(mixed $value): bool
+{
+    return isset($value)
+        && is_string($value)
+        && strlen($value) > 0
+        && filter_var($value, FILTER_VALIDATE_EMAIL);
+}

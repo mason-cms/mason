@@ -96,6 +96,34 @@ class FormSubmission extends Model
             : null;
     }
 
+    public function getSendToAttribute(): ?array
+    {
+        return isset($this->form->send_to)
+            ? $this->parseEmailAddresses($this->form->send_to)
+            : null;
+    }
+
+    public function getCcAttribute(): ?array
+    {
+        return isset($this->form->cc)
+            ? $this->parseEmailAddresses($this->form->cc)
+            : null;
+    }
+
+    public function getBccAttribute(): ?array
+    {
+        return isset($this->form->bcc)
+            ? $this->parseEmailAddresses($this->form->bcc)
+            : null;
+    }
+
+    public function getReplyToAttribute(): ?array
+    {
+        return isset($this->form->reply_to)
+            ? $this->parseEmailAddresses($this->form->reply_to)
+            : null;
+    }
+
     /**
      * ==================================================
      * Relationships
@@ -117,6 +145,37 @@ class FormSubmission extends Model
      * Helpers
      * ==================================================
      */
+
+    public function parseEmailAddresses(string $value = null): array
+    {
+        $addresses = [];
+
+        if (isset($value)) {
+            $values = array_map('trim', explode(',', $this->form->send_to));
+
+            foreach ($values as $v) {
+                if (is_email($v)) {
+                    $addresses[] = $v;
+                } elseif ($field = $this->form->fields()->byName($v)->first()) {
+                    if (isset($this->input[$field])) {
+                        $inputValue = $this->input[$field];
+
+                        if (is_array($inputValue)) {
+                            foreach ($inputValue as $iv) {
+                                if (is_email($iv)) {
+                                    $addresses[] = $iv;
+                                }
+                            }
+                        } elseif (is_email($inputValue)) {
+                            $addresses[] = $inputValue;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $addresses;
+    }
 
     public function storeFile(UploadedFile|File $file)
     {
@@ -195,15 +254,8 @@ class FormSubmission extends Model
         $this->form->runActions($this);
     }
 
-    public function send(string|array $to = null): SentMessage
+    public function send(): SentMessage
     {
-        $to ??= $this->form?->send_to;
-
-        if (is_string($to)) {
-            $to = array_map('trim', explode(',', $to));
-        }
-
-        return Mail::to($to)
-            ->send(new FormSubmissionMailable($this));
+        return Mail::send(new FormSubmissionMailable($this));
     }
 }
