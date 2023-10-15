@@ -19,6 +19,9 @@ return [
         'translations' => "Translations",
         'confirmation_message' => "Confirmation message",
         'send_to' => "Send to",
+        'reply_to' => "Reply to",
+        'cc' => "CC",
+        'bcc' => "BCC",
         'redirect_to' => "Redirect to",
         'grecaptcha_enabled' => "Enable Google reCAPTCHA?",
         'grecaptcha_site_key' => "Google reCAPTCHA Site Key",
@@ -40,6 +43,10 @@ return [
         'edit' => [
             'title' => "Edit Form",
             'label' => "Edit",
+        ],
+
+        'addField' => [
+            'label' => "Add Field",
         ],
 
         'submit' => [
