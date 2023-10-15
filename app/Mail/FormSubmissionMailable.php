@@ -24,6 +24,10 @@ class FormSubmissionMailable extends Mailable
     public function envelope()
     {
         return new Envelope(
+            to: $this->submission->send_to,
+            cc: $this->submission->cc,
+            bcc: $this->submission->bcc,
+            replyTo: $this->submission->reply_to,
             subject: $this->submission->form->title,
         );
     }
