@@ -151,7 +151,7 @@ class FormSubmission extends Model
         $addresses = [];
 
         if (isset($value)) {
-            $values = array_map('trim', explode(',', $this->form->send_to));
+            $values = array_map('trim', explode(',', $value));
 
             foreach ($values as $v) {
                 if (is_email($v)) {
