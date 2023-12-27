@@ -15,6 +15,7 @@ return [
         'password' => "Password",
         'password_confirmation' => "Password (confirmation)",
         'is_root' => "Root user",
+        'photo' => "Photo",
         'created_at' => "Created on",
         'updated_at' => "Updated on",
         'deleted_at' => "Deleted on",
