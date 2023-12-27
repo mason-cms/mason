@@ -42,6 +42,7 @@ class User extends Authenticatable
         'photo_id',
         'photo_file',
         'profiles',
+        'links',
     ];
 
     /**
@@ -72,6 +73,14 @@ class User extends Authenticatable
     protected static function boot(): void
     {
         parent::boot();
+
+        static::saved(function (self $user) {
+            $locales = Locale::all();
+
+            foreach ($locales as $locale) {
+                $user->profiles()->firstOrCreate(['locale_id' => $locale->id]);
+            }
+        });
     }
 
     /**
@@ -125,14 +134,33 @@ class User extends Authenticatable
 
     public function setProfilesAttribute(?array $profiles): void
     {
-        foreach ($profiles as $attributes) {
-            if (isset($attributes['locale_id'])) {
+        if (isset($profiles)) {
+            foreach ($profiles as $attributes) {
                 try {
-                    $profile = $this->profiles()->firstOrNew([
-                        'locale_id' => $attributes['locale_id'],
-                    ]);
-                    $profile->fill($attributes);
-                    $profile->saveOrFail();
+                    if (isset($attributes['id'])) {
+                        $profile = $this->profiles()->findOrFail($attributes['id']);
+                        $profile->updateOrFail($attributes);
+                    } else {
+                        $this->profiles()->create($attributes);
+                    }
+                } catch (\Exception $e) {
+                    \Sentry\captureException($e);
+                }
+            }
+        }
+    }
+
+    public function setLinksAttribute(?array $links): void
+    {
+        if (isset($links)) {
+            foreach ($links as $attributes) {
+                try {
+                    if (isset($attributes['id'])) {
+                        $link = $this->links()->findOrFail($attributes['id']);
+                        $link->updateOrFail($attributes);
+                    } elseif (isset($attributes['title'], $attributes['url'])) {
+                        $this->links()->create($attributes);
+                    }
                 } catch (\Exception $e) {
                     \Sentry\captureException($e);
                 }
@@ -159,5 +187,10 @@ class User extends Authenticatable
     public function profiles(): HasMany
     {
         return $this->hasMany(UserProfile::class);
+    }
+
+    public function links(): HasMany
+    {
+        return $this->hasMany(UserLink::class);
     }
 }
