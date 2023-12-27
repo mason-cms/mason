@@ -24,16 +24,6 @@ trait Translatable
         });
     }
 
-    public function locale(): BelongsTo
-    {
-        return $this->belongsTo(Locale::class);
-    }
-
-    public function scopeByLocale(Builder $query, mixed $locale): Builder
-    {
-        return $query->whereIn('locale_id', Locale::resolveAll($locale)->pluck('id'));
-    }
-
     public function scopeOriginals(Builder $query): Builder
     {
         $defaultLocale = Locale::getDefault();

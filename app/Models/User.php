@@ -5,12 +5,14 @@ namespace App\Models;
 use App\Traits\Cancellable;
 use App\Traits\Metable;
 use App\Traits\Resolvable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -34,6 +36,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profiles',
     ];
 
     /**
@@ -57,6 +60,17 @@ class User extends Authenticatable
 
     /**
      * ==================================================
+     * Static Methods
+     * ==================================================
+     */
+
+    protected static function boot(): void
+    {
+        parent::boot();
+    }
+
+    /**
+     * ==================================================
      * Helpers
      * ==================================================
      */
@@ -66,15 +80,24 @@ class User extends Authenticatable
         return "{$this->name}";
     }
 
+    public function getProfile(Locale $locale): UserProfile
+    {
+        return $this->profiles()->firstOrCreate([
+            'locale_id' => $locale->id,
+        ]);
+    }
+
     /**
      * ==================================================
      * Accessors & Mutators
      * ==================================================
      */
 
-    public function setPasswordAttribute(string $value): void
+    public function setPasswordAttribute(?string $value): void
     {
-        $this->attributes['password'] = Hash::make($value);
+        if (isset($value)) {
+            $this->attributes['password'] = Hash::make($value);
+        }
     }
 
     public function getGravatarUrlAttribute(): ?string
@@ -87,6 +110,23 @@ class User extends Authenticatable
         return null;
     }
 
+    public function setProfilesAttribute(?array $profiles): void
+    {
+        foreach ($profiles as $attributes) {
+            if (isset($attributes['locale_id'])) {
+                try {
+                    $profile = $this->profiles()->firstOrNew([
+                        'locale_id' => $attributes['locale_id'],
+                    ]);
+                    $profile->fill($attributes);
+                    $profile->saveOrFail();
+                } catch (\Exception $e) {
+                    \Sentry\captureException($e);
+                }
+            }
+        }
+    }
+
     /**
      * ==================================================
      * Relationships
@@ -96,5 +136,10 @@ class User extends Authenticatable
     public function entries(): HasMany
     {
         return $this->hasMany(Entry::class, 'author_id');
+    }
+
+    public function profiles(): HasMany
+    {
+        return $this->hasMany(UserProfile::class);
     }
 }
