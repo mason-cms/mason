@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Localizable;
 use App\Traits\Translatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ use Illuminate\Support\Str;
 class Form extends Model
 {
     use HasFactory,
+        Localizable,
         Translatable,
         SoftDeletes;
 

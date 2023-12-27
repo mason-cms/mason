@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\EditorMode;
 use App\Facades\Parser;
+use App\Traits\Localizable;
 use App\Traits\MenuItemable;
 use App\Traits\Metable;
 use App\Traits\Resolvable;
@@ -25,6 +26,7 @@ class Entry extends Model
         SoftDeletes,
         Metable,
         MenuItemable,
+        Localizable,
         Translatable,
         Urlable,
         Resolvable;
