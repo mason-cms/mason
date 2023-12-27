@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Cancellable;
+use App\Traits\Localizable;
 use App\Traits\MenuItemable;
 use App\Traits\Metable;
 use App\Traits\Translatable;
@@ -27,6 +28,7 @@ class Taxonomy extends Model
         Metable,
         Cancellable,
         MenuItemable,
+        Localizable,
         Translatable,
         Urlable;
 
