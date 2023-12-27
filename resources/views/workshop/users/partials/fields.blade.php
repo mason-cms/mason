@@ -1,5 +1,5 @@
 <div class="columns">
-    <div class="column is-4">
+    <div class="column is-7">
         <div class="card block">
             <div class="card-content">
                 <div class="field">
@@ -51,9 +51,7 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="column is-8">
         <div class="card block">
             <div class="card-content">
                 <div class="tabs">
@@ -91,6 +89,70 @@
                         @endif
                     </fieldset>
                 @endforeach
+            </div>
+        </div>
+    </div>
+
+    <div class="column is-5">
+        <div class="card block">
+            <div class="card-content">
+                <div class="field">
+                    <label
+                        class="label"
+                        for="user-photo"
+                    >@lang('users.attributes.photo')</label>
+
+                    @isset($user->photo)
+                        <figure class="image block">
+                            <img
+                                src="{{ $user->photo->url }}"
+                                width="{{ $user->photo->image_width }}"
+                                height="{{ $user->photo->image_height }}"
+                                alt="{{ $user }}"
+                            />
+                        </figure>
+                    @endisset
+
+                    <div class="control block">
+                        <div class="select is-fullwidth">
+                            <select
+                                id="user-photo"
+                                name="user[photo_id]"
+                                autocomplete="off"
+                            >
+                                <option></option>
+
+                                @foreach (\App\Models\Medium::images()->get() as $image)
+                                    <option
+                                        value="{{ $image->getKey() }}"
+                                        {{ isset($user->photo) && $user->photo->is($image) ? 'selected' : '' }}
+                                    >{{ $image }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control block">
+                        <div class="file is-small">
+                            <label class="file-label">
+                                <input
+                                    id="user-photo-file"
+                                    class="file-input"
+                                    type="file"
+                                    name="user[photo_file]"
+                                />
+
+                                <span class="file-cta">
+                                    <span class="file-icon">@i('fa-upload')</span>
+
+                                    <span class="file-label">
+                                        @lang('general.file.cta.label')
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

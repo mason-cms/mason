@@ -7,9 +7,12 @@ use App\Traits\Metable;
 use App\Traits\Resolvable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -36,6 +39,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'photo_id',
+        'photo_file',
         'profiles',
     ];
 
@@ -100,6 +105,14 @@ class User extends Authenticatable
         }
     }
 
+    public function setPhotoFileAttribute(File|UploadedFile $file): void
+    {
+        $medium = new Medium(['file' => $file]);
+        $medium->parent()->associate($this);
+        $medium->saveOrFail();
+        $this->photo()->associate($medium);
+    }
+
     public function getGravatarUrlAttribute(): ?string
     {
         if (isset($this->email)) {
@@ -132,6 +145,11 @@ class User extends Authenticatable
      * Relationships
      * ==================================================
      */
+
+    public function photo(): BelongsTo
+    {
+        return $this->belongsTo(Medium::class);
+    }
 
     public function entries(): HasMany
     {
