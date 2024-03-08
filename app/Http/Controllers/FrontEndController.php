@@ -132,28 +132,38 @@ class FrontEndController extends Controller
         abort(404);
     }
 
-    public function formSubmit(Request $request, Form $form): RedirectResponse
+    public function formSubmit(Request $request, ...$params): RedirectResponse
     {
         $this->boot();
 
-        $request->validate($form->rules);
+        if (isset($params[0]) && Locale::exists($params[0])) {
+            $formName = $params[1] ?? null;
+        } else {
+            $formName = $params[0] ?? null;
+        }
 
-        $submission = $form->submissions()->make()->fill([
-            'input' => $request->all(),
-            'user_agent' => $request->userAgent(),
-            'user_ip' => $request->ip(),
-            'referrer_url' => $request->header('referer'),
-        ]);
+        if (isset($formName) && $form = $this->site->form($formName)) {
+            $request->validate($form->rules);
 
-        $submission->saveOrFail();
+            $submission = $form->submissions()->make()->fill([
+                'input' => $request->all(),
+                'user_agent' => $request->userAgent(),
+                'user_ip' => $request->ip(),
+                'referrer_url' => $request->header('referer'),
+            ]);
 
-        $submission->verify();
+            $submission->saveOrFail();
 
-        $submission->runActions();
+            $submission->verify();
 
-        $success = $form->confirmation_message ?? __('forms.actions.submit.success');
+            $submission->runActions();
 
-        return redirect()->back()->with('success', $success);
+            $success = $form->confirmation_message ?? __('forms.actions.submit.success');
+
+            return redirect()->back()->with('success', $success);
+        }
+
+        abort(404);
     }
 
     public function redirect(Request $request, Redirection $redirection): RedirectResponse
