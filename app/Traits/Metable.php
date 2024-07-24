@@ -13,6 +13,11 @@ trait Metable
         });
     }
 
+    public function initializeMetable()
+    {
+        $this->fillable[] = 'metadata';
+    }
+
     public function meta()
     {
         return $this->morphMany(Meta::class, 'parent');
