@@ -97,6 +97,74 @@
                 </div>
             </div>
         </fieldset>
+
+        <fieldset class="card block">
+            <header class="card-header">
+                <h2 class="card-header-title">
+                    @lang('meta.title')
+                </h2>
+            </header>
+
+            <div class="card-content">
+                <div class="field">
+                    <label
+                        class="label"
+                        for="entry-meta-title"
+                    >
+                        @lang('entries.meta.title')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="entry-meta-title"
+                            class="input"
+                            name="entry[metadata][title]"
+                            type="text"
+                            value="{!! $entry->metadata['title'] ?? null !!}"
+                            maxlength="255"
+                        />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="entry-meta-description"
+                    >
+                        @lang('entries.meta.description')
+                    </label>
+
+                    <div class="control">
+                        <textarea
+                            id="entry-meta-description"
+                            class="textarea"
+                            name="entry[metadata][description]"
+                            rows="2"
+                        >{!! $entry->metadata['description'] ?? null !!}</textarea>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label
+                        class="label"
+                        for="entry-meta-keywords"
+                    >
+                        @lang('entries.meta.keywords')
+                    </label>
+
+                    <div class="control">
+                        <input
+                            id="entry-meta-keywords"
+                            class="input"
+                            name="entry[metadata][keywords]"
+                            type="text"
+                            value="{!! $entry->metadata['keywords'] ?? null !!}"
+                            maxlength="255"
+                        />
+                    </div>
+                </div>
+            </div>
+        </fieldset>
     </div>
 
     <div class="column is-3">
@@ -324,6 +392,12 @@
         </fieldset>
 
         <fieldset class="card block">
+            <header class="card-header">
+                <h2 class="card-header-title">
+                    @lang('taxonomies.title')
+                </h2>
+            </header>
+
             <div class="card-content">
                 <input
                     name="entry[taxonomies]"
