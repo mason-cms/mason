@@ -26,6 +26,12 @@ return [
         'deleted_at' => "Deleted on",
     ],
 
+    'meta' => [
+        'title' => "Titre",
+        'description' => "Description",
+        'keywords' => "Keywords"
+    ],
+
     'statuses' => [
         'draft' => "Draft",
         'published' => "Published",
