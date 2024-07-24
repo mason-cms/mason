@@ -27,7 +27,6 @@ class MenuItem extends Model
         'href',
         'title',
         'rank',
-        'metadata',
     ];
 
     protected $casts = [
