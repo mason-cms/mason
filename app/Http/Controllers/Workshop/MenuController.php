@@ -15,10 +15,10 @@ class MenuController extends Controller
     public function index(Request $request): Response
     {
         if (isset($request->location, $request->locale_id)) {
-            $menu = Menu::where([
+            $menu = Menu::firstOrCreate([
                 'location' => $request->location,
                 'locale_id' => $request->locale_id,
-            ])->first();
+            ]);
         }
 
         return response()->view('workshop.menus.index', [
