@@ -36,11 +36,15 @@ class Redirection extends Model
         parent::boot();
 
         static::saving(function (self $redirection) {
+            $redirection->source = rtrim($redirection->source, "/ \n\r\t\v\x00");
+
             Artisan::call('route:clear');
+            Artisan::call('route:cache');
         });
 
         static::deleting(function (self $redirection) {
             Artisan::call('route:clear');
+            Artisan::call('route:cache');
         });
     }
 
