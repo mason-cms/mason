@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-content">
         <div class="columns is-multiline">
-            <div class="column is-6">
+            <div class="column is-5">
                 <div class="field">
                     <label class="label">
                         @lang('redirections.attributes.source')
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-            <div class="column is-6">
+            <div class="column is-5">
                 <div class="field">
                     <label class="label">
                         @lang('redirections.attributes.target')
@@ -46,6 +46,33 @@
                                 type="text"
                                 name="redirection[target]"
                                 value="{{ $redirection->target }}"
+                                required
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column is-2">
+                <div class="field">
+                    <label class="label">
+                        @lang('redirections.attributes.http_response_code')
+                    </label>
+
+                    <div class="field has-addons">
+                        <div class="control">
+                            <a class="button is-static">
+                                @icon('fa-browser')
+                            </a>
+                        </div>
+
+                        <div class="control is-expanded">
+                            <input
+                                class="input"
+                                type="text"
+                                name="redirection[http_response_code]"
+                                value="{{ $redirection->http_response_code }}"
+                                maxlength="3"
                                 required
                             />
                         </div>
