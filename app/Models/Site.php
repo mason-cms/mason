@@ -251,7 +251,7 @@ class Site
         return $this->media()->find($id);
     }
 
-    public function blocks(string $location = null, mixed $locale = null): Builder
+    public function blocks(string $location = null, mixed $locale = null, bool $strict = false): Builder
     {
         $query = Block::query();
 
@@ -259,9 +259,13 @@ class Site
             $query->byLocation($location);
         }
 
-        if ($locale ??= $this->locale) {
-            $query->byLocale($locale);
-        }
+        $query->where(function (Builder $q) use ($strict) {
+            $q->byLocale($locale ?? $this->locale);
+
+            if (! $strict) {
+                $q->orWhereNull('locale_id');
+            }
+        });
 
         return $query;
     }
