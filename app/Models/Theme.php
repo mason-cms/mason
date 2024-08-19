@@ -148,7 +148,7 @@ class Theme
         return collect($this->info('blockLocations') ?? []);
     }
 
-    public function blockLocation(string $name): object
+    public function blockLocation(string $name): ?object
     {
         return $this->blockLocations()->where('name', $name)->first();
     }

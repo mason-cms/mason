@@ -13,7 +13,7 @@
 
         <div class="block block-meta">
             <div class="field is-grouped is-grouped-multiline">
-                @isset($block->location)
+                @isset($block->location_info)
                     <div
                         class="control block-location"
                         title="@lang('blocks.attributes.location')"
