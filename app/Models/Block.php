@@ -98,16 +98,19 @@ class Block extends Model
 
     public function view(): ?string
     {
-        $views = [
-            "{$this->locale->name}.blocks.{$this->location}.default",
-            "{$this->locale->name}.blocks.{$this->location}",
-            "{$this->locale->name}.blocks.default",
-            "{$this->locale->name}.blocks",
-            "blocks.{$this->location}.default",
-            "blocks.{$this->location}",
-            "blocks.default",
-            "blocks",
-        ];
+        $views = [];
+
+        if (isset($this->locale?->name)) {
+            $views[] = "{$this->locale->name}.blocks.{$this->location}.default";
+            $views[] = "{$this->locale->name}.blocks.{$this->location}";
+            $views[] = "{$this->locale->name}.blocks.default";
+            $views[] = "{$this->locale->name}.blocks";
+        }
+
+        $views[] = "blocks.{$this->location}.default";
+        $views[] = "blocks.{$this->location}";
+        $views[] = "blocks.default";
+        $views[] = "blocks";
 
         foreach ($views as $view) {
             if (view()->exists($view)) {
