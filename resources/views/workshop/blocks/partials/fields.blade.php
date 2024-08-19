@@ -97,6 +97,8 @@
                                 name="block[locale_id]"
                                 autocomplete="off"
                             >
+                                <option value="">@lang('general.all')</option>
+
                                 @foreach (\App\Models\Locale::all() as $localeOption)
                                     <option
                                         value="{{ $localeOption->getKey() }}"
